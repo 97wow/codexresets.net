@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "codexresets-net",
+  "compatibility_date": "2026-09-17",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/",
+      "/zh/",
+      "/api/*",
+      "/feed.xml",
+      "/zh/feed.xml"
+    ]
+  },
+  "workers_dev": true,
+  "main": "worker/index.js",
+  "account_id": "59dc946124fa89b2df0f002b8a701862",
+  "kv_namespaces": [
+    {
+      "binding": "RESETS",
+      "id": "db9569434207442989cb174b9ee2a082"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "codexresets.net",
+      "custom_domain": true
+    }
+  ]
+}

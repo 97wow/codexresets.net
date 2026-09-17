@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "source": "https://x.com/thsottiaux",
+  "posts": [
+    {
+      "id": "2098685367058612394",
+      "authorId": "1953337039510003712",
+      "text": "Reset all propagated. Sweet dreams.",
+      "createdAt": "2026-09-12T08:09:17.000Z",
+      "url": "https://x.com/thsottiaux/status/2098685367058612394",
+      "references": [
+        {
+          "type": "quoted",
+          "id": "2098612714704891959"
+        }
+      ],
+      "edits": [
+        "2098685367058612394"
+      ],
+      "collectedAt": "2026-09-17T05:07:24.206070+00:00",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "completed",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 引用此前的重置预告，确认这次重置已经完成发放。",
+          "en": "Tibo confirmed the rollout, quoting the earlier reset announcement."
+        }
+      }
+    },
+    {
+      "id": "2098612714704891959",
+      "authorId": "1953337039510003712",
+      "text": "And of course, a reset is also landing by midnight today.",
+      "createdAt": "2026-09-12T03:20:36.000Z",
+      "url": "https://x.com/thsottiaux/status/2098612714704891959",
+      "references": [],
+      "edits": [
+        "2098612714704891959"
+      ],
+      "collectedAt": "2026-09-17T05:07:24.206070+00:00",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "announced",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 在介绍质量改进时预告当日午夜前重置，随后发帖确认完成。原文这句没有注明时区。",
+          "en": "Alongside quality fixes, Tibo announced a reset by midnight. A later post confirmed completion. This sentence does not specify a timezone."
+        }
+      }
+    },
+    {
+      "id": "2097752790177370535",
+      "authorId": "1953337039510003712",
+      "text": "Everyone who used one in the affected time window is getting another one and an email to apologize.",
+      "createdAt": "2026-09-09T18:23:34.000Z",
+      "url": "https://x.com/thsottiaux/status/2097752790177370535",
+      "references": [],
+      "edits": [
+        "2097752790177370535"
+      ],
+      "collectedAt": "2026-09-17T05:07:24.206070+00:00",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "compensation",
+        "kind": "banked",
+        "summary": {
+          "zh": "部分用户使用备用重置时未能完整恢复额度，Tibo 宣布为受影响时段内的使用者补发一次，并邮件说明。",
+          "en": "Tibo announced replacement banked resets for users whose redemption had not fully restored usage during the affected period."
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "2098685367058612394",
+      "state": "completed",
+      "kind": "regular",
+      "text": "Reset all propagated. Sweet dreams.",
+      "announcedAt": "2026-09-12T08:09:17.000Z",
+      "source": "https://x.com/thsottiaux/status/2098685367058612394",
+      "relatedPostIds": [
+        "2098612714704891959"
+      ],
+      "timingText": "",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "Tibo 引用此前的重置预告，确认这次重置已经完成发放。",
+        "en": "Tibo confirmed the rollout, quoting the earlier reset announcement."
+      }
+    },
+    {
+      "id": "2098612714704891959",
+      "state": "announced",
+      "kind": "regular",
+      "text": "And of course, a reset is also landing by midnight today.",
+      "announcedAt": "2026-09-12T03:20:36.000Z",
+      "source": "https://x.com/thsottiaux/status/2098612714704891959",
+      "relatedPostIds": [],
+      "timingText": "",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "Tibo 在介绍质量改进时预告当日午夜前重置，随后发帖确认完成。原文这句没有注明时区。",
+        "en": "Alongside quality fixes, Tibo announced a reset by midnight. A later post confirmed completion. This sentence does not specify a timezone."
+      }
+    },
+    {
+      "id": "2097752790177370535",
+      "state": "compensation",
+      "kind": "banked",
+      "text": "Everyone who used one in the affected time window is getting another one and an email to apologize.",
+      "announcedAt": "2026-09-09T18:23:34.000Z",
+      "source": "https://x.com/thsottiaux/status/2097752790177370535",
+      "relatedPostIds": [],
+      "timingText": "",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "部分用户使用备用重置时未能完整恢复额度，Tibo 宣布为受影响时段内的使用者补发一次，并邮件说明。",
+        "en": "Tibo announced replacement banked resets for users whose redemption had not fully restored usage during the affected period."
+      }
+    }
+  ],
+  "cursor": null,
+  "lastSuccessAt": null,
+  "lastReviewAt": "2026-09-17T05:07:24.206070+00:00",
+  "lastAttemptAt": "2026-09-17T05:07:24.206070+00:00",
+  "collectorState": "authentication_required",
+  "error": "invalid_credentials",
+  "coverage": "partial"
+}

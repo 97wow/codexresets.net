@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://codexresets.net/sitemap.xml
