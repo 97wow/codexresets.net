@@ -19,8 +19,30 @@ const t = copy[l];
   const root = document.querySelector<HTMLElement>('#tracker')!;
   const lang = document.querySelector<HTMLElement>('[data-language]')!.dataset.language as 'en' | 'zh';
   const t = copy[lang];
-  let expanded = false, filter = 'all', busy = false, lastPayload = '';
+  let expanded = false, filter = 'all', busy = false, communityBusy = false, lastPayload = '';
   const notificationKey = 'codex-resets-browser-alerts';
+  const visitKey = 'codex-resets-visit-v1';
+  const flagEmoji=(country:string)=>/^[A-Z]{2}$/.test(country)&&country!=='XX'?[...country].map(char=>String.fromCodePoint(127397+char.charCodeAt(0))).join(''):'🌍';
+  function paintCommunity(stats:{visitors?:number,beg?:{count?:number,countries?:Record<string,number>},country?:string},message='') {
+    const total=root.querySelector<HTMLElement>('.beg-total'),visitors=root.querySelector<HTMLElement>('.visitor-total'),flags=root.querySelector<HTMLElement>('.country-flags'),feedback=root.querySelector<HTMLElement>('.beg-feedback');
+    if(total)total.textContent=String(stats.beg?.count||0);if(visitors)visitors.textContent=String(stats.visitors||0);
+    if(feedback&&message)feedback.textContent=message;
+    if(flags){flags.replaceChildren();Object.entries(stats.beg?.countries||{}).sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([country,count])=>{const item=document.createElement('span');item.textContent=`${flagEmoji(country)} ${count}`;item.title=country;flags.append(item);});}
+  }
+  async function loadCommunity(record=true) {
+    try{
+      const shouldRecord=record&&!localStorage.getItem(visitKey);
+      const response=await fetch(shouldRecord?'/api/community/visit':'/api/community/stats',{method:shouldRecord?'POST':'GET',credentials:'same-origin',signal:AbortSignal.timeout(8000)});
+      if(!response.ok)throw new Error('Unavailable');const stats=await response.json();paintCommunity(stats);
+      if(shouldRecord)localStorage.setItem(visitKey,'1');
+    }catch{/* Community counters never block reset information. */}
+  }
+  async function begForReset(){
+    if(communityBusy)return;communityBusy=true;const button=root.querySelector<HTMLButtonElement>('.beg-button');if(button)button.disabled=true;
+    try{const response=await fetch('/api/community/beg',{method:'POST',credentials:'same-origin',signal:AbortSignal.timeout(8000)});if(!response.ok)throw new Error('Unavailable');const stats=await response.json();paintCommunity(stats,`${flagEmoji(stats.country)} ${stats.added?t.begDone:t.begAlready}`);if(button){button.dataset.done='true';button.textContent=stats.added?t.begDone:t.begAlready;}}
+    catch{const feedback=root.querySelector<HTMLElement>('.beg-feedback');if(feedback)feedback.textContent=t.offline;}
+    finally{communityBusy=false;if(button)button.disabled=false;}
+  }
   function updateNotificationButton() {
     const button = root.querySelector<HTMLButtonElement>('.notify-toggle');
     const note = root.querySelector<HTMLElement>('.notify-note');
@@ -59,7 +81,7 @@ const t = copy[l];
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
         const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['announced','rollout','completed','compensation'].includes(item.state));
         if(newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
-        lastPayload=identity;applyFilters();updateNotificationButton();
+        lastPayload=identity;applyFilters();updateNotificationButton();void loadCommunity(false);
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
       time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.textContent=dateLabel(time.dateTime,lang);
@@ -72,12 +94,13 @@ const t = copy[l];
   root.addEventListener('click', event=>{
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
+    if(target.matches('.beg-button'))void begForReset();
     if(target.matches('.notify-toggle'))void (async()=>{if(!('Notification' in window))return;const permission=await Notification.requestPermission();if(permission==='granted')localStorage.setItem(notificationKey,'on');else localStorage.removeItem(notificationKey);updateNotificationButton();})();
     if(target.dataset.filter){filter=target.dataset.filter;expanded=false;applyFilters();}
     if(target.matches('.show-more')){expanded=!expanded;applyFilters();}
     if(target.matches('.day')){filter='all';expanded=true;applyFilters();}
   });
-  applyFilters();updateNotificationButton();void refresh();
+  applyFilters();updateNotificationButton();void loadCommunity();void refresh();
   setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 </script>

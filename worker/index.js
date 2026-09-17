@@ -4,6 +4,7 @@ import {collectXPublic,cleanPublicPostText} from '../src/lib/x-public-collector.
 import {apiDocument,openAPI} from '../src/lib/api.js';
 import {renderTracker} from '../src/lib/tracker.js';
 import {rssResponse} from '../src/lib/rss.js';
+import {communityStats,recordBeg,recordVisit} from '../src/lib/community.js';
 
 export async function synchronize(env,fetcher=fetch){
   const previous=await env.RESETS.get('state','json')||fallback;
@@ -28,6 +29,7 @@ export function publicState(data,health){
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
 const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, OPTIONS','Cache-Control':'public, max-age=60, s-maxage=300'};
 const json=(body,status=200)=>Response.json(body,{status,headers:apiHeaders});
+const allowedMutation=request=>{const origin=request.headers.get('Origin');return !origin||origin===new URL(request.url).origin;};
 
 export default {
   async scheduled(_event,env,ctx){if(env.COLLECTOR_ENABLED==='true')ctx.waitUntil(synchronize(env));},
@@ -35,6 +37,16 @@ export default {
     const url=new URL(request.url);
     if(url.hostname==='www.codexresets.net'){url.hostname='codexresets.net';return Response.redirect(url,308);}
     if(url.pathname.startsWith('/api/')&&request.method==='OPTIONS')return new Response(null,{status:204,headers:apiHeaders});
+    if(url.pathname.startsWith('/api/community/')){
+      if(!['GET','POST','HEAD'].includes(request.method))return json({error:'method_not_allowed'},405);
+      if(request.method==='POST'&&!allowedMutation(request))return json({error:'forbidden'},403);
+      let data=fallback;try{data=await env.RESETS.get('state','json')||fallback;}catch{}
+      try{
+        const result=url.pathname==='/api/community/stats'?await communityStats(env,data,request):url.pathname==='/api/community/visit'&&request.method==='POST'?await recordVisit(env,data,request):url.pathname==='/api/community/beg'&&request.method==='POST'?await recordBeg(env,data,request):null;
+        if(!result)return json({error:'not_found'},404);
+        const response=json(result);return request.method==='HEAD'?new Response(null,response):response;
+      }catch{return json({error:'stats_unavailable'},503);}
+    }
     if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{Allow:'GET, HEAD',...securityHeaders}});
     if(url.pathname==='/api/'||url.pathname==='/api')return env.ASSETS.fetch(request);
     const dynamic=['/','/zh/','/api/status','/api/v1/status','/api/v1/events','/api/v1/posts','/api/v1/openapi.json','/feed.xml','/zh/feed.xml'];

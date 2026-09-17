@@ -112,6 +112,17 @@
     ,"xOpenPost": "Open original"
     ,"xCaptured": "posts captured"
     ,"archiveMood": "A small trail of confirmed reset days"
+    ,"resetCount": "Confirmed resets"
+    ,"longestWait": "Longest wait"
+    ,"metricBasis": "From confirmed records"
+    ,"communityTitle": "Send a tiny reset wish"
+    ,"communityText": "Tap once, let it go, and get back to building. The counter starts fresh after each confirmed reset."
+    ,"begAction": "Beg for a reset 🙏"
+    ,"begDone": "Wish added"
+    ,"begAlready": "You already wished this round"
+    ,"begCount": "wishes this round"
+    ,"visitorCount": "visitors"
+    ,"onePerIp": "One anonymous wish per network each reset cycle"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -226,5 +237,16 @@
     ,"xOpenPost": "查看原文"
     ,"xCaptured": "条动态已捕获"
     ,"archiveMood": "把每一次确认完成的重置，留成一串小小足迹"
+    ,"resetCount": "确认重置次数"
+    ,"longestWait": "最长等待"
+    ,"metricBasis": "按确认完成的记录计算"
+    ,"communityTitle": "小小求一次重置"
+    ,"communityText": "点一下，把期待留在这里，然后轻松回去继续创造。每次确认重置后，计数会重新开始。"
+    ,"begAction": "求一次重置 🙏"
+    ,"begDone": "愿望 +1"
+    ,"begAlready": "这一轮已经许过愿啦"
+    ,"begCount": "人正在等这一轮"
+    ,"visitorCount": "位访客来过"
+    ,"onePerIp": "每个网络在一个重置周期内匿名计数一次"
   }
 }

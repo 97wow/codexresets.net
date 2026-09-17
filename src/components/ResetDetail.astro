@@ -15,7 +15,7 @@ const jsonLd={'@context':'https://schema.org','@type':'BlogPosting',headline:tit
   <article class="reset-detail wrap">
     <nav class="breadcrumb" aria-label={zh?'面包屑':'Breadcrumb'}><a href={zh?'/zh/':'/'}>{zh?'重置状态':'Reset status'}</a><span aria-hidden="true">›</span><span>{t[event.state]}</span></nav>
     <header><span class={`type-tag ${event.state}`}>{t[event.state]}</span><h1>{summary}</h1><time datetime={event.announcedAt}>{dateLabel(event.announcedAt,lang)}</time></header>
-    <section class="detail-source"><div class="post-author"><span aria-hidden="true">T</span><strong>Tibo</strong><small>@thsottiaux</small></div><blockquote lang="en">{event.text}</blockquote><a class="source-button" href={sourceURL(event.source)} target="_blank" rel="noopener noreferrer">{t.original} ↗</a></section>
+    <section class="detail-source"><div class="post-author"><img class="tibo-avatar" src="/tibo.jpg" alt="" width="42" height="42" /><span class="author-copy"><strong>Tibo <i class="verified" aria-label="Verified">✓</i></strong><small>@thsottiaux</small></span></div><blockquote lang="en">{event.text}</blockquote><a class="source-button" href={sourceURL(event.source)} target="_blank" rel="noopener noreferrer">{t.original} ↗</a></section>
     <dl class="detail-facts"><div><dt>{zh?'状态':'Status'}</dt><dd>{t[event.state]}</dd></div><div><dt>{zh?'重置类型':'Reset type'}</dt><dd>{event.kind==='banked'?t.banked:t.automatic}</dd></div><div><dt>{zh?'核查方式':'Review'}</dt><dd>{event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</dd></div></dl>
     <a class="back-link" href={`${zh?'/zh/':'/'}#archive`}>← {zh?'返回全部重置消息':'Back to all reset updates'}</a>
   </article>

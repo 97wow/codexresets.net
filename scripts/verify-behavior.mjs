@@ -33,7 +33,7 @@ const browserResponseState=await collectXPublic(previous,{quickAction:async()=>R
 assert.equal(browserResponseState.collectorMethod,'browser_rendering');assert.equal(browserResponseState.posts[0].id,'2100363668051603608');
 await assert.rejects(collectX(previous,'test-only-token',async()=>new Response('',{status:401})),e=>e.code==='invalid_credentials');
 await assert.rejects(collectX(previous,'test-only-token',async()=>Response.json({data:[],meta:{result_count:0,next_token:'endless'}})),e=>e.code==='backlog_requires_backfill');
-const bundle=await build({stdin:{contents:"export {renderTracker} from './src/lib/tracker.js';export {synchronize,publicState} from './worker/index.js';export {rssResponse} from './src/lib/rss.js';",resolveDir:process.cwd()},bundle:true,write:false,platform:'node',format:'esm'});
+const bundle=await build({stdin:{contents:"export {renderTracker} from './src/lib/tracker.js';export {synchronize,publicState} from './worker/index.js';export {rssResponse} from './src/lib/rss.js';export {communityStats,recordVisit,recordBeg,resetCycle} from './src/lib/community.js';",resolveDir:process.cwd()},bundle:true,write:false,platform:'node',format:'esm'});
 const api=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
 const seed=JSON.parse(readFileSync('src/data/snapshot.json'));
 const entries=new Map([['state',JSON.stringify(seed)]]);
@@ -43,6 +43,15 @@ assert.equal(entries.get('state'),JSON.stringify(seed),'Failed collection must n
 assert.equal(JSON.parse(entries.get('health')).code,'invalid_credentials');
 const view=api.publicState(seed);assert.equal(view.posts.length,seed.posts.length);assert.ok(!('cursor' in view)&&!('authorId' in view.posts[0]));
 const document=apiDocument(seed);assert.equal(document.apiVersion,'1.0');assert.equal(document.status.confirmedResetCount,3);assert.equal(document.events[0].sourceUrl,seed.events[0].source);assert.equal(document.posts.length,seed.posts.length);assert.ok(openAPI().paths['/api/v1/status']);assert.ok(openAPI().paths['/api/v1/posts']);
+assert.ok(document.status.longestIntervalSeconds>=document.status.averageIntervalSeconds);assert.ok(openAPI().paths['/api/community/stats']);
+const communityEntries=new Map();
+const communityEnv={STATS_SALT:'test-only-community-salt',RESETS:{get:async(k,type)=>{const value=communityEntries.get(k);return value&&type==='json'?JSON.parse(value):value;},put:async(k,v)=>communityEntries.set(k,v)}};
+const visitorRequest=new Request('https://codexresets.net/api/community/visit',{headers:{'CF-Connecting-IP':'203.0.113.8','CF-IPCountry':'JP'}});
+assert.equal((await api.recordVisit(communityEnv,seed,visitorRequest)).visitors,1);assert.equal((await api.recordVisit(communityEnv,seed,visitorRequest)).visitors,1,'Visitors are counted once per anonymous IP hash');
+const firstBeg=await api.recordBeg(communityEnv,seed,visitorRequest);assert.equal(firstBeg.added,true);assert.equal(firstBeg.beg.count,1);assert.equal(firstBeg.beg.countries.JP,1);
+const duplicateBeg=await api.recordBeg(communityEnv,seed,visitorRequest);assert.equal(duplicateBeg.added,false);assert.equal(duplicateBeg.beg.count,1,'Wishes are counted once per reset cycle');
+const nextCycle=structuredClone(seed);nextCycle.events.push({...seed.events.find(event=>event.state==='completed'),id:'2199999999999999999',announcedAt:'2026-10-01T00:00:00.000Z',source:'https://x.com/thsottiaux/status/2199999999999999999'});
+assert.notEqual(api.resetCycle(nextCycle),api.resetCycle(seed));assert.equal((await api.communityStats(communityEnv,nextCycle,visitorRequest)).beg.count,0,'A confirmed reset starts a fresh wish count');
 const html=api.renderTracker(view,'zh');assert.ok(html.includes('自动采集尚未接通'));assert.ok(html.includes('6 天'),'Average interval uses confirmed reset events');assert.ok(html.includes('3 次确认样本'));assert.ok(html.includes('历史重置日历'));assert.ok(html.includes('Tibo 最近在说什么'));assert.equal((html.match(/class="x-post-card/g)||[]).length,seed.posts.length);assert.ok(html.includes('Reset all propagated. Sweet dreams.'));assert.ok(!html.includes('class="message-details"'),'Source excerpts are visible without expansion');assert.ok(!html.includes('<section class="upcoming">'),'Linked completion resolves the old announcement');
 const malicious=structuredClone(seed);malicious.events[0].text='<script>alert(1)</script>';
 assert.ok(api.renderTracker(malicious).includes('&lt;script&gt;'));
