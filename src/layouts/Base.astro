@@ -46,6 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
         <a href={`${base}#posts`}>{t.xNav}</a><a href={`${base}#archive`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
       </nav>
+      <a class="api-shortcut" href="/api/">API</a>
       <a class="language" href={alternate} lang={lang === 'zh' ? 'en' : 'zh-CN'}>{lang === 'zh' ? 'English' : '中文'} <span aria-hidden="true">⌄</span></a>
     </header>
     <main id="main"><slot /></main>
