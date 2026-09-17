@@ -11,6 +11,20 @@ export function elapsedLabel(date,lang,now=Date.now()){
   const minutes=Math.max(1,Math.floor(elapsed/60000));
   return lang==='zh'?`${hours} 小时 ${minutes%60} 分钟`:`${hours}h ${minutes%60}m`;
 }
+function calendarMonth(year,month,completed,lang,t){
+  const first=new Date(Date.UTC(year,month,1));
+  const days=new Date(Date.UTC(year,month+1,0)).getUTCDate();
+  const offset=(first.getUTCDay()+6)%7;
+  const byDay=new Map(completed.filter(event=>{const date=new Date(event.announcedAt);return date.getUTCFullYear()===year&&date.getUTCMonth()===month;}).map(event=>[new Date(event.announcedAt).getUTCDate(),event]));
+  const label=new Intl.DateTimeFormat(lang==='zh'?'zh-CN':'en-GB',{month:'long',year:'numeric',timeZone:'UTC'}).format(first);
+  const weekdays=lang==='zh'?['一','二','三','四','五','六','日']:['M','T','W','T','F','S','S'];
+  const cells=[...Array(offset)].map(()=>'<span class="calendar-empty" aria-hidden="true"></span>');
+  for(let day=1;day<=days;day++){
+    const event=byDay.get(day);
+    cells.push(event?`<a class="calendar-day reset-day" href="#event-${escape(event.id)}" aria-label="${escape(label)} ${day}, ${t.completed}"><span>${day}</span><i aria-hidden="true">↻</i></a>`:`<span class="calendar-day"><span>${day}</span></span>`);
+  }
+  return `<div class="calendar-month"><h3>${escape(label)}</h3><div class="weekdays" aria-hidden="true">${weekdays.map(day=>`<span>${day}</span>`).join('')}</div><div class="calendar-grid">${cells.join('')}</div></div>`;
+}
 export function renderTracker(data,lang='en',now=Date.now()){
   const t=copy[lang],events=data.events||[],live=data.collectorState==='connected',fresh=live&&data.lastSuccessAt&&now-Date.parse(data.lastSuccessAt)<900000;
   const sourceLink=event=>`<a href="${escape(sourceURL(event.source))}" target="_blank" rel="noopener noreferrer">${t.original} ↗</a>`;
@@ -22,17 +36,18 @@ export function renderTracker(data,lang='en',now=Date.now()){
       <div class="date-block" aria-hidden="true"><strong>${day}</strong><span>${month}</span></div>
       <div class="message-body"><div class="message-heading"><span class="type-tag ${escape(event.state)}">${t[event.state]}</span><time datetime="${escape(event.announcedAt)}">${dateLabel(event.announcedAt,lang)}</time></div>
       <p class="summary">${escape(event.summary?.[lang]||event.text)}</p>
-      <details class="message-details" id="detail-${escape(event.id)}"><summary>${t.readMore}<span aria-hidden="true">＋</span></summary><div class="detail-content">
-      <span class="excerpt-label">${event.excerpt?t.excerptLabel:t.original}</span><blockquote lang="en">${escape(event.text)}</blockquote>
-      ${event.timingText?`<p>${t.scheduledTime}: ${escape(event.timingText)}</p>`:''}
-      ${event.relatedPostIds.length?`<div class="related-posts">${event.relatedPostIds.map((id,i)=>`<a href="${escape(sourceURL('https://x.com/thsottiaux/status/'+id))}" target="_blank" rel="noopener noreferrer">${t.related}${event.relatedPostIds.length>1?' '+(i+1):''} ↗</a>`).join(' ')}</div>`:''}
-      <div class="message-meta">${sourceLink(event)}<span>${event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</span></div></div></details></div></article>`;
+      <div class="original-post"><div class="post-author"><span aria-hidden="true">T</span><strong>Tibo</strong><small>@thsottiaux</small><em>${t.excerptLabel}</em></div><blockquote lang="en">${escape(event.text)}</blockquote><div class="message-meta">${sourceLink(event)}<span>${event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</span></div></div>
+      ${event.timingText?`<p class="timing">${t.scheduledTime}: ${escape(event.timingText)}</p>`:''}
+      ${event.relatedPostIds.length?`<div class="related-posts">${event.relatedPostIds.map((id,i)=>`<a href="${escape(sourceURL('https://x.com/thsottiaux/status/'+id))}" target="_blank" rel="noopener noreferrer">${t.related}${event.relatedPostIds.length>1?' '+(i+1):''} ↗</a>`).join(' ')}</div>`:''}</div></article>`;
   };
   const active=events.filter(e=>e.state==='announced'&&!events.some(other=>['completed','rollout'].includes(other.state)&&other.relatedPostIds.includes(e.id)));
   const completed=events.filter(e=>e.state==='completed').sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt));
   const lastCompleted=completed[0];
   const intervals=completed.slice(0,-1).map((event,index)=>Date.parse(event.announcedAt)-Date.parse(completed[index+1].announcedAt)).filter(value=>value>0);
   const average=intervals.length?Math.round(intervals.reduce((sum,value)=>sum+value,0)/intervals.length/86400000):null;
+  const latestCalendarDate=lastCompleted?new Date(lastCompleted.announcedAt):new Date(now);
+  const previousMonth=new Date(Date.UTC(latestCalendarDate.getUTCFullYear(),latestCalendarDate.getUTCMonth()-1,1));
+  const calendar=`<section class="calendar-section" id="calendar"><div class="section-heading"><div><h2>${t.calendarTitle}</h2><p>${t.calendarIntro}</p></div><span class="calendar-key"><i aria-hidden="true">↻</i>${t.confirmedDay}</span></div><div class="calendars">${calendarMonth(previousMonth.getUTCFullYear(),previousMonth.getUTCMonth(),completed,lang,t)}${calendarMonth(latestCalendarDate.getUTCFullYear(),latestCalendarDate.getUTCMonth(),completed,lang,t)}</div></section>`;
   const feed=lang==='zh'?'/zh/feed.xml':'/feed.xml';
   return `<section class="status-panel" aria-labelledby="status-title"><div class="status-top"><div><p>${t.headline}</p><h1 id="status-title">${t.statusHeadline}</h1></div><a class="source-profile" href="https://x.com/thsottiaux" target="_blank" rel="noopener noreferrer"><span class="author-monogram" aria-hidden="true">T</span><span><strong>Tibo</strong><span>@thsottiaux ↗</span></span></a></div>
     <div class="status-grid"><div class="last-reset"><span>${t.lastConfirmed}</span><strong>${lastCompleted?elapsedLabel(lastCompleted.announcedAt,lang,now):t.noConfirmed}</strong><time datetime="${escape(lastCompleted?.announcedAt||'')}">${lastCompleted?dateLabel(lastCompleted.announcedAt,lang):''}</time></div><div class="status-facts"><div><span>${t.nextReset}</span><strong>${active.length?t.nextAnnounced:t.noAnnouncement}</strong><small>${active.length?t.checkAnnouncement:t.noAnnouncementNote}</small></div><div><span>${t.averageInterval}</span><strong>${average!==null?`${average} ${t.days}`:t.collecting}</strong><small>${completed.length} ${t.confirmedSamples}${average!==null?` · ${t.confirmedAverage}`:''}</small></div></div></div>
@@ -40,6 +55,7 @@ export function renderTracker(data,lang='en',now=Date.now()){
     <div class="status-foot"><span class="collection-mode ${fresh?'connected':''}"><i aria-hidden="true"></i>${fresh?t.liveMode:t.reviewMode}</span><button class="refresh" type="button">↻ ${t.refresh}</button></div></section>
     <p class="connection-warning" role="status" ${fresh?'hidden':''}>${live?t.stale:t.collectorBlocked}</p>
     ${active.length?`<section class="upcoming"><h2>${t.announced}</h2>${active.map(e=>`<p>${escape(e.summary?.[lang]||e.text)}</p>${sourceLink(e)}`).join('')}<small>${t.pendingNote}</small></section>`:''}
+    ${calendar}
     <section class="message-history" id="archive"><div class="section-heading"><h2>${t.historyTitle}</h2><span>${t.historyIntro}</span></div>
     <div class="filters" role="group" aria-label="${t.filterLabel}"><button data-filter="all" aria-pressed="true">${t.all}</button>${['announced','rollout','completed','compensation','signal'].filter(state=>events.some(e=>e.state===state)).map(state=>`<button data-filter="${state}" aria-pressed="false">${t[state]}</button>`).join('')}</div>
     <div class="message-list">${events.map(row).join('')}</div><p class="empty-state" hidden>${t.empty}</p><button class="show-more" hidden>${t.more}</button></section>

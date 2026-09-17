@@ -100,6 +100,9 @@
     ,"notifyUnsupported": "Alerts unavailable"
     ,"notifyUnsupportedNote": "This browser does not support notifications. Use RSS instead."
     ,"notifyTitle": "New Codex reset update"
+    ,"calendarTitle": "Confirmed reset calendar"
+    ,"calendarIntro": "Only dates with a completion post are marked"
+    ,"confirmedDay": "Confirmed reset"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -202,5 +205,8 @@
     ,"notifyUnsupported": "无法使用浏览器提醒"
     ,"notifyUnsupportedNote": "当前浏览器不支持通知，请使用 RSS 订阅。"
     ,"notifyTitle": "Codex 有新的重置动态"
+    ,"calendarTitle": "历史重置日历"
+    ,"calendarIntro": "只标记有原帖确认完成的日期"
+    ,"confirmedDay": "确认重置"
   }
 }
