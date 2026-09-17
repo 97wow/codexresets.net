@@ -32,8 +32,8 @@ await assert.rejects(api.synchronize(env,async()=>new Response('',{status:401}))
 assert.equal(entries.get('state'),JSON.stringify(seed),'Failed collection must not erase records or advance the cursor');
 assert.equal(JSON.parse(entries.get('health')).code,'invalid_credentials');
 const view=api.publicState(seed);assert.ok(!('posts' in view)&&!('cursor' in view));
-const html=api.renderTracker(seed,'zh');assert.ok(html.includes('自动采集尚未接通'));assert.ok(!html.includes('<section class="upcoming">'),'Linked completion resolves the old announcement');
+const html=api.renderTracker(seed,'zh');assert.ok(html.includes('自动采集尚未接通'));assert.ok(html.includes('6 天'),'Average interval uses confirmed reset events');assert.ok(html.includes('3 次确认样本'));assert.ok(!html.includes('<section class="upcoming">'),'Linked completion resolves the old announcement');
 const malicious=structuredClone(seed);malicious.events[0].text='<script>alert(1)</script>';
 assert.ok(api.renderTracker(malicious).includes('&lt;script&gt;'));
-const xml=await api.rssResponse(seed).text();assert.equal((xml.match(/<item>/g)||[]).length,3);assert.ok(xml.includes('Tibo on X'));
+const xml=await api.rssResponse(seed).text();assert.equal((xml.match(/<item>/g)||[]).length,5);assert.ok(xml.includes('Tibo on X'));
 console.log('PASS: direct X only; replies retained; full-text selection; author validation; conservative categories; edit deduplication; pagination and cursor safety; failed collection preserves records; source relations; HTML escaping; RSS.');

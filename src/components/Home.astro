@@ -6,11 +6,9 @@ import { renderTracker } from '../lib/tracker.js';
 const { lang = 'en' } = Astro.props;
 const l = lang as 'en' | 'zh';
 const t = copy[l];
-const base = l === 'zh' ? '/zh/' : '/';
 ---
 <Base lang={l} alternate={l === 'zh' ? '/' : '/zh/'}>
   <div class="dashboard wrap" data-language={l}>
-    <section class="tracker-intro"><div class="intro-copy"><h1>{t.headline}</h1><p>{t.intro}</p><a class="subscribe" href={`${base}feed.xml`}>{t.rss} <span aria-hidden="true">↗</span></a></div><div class="reset-emblem" aria-hidden="true"><span>↻</span></div></section>
     <div id="tracker" set:html={renderTracker(snapshot,l)}></div>
     <details class="explanation" id="guide"><summary>{t.guideTitle}</summary><p>{t.methodText}</p><div class="definitions"><div><h3>{t.automatic}</h3><p>{t.autoText}</p></div><div><h3>{t.banked}</h3><p>{t.bankText}</p></div></div><p>{t.feedNote}</p><a href="https://learn.chatgpt.com/docs/pricing" target="_blank" rel="noopener noreferrer">{t.official} ↗</a></details>
   </div>
@@ -22,6 +20,17 @@ const base = l === 'zh' ? '/zh/' : '/';
   const lang = document.querySelector<HTMLElement>('[data-language]')!.dataset.language as 'en' | 'zh';
   const t = copy[lang];
   let expanded = false, filter = 'all', busy = false, lastPayload = '';
+  const notificationKey = 'codex-resets-browser-alerts';
+  function updateNotificationButton() {
+    const button = root.querySelector<HTMLButtonElement>('.notify-toggle');
+    const note = root.querySelector<HTMLElement>('.notify-note');
+    if (!button || !note) return;
+    if (!('Notification' in window)) { button.disabled=true; button.textContent=t.notifyUnsupported; note.textContent=t.notifyUnsupportedNote; return; }
+    if(Notification.permission==='denied'){button.disabled=true;button.textContent=t.notifyBlocked;note.textContent=t.notifyDenied;return;}
+    const enabled=localStorage.getItem(notificationKey)==='on'&&Notification.permission==='granted';
+    button.dataset.enabled=String(enabled);button.textContent=enabled?t.notifyOn:t.notifyAction;
+    note.textContent=Notification.permission==='denied'?t.notifyDenied:(enabled?t.notifyOnNote:t.notifyNote);
+  }
   function applyFilters() {
     const rows = Array.from(root.querySelectorAll<HTMLElement>('.message-row'));
     let matched = 0;
@@ -44,10 +53,13 @@ const base = l === 'zh' ? '/zh/' : '/';
       if(payload.version!==1 || !Array.isArray(payload.events)) throw new Error('Invalid response');
       const identity=JSON.stringify(payload);
       if(lastPayload!==identity) {
+        const knownIds=new Set(Array.from(root.querySelectorAll<HTMLElement>('.message-row')).map(row=>row.id.replace('event-','')));
         const openIds=Array.from(root.querySelectorAll<HTMLDetailsElement>('details[open]')).map(d=>d.id);
         root.innerHTML=renderTracker(payload,lang);
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
-        lastPayload=identity;applyFilters();
+        const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['announced','rollout','completed','compensation'].includes(item.state));
+        if(newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
+        lastPayload=identity;applyFilters();updateNotificationButton();
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
       time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.textContent=dateLabel(time.dateTime,lang);
@@ -60,11 +72,12 @@ const base = l === 'zh' ? '/zh/' : '/';
   root.addEventListener('click', event=>{
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
+    if(target.matches('.notify-toggle'))void (async()=>{if(!('Notification' in window))return;const permission=await Notification.requestPermission();if(permission==='granted')localStorage.setItem(notificationKey,'on');else localStorage.removeItem(notificationKey);updateNotificationButton();})();
     if(target.dataset.filter){filter=target.dataset.filter;expanded=false;applyFilters();}
     if(target.matches('.show-more')){expanded=!expanded;applyFilters();}
     if(target.matches('.day')){filter='all';expanded=true;applyFilters();}
   });
-  applyFilters();void refresh();
-  setInterval(()=>{if(!document.hidden)void refresh();},60000);
+  applyFilters();updateNotificationButton();void refresh();
+  setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 </script>

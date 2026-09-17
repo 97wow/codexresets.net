@@ -72,6 +72,55 @@
           "en": "Tibo announced replacement banked resets for users whose redemption had not fully restored usage during the affected period."
         }
       }
+    },
+    {
+      "id": "2097174560412246215",
+      "authorId": "1953337039510003712",
+      "text": "All reset for everyone. Enjoy the week with Astra.",
+      "createdAt": "2026-09-08T04:05:53.478Z",
+      "url": "https://x.com/thsottiaux/status/2097174560412246215",
+      "references": [
+        {
+          "type": "quoted",
+          "id": "2097043464538264003"
+        }
+      ],
+      "edits": [
+        "2097174560412246215"
+      ],
+      "collectedAt": "2026-09-17T05:32:00.000Z",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "completed",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 确认面向所有人的重置已经完成。",
+          "en": "Tibo confirmed that the reset for everyone had completed."
+        }
+      }
+    },
+    {
+      "id": "2094252447271366730",
+      "authorId": "1953337039510003712",
+      "text": "We have now reset usage for all paid subscriptions for ChatGPT Work and Codex.",
+      "createdAt": "2026-08-31T02:34:27.415Z",
+      "url": "https://x.com/thsottiaux/status/2094252447271366730",
+      "references": [],
+      "edits": [
+        "2094252447271366730"
+      ],
+      "collectedAt": "2026-09-17T05:32:00.000Z",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "completed",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 确认 ChatGPT Work 和 Codex 的全部付费订阅已经重置用量。",
+          "en": "Tibo confirmed a usage reset for all paid ChatGPT Work and Codex subscriptions."
+        }
+      }
     }
   ],
   "events": [
@@ -126,6 +175,42 @@
       "summary": {
         "zh": "部分用户使用备用重置时未能完整恢复额度，Tibo 宣布为受影响时段内的使用者补发一次，并邮件说明。",
         "en": "Tibo announced replacement banked resets for users whose redemption had not fully restored usage during the affected period."
+      }
+    },
+    {
+      "id": "2097174560412246215",
+      "state": "completed",
+      "kind": "regular",
+      "text": "All reset for everyone. Enjoy the week with Astra.",
+      "announcedAt": "2026-09-08T04:05:53.478Z",
+      "source": "https://x.com/thsottiaux/status/2097174560412246215",
+      "relatedPostIds": [
+        "2097043464538264003"
+      ],
+      "timingText": "",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "Tibo 确认面向所有人的重置已经完成。",
+        "en": "Tibo confirmed that the reset for everyone had completed."
+      }
+    },
+    {
+      "id": "2094252447271366730",
+      "state": "completed",
+      "kind": "regular",
+      "text": "We have now reset usage for all paid subscriptions for ChatGPT Work and Codex.",
+      "announcedAt": "2026-08-31T02:34:27.415Z",
+      "source": "https://x.com/thsottiaux/status/2094252447271366730",
+      "relatedPostIds": [],
+      "timingText": "",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "Tibo 确认 ChatGPT Work 和 Codex 的全部付费订阅已经重置用量。",
+        "en": "Tibo confirmed a usage reset for all paid ChatGPT Work and Codex subscriptions."
       }
     }
   ],

@@ -78,6 +78,28 @@
     "reviewMode": "Manually reviewed archive",
     "liveMode": "Updates connected",
     "sourceShort": "From"
+    ,"statusHeadline": "Reset status"
+    ,"lastConfirmed": "Time since the last confirmed reset"
+    ,"noConfirmed": "No confirmed reset yet"
+    ,"nextReset": "Next reset"
+    ,"nextAnnounced": "Announced"
+    ,"noAnnouncement": "No announcement yet"
+    ,"checkAnnouncement": "See the announcement below"
+    ,"noAnnouncementNote": "We’ll update this when Tibo posts"
+    ,"averageInterval": "Average interval"
+    ,"collecting": "Collecting data"
+    ,"confirmedSamples": "confirmed sample"
+    ,"confirmedAverage": "Based on confirmed reset events"
+    ,"getNotified": "Get the next reset alert"
+    ,"notifyAction": "Enable browser alerts"
+    ,"notifyOn": "Browser alerts on"
+    ,"notifyNote": "Alerts work while this site is open. RSS works in the background."
+    ,"notifyOnNote": "This browser will alert you when a new reset update appears."
+    ,"notifyDenied": "Notifications are blocked in this browser. You can still use RSS."
+    ,"notifyBlocked": "Alerts blocked"
+    ,"notifyUnsupported": "Alerts unavailable"
+    ,"notifyUnsupportedNote": "This browser does not support notifications. Use RSS instead."
+    ,"notifyTitle": "New Codex reset update"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -158,5 +180,27 @@
     "reviewMode": "人工核查记录",
     "liveMode": "消息同步中",
     "sourceShort": "消息来源"
+    ,"statusHeadline": "当前重置状态"
+    ,"lastConfirmed": "距离上次确认重置"
+    ,"noConfirmed": "尚无确认记录"
+    ,"nextReset": "下一次重置"
+    ,"nextAnnounced": "已经预告"
+    ,"noAnnouncement": "尚未预告"
+    ,"checkAnnouncement": "具体时间见下方预告"
+    ,"noAnnouncementNote": "Tibo 发布消息后会在这里更新"
+    ,"averageInterval": "平均重置间隔"
+    ,"collecting": "数据积累中"
+    ,"confirmedSamples": "次确认样本"
+    ,"confirmedAverage": "仅按确认完成的重置计算"
+    ,"getNotified": "下一次重置时提醒我"
+    ,"notifyAction": "开启浏览器提醒"
+    ,"notifyOn": "浏览器提醒已开启"
+    ,"notifyNote": "打开本站时可接收提醒；RSS 可在后台持续订阅。"
+    ,"notifyOnNote": "出现新的重置动态时，这个浏览器会提醒你。"
+    ,"notifyDenied": "浏览器已禁止通知，你仍可使用 RSS 订阅。"
+    ,"notifyBlocked": "浏览器通知已禁用"
+    ,"notifyUnsupported": "无法使用浏览器提醒"
+    ,"notifyUnsupportedNote": "当前浏览器不支持通知，请使用 RSS 订阅。"
+    ,"notifyTitle": "Codex 有新的重置动态"
   }
 }
