@@ -103,6 +103,15 @@
     ,"calendarTitle": "Confirmed reset calendar"
     ,"calendarIntro": "Only dates with a completion post are marked"
     ,"confirmedDay": "Confirmed reset"
+    ,"xNav": "Tibo’s posts"
+    ,"xStreamTitle": "What Tibo is saying"
+    ,"xStreamIntro": "Every public post captured since tracking began"
+    ,"xStreamFresh": "Fresh from X"
+    ,"xResetPost": "Reset update"
+    ,"xGeneralPost": "Latest post"
+    ,"xOpenPost": "Open original"
+    ,"xCaptured": "posts captured"
+    ,"archiveMood": "A small trail of confirmed reset days"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -208,5 +217,14 @@
     ,"calendarTitle": "历史重置日历"
     ,"calendarIntro": "只标记有原帖确认完成的日期"
     ,"confirmedDay": "确认重置"
+    ,"xNav": "Tibo 动态"
+    ,"xStreamTitle": "Tibo 最近在说什么"
+    ,"xStreamIntro": "展示接通采集后捕获到的每一条公开 X 文"
+    ,"xStreamFresh": "刚从 X 获取"
+    ,"xResetPost": "重置动态"
+    ,"xGeneralPost": "最新动态"
+    ,"xOpenPost": "查看原文"
+    ,"xCaptured": "条动态已捕获"
+    ,"archiveMood": "把每一次确认完成的重置，留成一串小小足迹"
   }
 }

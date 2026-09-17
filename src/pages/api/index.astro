@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-const endpoints=[['Current status','GET /api/v1/status'],['Reset archive','GET /api/v1/events'],['Single event','GET /api/v1/events/{id}'],['OpenAPI schema','GET /api/v1/openapi.json']];
+const endpoints=[['Current status','GET /api/v1/status'],['Reset archive','GET /api/v1/events'],['Captured X posts','GET /api/v1/posts'],['Single event','GET /api/v1/events/{id}'],['OpenAPI schema','GET /api/v1/openapi.json']];
 ---
 <Base title="Codex Resets API — Public reset status data" description="A free, read-only JSON API for Codex reset status and history collected from Tibo’s public X posts." alternate="/api/">
   <section class="api-page wrap"><span class="eyebrow">PUBLIC API · V1</span><h1>Codex reset data, ready for your app.</h1><p class="api-lead">Use the current status and historical reset events without scraping this website. Responses are JSON, cached at the edge, and available with cross-origin requests.</p>

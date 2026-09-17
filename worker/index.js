@@ -22,7 +22,8 @@ export async function synchronize(env,fetcher=fetch){
   }
 }
 export function publicState(data,health){
-  return {version:1,events:data.events,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
+  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:post.text,createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`}));
+  return {version:1,events:data.events,posts,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
 const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, OPTIONS','Cache-Control':'public, max-age=60, s-maxage=300'};
@@ -36,7 +37,7 @@ export default {
     if(url.pathname.startsWith('/api/')&&request.method==='OPTIONS')return new Response(null,{status:204,headers:apiHeaders});
     if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{Allow:'GET, HEAD',...securityHeaders}});
     if(url.pathname==='/api/'||url.pathname==='/api')return env.ASSETS.fetch(request);
-    const dynamic=['/','/zh/','/api/status','/api/v1/status','/api/v1/events','/api/v1/openapi.json','/feed.xml','/zh/feed.xml'];
+    const dynamic=['/','/zh/','/api/status','/api/v1/status','/api/v1/events','/api/v1/posts','/api/v1/openapi.json','/feed.xml','/zh/feed.xml'];
     const eventMatch=url.pathname.match(/^\/api\/v1\/events\/(\d{10,25})$/);
     if(!dynamic.includes(url.pathname)&&!eventMatch)return env.ASSETS.fetch(request);
     let data=fallback,health;
@@ -49,6 +50,7 @@ export default {
       const document=apiDocument({...data,collectorMethod:view.collectorMethod});
       if(url.pathname==='/api/v1/status')response=json({apiVersion:document.apiVersion,generatedAt:document.generatedAt,source:document.source,status:document.status});
       else if(url.pathname==='/api/v1/events')response=json({apiVersion:document.apiVersion,generatedAt:document.generatedAt,events:document.events});
+      else if(url.pathname==='/api/v1/posts')response=json({apiVersion:document.apiVersion,generatedAt:document.generatedAt,posts:document.posts});
       else {const event=document.events.find(item=>item.id===eventMatch?.[1]);response=event?json({apiVersion:document.apiVersion,event}):json({error:'not_found'},404);}
     }else if(url.pathname.endsWith('feed.xml'))response=rssResponse(view,url.pathname.startsWith('/zh/')?'zh':'en');
     else response=new HTMLRewriter().on('#tracker',{element(element){element.setInnerContent(renderTracker(view,url.pathname==='/zh/'?'zh':'en'),{html:true});}}).transform(await env.ASSETS.fetch(request));

@@ -44,7 +44,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <header class="site-header wrap">
       <a class="brand" href={base} aria-label="Codex Resets"><span class="brand-icon" aria-hidden="true">↻</span><span>codex<span class="brand-light">resets</span><small>.net</small></span></a>
       <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
-        <a href={`${base}#archive`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
+        <a href={`${base}#posts`}>{t.xNav}</a><a href={`${base}#archive`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
       </nav>
       <a class="language" href={alternate} lang={lang === 'zh' ? 'en' : 'zh-CN'}>{lang === 'zh' ? 'English' : '中文'} <span aria-hidden="true">⌄</span></a>
     </header>
