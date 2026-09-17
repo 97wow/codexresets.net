@@ -44,8 +44,8 @@ export default {
       try{
         const result=url.pathname==='/api/community/stats'?await communityStats(env,data,request):url.pathname==='/api/community/visit'&&request.method==='POST'?await recordVisit(env,data,request):url.pathname==='/api/community/beg'&&request.method==='POST'?await recordBeg(env,data,request):null;
         if(!result)return json({error:'not_found'},404);
-        const response=json(result);return request.method==='HEAD'?new Response(null,response):response;
-      }catch{return json({error:'stats_unavailable'},503);}
+        const response=json(result);response.headers.set('Cache-Control','no-store');return request.method==='HEAD'?new Response(null,response):response;
+      }catch(error){console.error('community_stats_error',error);return json({error:'stats_unavailable'},503);}
     }
     if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{Allow:'GET, HEAD',...securityHeaders}});
     if(url.pathname==='/api/'||url.pathname==='/api')return env.ASSETS.fetch(request);
