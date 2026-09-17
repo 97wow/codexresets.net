@@ -1,6 +1,6 @@
 import fallback from '../src/data/snapshot.json';
 import {collectX,XError} from '../src/lib/x-collector.js';
-import {collectXPublic} from '../src/lib/x-public-collector.js';
+import {collectXPublic,cleanPublicPostText} from '../src/lib/x-public-collector.js';
 import {apiDocument,openAPI} from '../src/lib/api.js';
 import {renderTracker} from '../src/lib/tracker.js';
 import {rssResponse} from '../src/lib/rss.js';
@@ -22,7 +22,7 @@ export async function synchronize(env,fetcher=fetch){
   }
 }
 export function publicState(data,health){
-  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:post.text,createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`}));
+  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`}));
   return {version:1,events:data.events,posts,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};

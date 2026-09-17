@@ -1,3 +1,4 @@
+import {cleanPublicPostText} from './x-public-collector.js';
 const states=new Set(['announced','rollout','completed','signal','compensation']);
 const safeSource=value=>{try{const url=new URL(value);return url.protocol==='https:'&&['x.com','twitter.com'].includes(url.hostname)&&/^\/thsottiaux\/status\/\d{10,25}\/?$/.test(url.pathname)?url.href:null;}catch{return null;}};
 const safeEvent=event=>({
@@ -13,7 +14,7 @@ const safeEvent=event=>({
 });
 export function apiDocument(data){
   const events=(data.events||[]).map(safeEvent);
-  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:post.text,createdAt:post.createdAt,sourceUrl:`https://x.com/thsottiaux/status/${post.id}`,resetEvent:events.some(event=>event.id===post.id)}));
+  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,sourceUrl:`https://x.com/thsottiaux/status/${post.id}`,resetEvent:events.some(event=>event.id===post.id)}));
   const completed=events.filter(event=>event.state==='completed').sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt));
   const pending=events.find(event=>event.state==='announced'&&!events.some(other=>['completed','rollout'].includes(other.state)&&other.relatedPostIds.includes(event.id)))||null;
   const intervals=completed.slice(0,-1).map((event,index)=>Date.parse(event.announcedAt)-Date.parse(completed[index+1].announcedAt)).filter(value=>value>0);
