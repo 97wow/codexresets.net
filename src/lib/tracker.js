@@ -21,8 +21,11 @@ function calendarMonth(year,month,completed,lang,t){
   const cells=[...Array(offset)].map(()=>'<span class="calendar-empty" aria-hidden="true"></span>');
   for(let day=1;day<=days;day++){
     const event=byDay.get(day);
-    const detail=`${lang==='zh'?'/zh':''}/resets/${escape(event?.id)}/`;
-    cells.push(event?`<a class="calendar-day reset-day" href="${detail}" aria-label="${escape(label)} ${day}, ${t.completed}"><span>${day}</span><i aria-hidden="true">↻</i></a>`:`<span class="calendar-day"><span>${day}</span></span>`);
+    if(event){
+      const tooltipId=`calendar-tip-${escape(event.id)}`;
+      const summary=event.summary?.[lang]||event.text;
+      cells.push(`<a class="calendar-day reset-day" href="${escape(sourceURL(event.source))}" target="_blank" rel="noopener noreferrer" aria-label="${escape(label)} ${day}, ${t.completed}, ${t.original}" aria-describedby="${tooltipId}"><span>${day}</span><i aria-hidden="true">↻</i><span class="calendar-tooltip" id="${tooltipId}" role="tooltip"><strong>${escape(dateLabel(event.announcedAt,lang))}</strong><b>${escape(t[event.state]||t.completed)}</b><span>${escape(summary)}</span><em>${t.original} ↗</em></span></a>`);
+    }else cells.push(`<span class="calendar-day"><span>${day}</span></span>`);
   }
   return `<div class="calendar-month"><h3>${escape(label)}</h3><div class="weekdays" aria-hidden="true">${weekdays.map(day=>`<span>${day}</span>`).join('')}</div><div class="calendar-grid">${cells.join('')}</div></div>`;
 }
