@@ -41,7 +41,7 @@ export async function collectXPublic(previous,browser){
   if(!browser?.quickAction)throw new XError('browser_unavailable');
   let result,markdown;
   try{
-    result=await browser.quickAction('markdown',{url:`https://x.com/${AUTHOR}`,gotoOptions:{waitUntil:'networkidle0',timeout:45000},waitForTimeout:3500});
+    result=await browser.quickAction('markdown',{url:`https://x.com/${AUTHOR}`,gotoOptions:{waitUntil:'domcontentloaded',timeout:30000},waitForSelector:'article',waitForTimeout:750});
     if(result instanceof Response){
       if(!result.ok)throw new XError(result.status===429?'rate_limited':'source_unavailable',result.status);
       const body=await result.json();
