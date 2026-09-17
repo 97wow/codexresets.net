@@ -10,7 +10,7 @@ const base = l === 'zh' ? '/zh/' : '/';
 ---
 <Base lang={l} alternate={l === 'zh' ? '/' : '/zh/'}>
   <div class="dashboard wrap" data-language={l}>
-    <section class="tracker-intro"><div><h1>{t.headline}</h1><p>{t.intro}</p></div><a class="subscribe" href={`${base}feed.xml`}>{t.rss} ↗</a></section>
+    <section class="tracker-intro"><div class="intro-copy"><h1>{t.headline}</h1><p>{t.intro}</p><a class="subscribe" href={`${base}feed.xml`}>{t.rss} <span aria-hidden="true">↗</span></a></div><div class="reset-emblem" aria-hidden="true"><span>↻</span></div></section>
     <div id="tracker" set:html={renderTracker(snapshot,l)}></div>
     <details class="explanation" id="guide"><summary>{t.guideTitle}</summary><p>{t.methodText}</p><div class="definitions"><div><h3>{t.automatic}</h3><p>{t.autoText}</p></div><div><h3>{t.banked}</h3><p>{t.bankText}</p></div></div><p>{t.feedNote}</p><a href="https://learn.chatgpt.com/docs/pricing" target="_blank" rel="noopener noreferrer">{t.official} ↗</a></details>
   </div>
@@ -44,9 +44,9 @@ const base = l === 'zh' ? '/zh/' : '/';
       if(payload.version!==1 || !Array.isArray(payload.events)) throw new Error('Invalid response');
       const identity=JSON.stringify(payload);
       if(lastPayload!==identity) {
-        const openIds=Array.from(root.querySelectorAll<HTMLDetailsElement>('details[open]')).map(d=>d.closest('article')?.id);
+        const openIds=Array.from(root.querySelectorAll<HTMLDetailsElement>('details[open]')).map(d=>d.id);
         root.innerHTML=renderTracker(payload,lang);
-        openIds.forEach(id=>{const d=id&&document.getElementById(id)?.querySelector('details');if(d)d.open=true;});
+        openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
         lastPayload=identity;applyFilters();
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
