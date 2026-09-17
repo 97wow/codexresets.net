@@ -5,6 +5,7 @@ const decodeMarkdown=value=>value
   .replace(/\\([\\_*\[\]()~`>#+\-=|{}.!])/g,'$1')
   .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
   .replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/\s+/g,' ').trim();
+export const cleanPublicPostText=value=>String(value||'').replace(/\s+When you make a selection it cannot be changed.*$/i,'').trim();
 
 export function createdAtFromSnowflake(id){
   if(!/^\d{10,25}$/.test(id))throw new XError('invalid_post');
@@ -30,7 +31,7 @@ export function parsePublicTimeline(markdown,now=new Date().toISOString()){
     const media=text.search(/\s\[!\[.*?\]\(https:\/\/pbs\.twimg\.com\/media\//);
     const cut=[quote,media].filter(value=>value>=0).sort((a,b)=>a-b)[0];
     if(cut!==undefined)text=text.slice(0,cut);
-    text=decodeMarkdown(text);
+    text=cleanPublicPostText(decodeMarkdown(text));
     if(!text||text.length>100000)continue;
     posts.push({id,authorId:AUTHOR_ID,text,createdAt:createdAtFromSnowflake(id),url:`https://x.com/${AUTHOR}/status/${id}`,references:[],edits:[id],collectedAt:now,method:'browser_rendering'});
   }
