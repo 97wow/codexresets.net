@@ -28,7 +28,11 @@ export function classify(post, context = []) {
 }
 export function mergePosts(existing, incoming) {
   const map=new Map(existing.map(p=>[p.id,p]));
-  for(const post of incoming){for(const old of post.edits||[])if(old!==post.id)map.delete(old);map.set(post.id,{...post,...(map.get(post.id)?.editorial?{editorial:map.get(post.id).editorial}:{})});}
+  for(const post of incoming){
+    for(const old of post.edits||[])if(old!==post.id)map.delete(old);
+    const current=map.get(post.id);
+    map.set(post.id,{...post,...(current?.editorial?{editorial:current.editorial}:{}),...(current?.excerpt?{excerpt:true}:{}),...(!post.references?.length&&current?.references?.length?{references:current.references}:{})});
+  }
   return [...map.values()].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
 }
 export function deriveEvents(posts) {
@@ -61,5 +65,5 @@ export async function collectX(previous, token, fetcher = fetch, options = {}) {
   const posts=mergePosts(previous.posts||[],received);
   // First connection is a bounded seed. Do not mistake manually reviewed historic posts for the API cursor.
   const cursor=received.reduce((max,p)=>!max||BigInt(p.id)>BigInt(max)?p.id:max,previous.cursor||null);
-  return {...previous,version:1,posts,events:deriveEvents(posts),cursor,lastAttemptAt:new Date().toISOString(),lastSuccessAt:new Date().toISOString(),collectorState:'connected',error:null,source:'https://x.com/thsottiaux',coverage:'partial'};
+  return {...previous,version:1,posts,events:deriveEvents(posts),cursor,lastAttemptAt:new Date().toISOString(),lastSuccessAt:new Date().toISOString(),collectorState:'connected',collectorMethod:'x_api',error:null,source:'https://x.com/thsottiaux',coverage:'partial'};
 }

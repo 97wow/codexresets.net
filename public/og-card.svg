@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaf3ff"/><stop offset="1" stop-color="#f0edff"/></linearGradient></defs>
+  <rect width="1200" height="630" rx="36" fill="url(#bg)"/><circle cx="1080" cy="70" r="210" fill="#fff1b8" opacity=".65"/>
+  <rect x="92" y="92" width="68" height="68" rx="19" fill="#6255c7"/><text x="126" y="144" text-anchor="middle" font-size="64" fill="white" font-family="Arial">↻</text>
+  <text x="184" y="139" font-size="42" font-weight="700" fill="#29304a" font-family="Arial">codex<tspan font-weight="400">resets</tspan><tspan font-size="23" fill="#73798c">.net</tspan></text>
+  <text x="92" y="316" font-size="76" font-weight="650" fill="#3f3976" font-family="Arial">Catch the next reset.</text>
+  <text x="96" y="387" font-size="30" fill="#626980" font-family="Arial">Status · announcements · original posts · history · API</text>
+  <rect x="92" y="478" width="412" height="62" rx="31" fill="white" opacity=".88"/><circle cx="127" cy="509" r="8" fill="#4cb98d"/><text x="151" y="519" font-size="26" fill="#43495e" font-family="Arial">Independent public tracker</text>
+</svg>

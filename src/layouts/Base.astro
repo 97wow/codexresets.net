@@ -1,7 +1,7 @@
 ---
 import copy from '../data/copy.json';
 import '../styles/site.css';
-const { lang = 'en', title, description, alternate = '/' } = Astro.props;
+const { lang = 'en', title, description, alternate = '/', type = 'website', jsonLd, noindex = false } = Astro.props;
 const t = copy[lang as keyof typeof copy];
 const base = lang === 'zh' ? '/zh/' : '/';
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -14,24 +14,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="theme-color" content="#3929b8" />
     <title>{title || t.pageTitle}</title>
     <meta name="description" content={description || t.description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang={lang === 'zh' ? 'zh-CN' : 'en'} href={canonical} />
     <link rel="alternate" hreflang={lang === 'zh' ? 'en' : 'zh-CN'} href={new URL(alternate, Astro.site)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Codex Resets" href={`${base}feed.xml`} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title || t.pageTitle} />
     <meta property="og:description" content={description || t.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Codex Resets" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta property="og:image" content={new URL('/og-card.png', Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title || t.pageTitle} />
+    <meta name="twitter:description" content={description || t.description} />
+    <meta name="twitter:image" content={new URL('/og-card.png', Astro.site)} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd || { '@context':'https://schema.org','@type':'WebSite',name:'Codex Resets',url:'https://codexresets.net/',description:t.description,inLanguage:lang === 'zh' ? 'zh-CN' : 'en' }).replace(/</g,'\\u003c')}></script>
   </head>
   <body>
     <a class="skip" href="#main">{t.skip}</a>
     <header class="site-header wrap">
       <a class="brand" href={base} aria-label="Codex Resets"><span class="brand-icon" aria-hidden="true">↻</span><span>codex<span class="brand-light">resets</span><small>.net</small></span></a>
       <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
-        <a href={`${base}#archive`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a>
+        <a href={`${base}#archive`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
       </nav>
       <a class="language" href={alternate} lang={lang === 'zh' ? 'en' : 'zh-CN'}>{lang === 'zh' ? 'English' : '中文'} <span aria-hidden="true">⌄</span></a>
     </header>

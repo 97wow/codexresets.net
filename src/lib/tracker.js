@@ -21,7 +21,8 @@ function calendarMonth(year,month,completed,lang,t){
   const cells=[...Array(offset)].map(()=>'<span class="calendar-empty" aria-hidden="true"></span>');
   for(let day=1;day<=days;day++){
     const event=byDay.get(day);
-    cells.push(event?`<a class="calendar-day reset-day" href="#event-${escape(event.id)}" aria-label="${escape(label)} ${day}, ${t.completed}"><span>${day}</span><i aria-hidden="true">↻</i></a>`:`<span class="calendar-day"><span>${day}</span></span>`);
+    const detail=`${lang==='zh'?'/zh':''}/resets/${escape(event?.id)}/`;
+    cells.push(event?`<a class="calendar-day reset-day" href="${detail}" aria-label="${escape(label)} ${day}, ${t.completed}"><span>${day}</span><i aria-hidden="true">↻</i></a>`:`<span class="calendar-day"><span>${day}</span></span>`);
   }
   return `<div class="calendar-month"><h3>${escape(label)}</h3><div class="weekdays" aria-hidden="true">${weekdays.map(day=>`<span>${day}</span>`).join('')}</div><div class="calendar-grid">${cells.join('')}</div></div>`;
 }
@@ -35,7 +36,7 @@ export function renderTracker(data,lang='en',now=Date.now()){
     return `<article class="message-row" id="event-${escape(event.id)}" data-kind="${escape(event.state)}" data-index="${index}">
       <div class="date-block" aria-hidden="true"><strong>${day}</strong><span>${month}</span></div>
       <div class="message-body"><div class="message-heading"><span class="type-tag ${escape(event.state)}">${t[event.state]}</span><time datetime="${escape(event.announcedAt)}">${dateLabel(event.announcedAt,lang)}</time></div>
-      <p class="summary">${escape(event.summary?.[lang]||event.text)}</p>
+      <p class="summary"><a class="event-link" href="${lang==='zh'?'/zh':''}/resets/${escape(event.id)}/">${escape(event.summary?.[lang]||event.text)}</a></p>
       <div class="original-post"><div class="post-author"><span aria-hidden="true">T</span><strong>Tibo</strong><small>@thsottiaux</small><em>${t.excerptLabel}</em></div><blockquote lang="en">${escape(event.text)}</blockquote><div class="message-meta">${sourceLink(event)}<span>${event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</span></div></div>
       ${event.timingText?`<p class="timing">${t.scheduledTime}: ${escape(event.timingText)}</p>`:''}
       ${event.relatedPostIds.length?`<div class="related-posts">${event.relatedPostIds.map((id,i)=>`<a href="${escape(sourceURL('https://x.com/thsottiaux/status/'+id))}" target="_blank" rel="noopener noreferrer">${t.related}${event.relatedPostIds.length>1?' '+(i+1):''} ↗</a>`).join(' ')}</div>`:''}</div></article>`;

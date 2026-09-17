@@ -16,6 +16,15 @@
   },
   "workers_dev": true,
   "main": "worker/index.js",
+  "browser": {
+    "binding": "BROWSER"
+  },
+  "triggers": {
+    "crons": ["*/30 * * * *"]
+  },
+  "vars": {
+    "COLLECTOR_ENABLED": "true"
+  },
   "account_id": "59dc946124fa89b2df0f002b8a701862",
   "kv_namespaces": [
     {
