@@ -36,6 +36,10 @@
     {
       "pattern": "codexresets.net",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.codexresets.net",
+      "custom_domain": true
     }
   ]
 }

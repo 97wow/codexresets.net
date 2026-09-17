@@ -32,6 +32,7 @@ export default {
   async scheduled(_event,env,ctx){if(env.COLLECTOR_ENABLED==='true')ctx.waitUntil(synchronize(env));},
   async fetch(request,env){
     const url=new URL(request.url);
+    if(url.hostname==='www.codexresets.net'){url.hostname='codexresets.net';return Response.redirect(url,308);}
     if(url.pathname.startsWith('/api/')&&request.method==='OPTIONS')return new Response(null,{status:204,headers:apiHeaders});
     if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{Allow:'GET, HEAD',...securityHeaders}});
     if(url.pathname==='/api/'||url.pathname==='/api')return env.ASSETS.fetch(request);
