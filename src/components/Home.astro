@@ -19,7 +19,7 @@ const t = copy[l];
   const root = document.querySelector<HTMLElement>('#tracker')!;
   const lang = document.querySelector<HTMLElement>('[data-language]')!.dataset.language as 'en' | 'zh';
   const t = copy[lang];
-  let expanded = false, filter = 'all', busy = false, communityBusy = false, lastPayload = '';
+  let expanded = false, postsExpanded = false, filter = 'all', busy = false, communityBusy = false, lastPayload = '';
   const notificationKey = 'codex-resets-browser-alerts';
   const visitKey = 'codex-resets-visit-v1';
   const flagEmoji=(country:string)=>/^[A-Z]{2}$/.test(country)&&country!=='XX'?[...country].map(char=>String.fromCodePoint(127397+char.charCodeAt(0))).join(''):'🌍';
@@ -55,6 +55,7 @@ const t = copy[l];
   }
   function applyFilters() {
     const rows = Array.from(root.querySelectorAll<HTMLElement>('.message-row'));
+    if(!rows.length)return;
     let matched = 0;
     rows.forEach(row => { const match = filter === 'all' || row.dataset.kind === filter; row.hidden = !match || (!expanded && matched >= 6); if(match) matched++; });
     root.querySelectorAll<HTMLElement>('[data-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.filter===filter)));
@@ -62,6 +63,12 @@ const t = copy[l];
     more.hidden = matched <= 6;
     more.textContent = expanded ? t.less : `${t.more} (${matched})`;
     root.querySelector<HTMLElement>('.empty-state')!.hidden = matched !== 0;
+  }
+  function applyPosts(){
+    const posts=Array.from(root.querySelectorAll<HTMLElement>('[data-post-index]'));
+    posts.forEach(post=>post.hidden=!postsExpanded&&Number(post.dataset.postIndex)>=3);
+    const button=root.querySelector<HTMLButtonElement>('.post-show-more');if(!button)return;
+    button.setAttribute('aria-expanded',String(postsExpanded));button.textContent=postsExpanded?t.lessPosts:`${t.morePosts} (${Math.max(0,posts.length-3)})`;
   }
   async function refresh() {
     if (busy) return;
@@ -81,7 +88,7 @@ const t = copy[l];
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
         const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['announced','rollout','completed','compensation'].includes(item.state));
         if(newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
-        lastPayload=identity;applyFilters();updateNotificationButton();void loadCommunity(false);
+        lastPayload=identity;applyFilters();applyPosts();updateNotificationButton();void loadCommunity(false);
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
       time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.textContent=dateLabel(time.dateTime,lang);
@@ -95,12 +102,13 @@ const t = copy[l];
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
     if(target.matches('.beg-button'))void begForReset();
+    if(target.matches('.post-show-more')){postsExpanded=!postsExpanded;applyPosts();}
     if(target.matches('.notify-toggle'))void (async()=>{if(!('Notification' in window))return;const permission=await Notification.requestPermission();if(permission==='granted')localStorage.setItem(notificationKey,'on');else localStorage.removeItem(notificationKey);updateNotificationButton();})();
     if(target.dataset.filter){filter=target.dataset.filter;expanded=false;applyFilters();}
     if(target.matches('.show-more')){expanded=!expanded;applyFilters();}
     if(target.matches('.day')){filter='all';expanded=true;applyFilters();}
   });
-  applyFilters();updateNotificationButton();void loadCommunity();void refresh();
+  applyFilters();applyPosts();updateNotificationButton();void loadCommunity();void refresh();
   setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 </script>

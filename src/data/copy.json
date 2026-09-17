@@ -100,8 +100,10 @@
     ,"notifyUnsupported": "Alerts unavailable"
     ,"notifyUnsupportedNote": "This browser does not support notifications. Use RSS instead."
     ,"notifyTitle": "New Codex reset update"
-    ,"calendarTitle": "Confirmed reset calendar"
-    ,"calendarIntro": "Only dates with a completion post are marked"
+    ,"calendarTitle": "Codex reset history"
+    ,"calendarIntro": "Hover for the reset note; select a marked day to open the X post"
+    ,"calendarRegular": "Regular"
+    ,"calendarNone": "No reset"
     ,"confirmedDay": "Confirmed reset"
     ,"xNav": "Tibo’s posts"
     ,"xStreamTitle": "What Tibo is saying"
@@ -123,6 +125,8 @@
     ,"begCount": "wishes this round"
     ,"visitorCount": "visitors"
     ,"onePerIp": "One anonymous wish per network each reset cycle"
+    ,"morePosts": "Show more posts"
+    ,"lessPosts": "Show recent posts only"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -225,8 +229,10 @@
     ,"notifyUnsupported": "无法使用浏览器提醒"
     ,"notifyUnsupportedNote": "当前浏览器不支持通知，请使用 RSS 订阅。"
     ,"notifyTitle": "Codex 有新的重置动态"
-    ,"calendarTitle": "历史重置日历"
-    ,"calendarIntro": "只标记有原帖确认完成的日期"
+    ,"calendarTitle": "Codex 重置历史"
+    ,"calendarIntro": "悬停查看重置消息；点击标记日期直达 X 原帖"
+    ,"calendarRegular": "常规"
+    ,"calendarNone": "未重置"
     ,"confirmedDay": "确认重置"
     ,"xNav": "Tibo 动态"
     ,"xStreamTitle": "Tibo 最近在说什么"
@@ -248,5 +254,7 @@
     ,"begCount": "人正在等这一轮"
     ,"visitorCount": "位访客来过"
     ,"onePerIp": "每个网络在一个重置周期内匿名计数一次"
+    ,"morePosts": "查看更多动态"
+    ,"lessPosts": "收起，只看最近动态"
   }
 }
