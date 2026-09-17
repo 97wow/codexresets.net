@@ -39,11 +39,17 @@ export function parsePublicTimeline(markdown,now=new Date().toISOString()){
 
 export async function collectXPublic(previous,browser){
   if(!browser?.quickAction)throw new XError('browser_unavailable');
-  let markdown;
+  let result,markdown;
   try{
-    markdown=await browser.quickAction('markdown',{url:`https://x.com/${AUTHOR}`,gotoOptions:{waitUntil:'networkidle0',timeout:45000},waitForTimeout:3500});
+    result=await browser.quickAction('markdown',{url:`https://x.com/${AUTHOR}`,gotoOptions:{waitUntil:'networkidle0',timeout:45000},waitForTimeout:3500});
+    if(result instanceof Response){
+      if(!result.ok)throw new XError(result.status===429?'rate_limited':'source_unavailable',result.status);
+      const body=await result.json();
+      if(body?.success!==true)throw new XError('invalid_response');
+      markdown=body.result;
+    }else markdown=typeof result==='string'?result:result?.result;
   }catch{throw new XError('source_unavailable');}
-  const received=parsePublicTimeline(typeof markdown==='string'?markdown:markdown?.result);
+  const received=parsePublicTimeline(markdown);
   if(!received.length)throw new XError('invalid_response');
   const posts=mergePosts(previous.posts||[],received);
   const now=new Date().toISOString();
