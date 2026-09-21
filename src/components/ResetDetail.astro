@@ -1,22 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
 import copy from '../data/copy.json';
+import {localeBase,localeInfo,localizedSummary} from '../lib/i18n.js';
 import {dateLabel,sourceURL} from '../lib/tracker.js';
 const {event,lang='en'}=Astro.props;
-const t=copy[lang as 'en'|'zh'];
-const zh=lang==='zh';
-const summary=event.summary?.[lang]||event.text;
-const title=zh?`${t[event.state]}：${summary} | Codex Resets`:`${t[event.state]}: ${summary} | Codex Resets`;
-const path=`${zh?'/zh':''}/resets/${event.id}/`;
-const alternate=`${zh?'':'/zh'}/resets/${event.id}/`;
-const jsonLd={'@context':'https://schema.org','@type':'BlogPosting',headline:title,description:summary,datePublished:event.announcedAt,dateModified:event.announcedAt,mainEntityOfPage:`https://codexresets.net${path}`,author:{'@type':'Organization',name:'Codex Resets'},publisher:{'@type':'Organization',name:'Codex Resets',url:'https://codexresets.net/'},citation:sourceURL(event.source),inLanguage:zh?'zh-CN':'en'};
+const t=copy[lang as keyof typeof copy];
+const summary=localizedSummary(event,lang),base=localeBase(lang);
+const title=`${t[event.state]}: ${summary} | Codex Resets`,path=`${base}resets/${event.id}/`;
+const detailWords={
+  en:{crumb:'Breadcrumb',home:'Reset status',status:'Status',type:'Reset type',review:'Review',back:'Back to all reset updates'},
+  zh:{crumb:'面包屑',home:'重置状态',status:'状态',type:'重置类型',review:'核查方式',back:'返回全部重置消息'},
+  'zh-Hant':{crumb:'麵包屑',home:'重置狀態',status:'狀態',type:'重置類型',review:'核查方式',back:'返回全部重置訊息'},
+  ja:{crumb:'パンくずリスト',home:'リセット状況',status:'状態',type:'リセット種別',review:'確認方法',back:'すべてのリセット更新に戻る'},
+  ko:{crumb:'이동 경로',home:'재설정 상태',status:'상태',type:'재설정 유형',review:'확인 방식',back:'모든 재설정 소식으로 돌아가기'}
+};
+const detail=detailWords[lang]||detailWords.en;
+const jsonLd={'@context':'https://schema.org','@type':'BlogPosting',headline:title,description:summary,datePublished:event.announcedAt,dateModified:event.announcedAt,mainEntityOfPage:`https://codexresets.net${path}`,author:{'@type':'Organization',name:'Codex Resets'},publisher:{'@type':'Organization',name:'Codex Resets',url:'https://codexresets.net/'},citation:sourceURL(event.source),inLanguage:localeInfo[lang]?.html||'en'};
 ---
-<Base lang={lang} title={title} description={summary} alternate={alternate} type="article" jsonLd={jsonLd}>
+<Base lang={lang} title={title} description={summary} type="article" jsonLd={jsonLd}>
   <article class="reset-detail wrap">
-    <nav class="breadcrumb" aria-label={zh?'面包屑':'Breadcrumb'}><a href={zh?'/zh/':'/'}>{zh?'重置状态':'Reset status'}</a><span aria-hidden="true">›</span><span>{t[event.state]}</span></nav>
+    <nav class="breadcrumb" aria-label={detail.crumb}><a href={base}>{detail.home}</a><span aria-hidden="true">›</span><span>{t[event.state]}</span></nav>
     <header><span class={`type-tag ${event.state}`}>{t[event.state]}</span><h1>{summary}</h1><time datetime={event.announcedAt}>{dateLabel(event.announcedAt,lang)}</time></header>
     <section class="detail-source"><div class="post-author"><img class="tibo-avatar" src="/tibo.jpg" alt="" width="42" height="42" /><span class="author-copy"><strong>Tibo <i class="verified" aria-label="Verified">✓</i></strong><small>@thsottiaux</small></span></div><blockquote lang="en">{event.text}</blockquote><a class="source-button" href={sourceURL(event.source)} target="_blank" rel="noopener noreferrer">{t.original} ↗</a></section>
-    <dl class="detail-facts"><div><dt>{zh?'状态':'Status'}</dt><dd>{t[event.state]}</dd></div><div><dt>{zh?'重置类型':'Reset type'}</dt><dd>{event.kind==='banked'?t.banked:t.automatic}</dd></div><div><dt>{zh?'核查方式':'Review'}</dt><dd>{event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</dd></div></dl>
-    <a class="back-link" href={`${zh?'/zh/':'/'}#archive`}>← {zh?'返回全部重置消息':'Back to all reset updates'}</a>
+    <dl class="detail-facts"><div><dt>{detail.status}</dt><dd>{t[event.state]}</dd></div><div><dt>{detail.type}</dt><dd>{event.kind==='banked'?t.banked:t.automatic}</dd></div><div><dt>{detail.review}</dt><dd>{event.review==='human_reviewed'?t.sourceChecked:t.ruleLabel}</dd></div></dl>
+    <a class="back-link" href={`${base}#archive`}>← {detail.back}</a>
   </article>
 </Base>

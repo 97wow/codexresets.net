@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import {localeBase} from '../lib/i18n.js';
 const { lang = 'en' } = Astro.props;
-const zh = lang === 'zh';
-const base = zh ? '/zh/' : '/';
+const base = localeBase(lang);
 const feedPath = `${base}feed.xml`;
 const feedUrl = new URL(feedPath, Astro.site).href;
-const words = zh ? {
+const translations = {zh:{
   title: '用 RSS 安静地关注 Codex 重置',
   description: '不注册账号，不打开通知权限。把订阅地址交给你喜欢的阅读器，新的重置信号、预告和确认会自动出现。',
   badge: '免费 · 无追踪 · 随时取消',
@@ -18,7 +18,7 @@ const words = zh ? {
   ],
   sends: '你会收到什么', sendsText: '新的重置信号、明确预告、发放进展和完成确认。每条记录都保留 Tibo 的 X 原文链接，方便核对来源。',
   why: '为什么选择 RSS', whyText: 'RSS 不需要邮箱、Telegram 或浏览器权限。阅读频率由你决定，也不会产生额外通知噪音。'
-} : {
+},en:{
   title: 'Follow Codex resets quietly with RSS',
   description: 'No account and no notification permission. Add the feed to your favorite reader and new signals, announcements and confirmed resets will appear automatically.',
   badge: 'Free · No tracking · Leave anytime',
@@ -31,9 +31,16 @@ const words = zh ? {
   ],
   sends: 'What arrives in the feed', sendsText: 'New reset signals, clear announcements, rollout progress and completion confirmations. Every item keeps the original X link from Tibo for provenance.',
   why: 'Why RSS', whyText: 'RSS needs no email, Telegram account or browser permission. You choose when to read it, without extra notification noise.'
-};
+},'zh-Hant':{
+  title:'用 RSS 輕鬆關注 Codex 重置',description:'不必註冊帳號，也不必開啟通知權限。把訂閱網址交給喜歡的閱讀器，新的重置信號、預告和確認便會自動出現。',badge:'免費 · 無追蹤 · 隨時取消',copy:'複製訂閱網址',copied:'已複製',open:'查看原始 Feed',back:'返回重置狀態',how:'三步完成訂閱',steps:[['複製網址','點擊上方按鈕，複製 Codex Resets 的 RSS 網址。'],['開啟閱讀器','使用 Feedly、Inoreader、NetNewsWire、Reeder 或其他 RSS 閱讀器。'],['加入訂閱','貼上網址並確認，之後的新動態會自動進入時間線。']],sends:'你會收到什麼',sendsText:'新的重置信號、明確預告、發放進度和完成確認。每筆記錄都保留 Tibo 的 X 原文連結。',why:'為什麼選擇 RSS',whyText:'RSS 不需要信箱、Telegram 或瀏覽器權限。閱讀頻率由你決定，也不會增加通知噪音。'
+},ja:{
+  title:'RSSでCodexリセットを気軽に追跡',description:'アカウント登録も通知権限も不要です。好きなRSSリーダーに追加すると、新しい兆候、予告、完了確認が自動で届きます。',badge:'無料 · 追跡なし · いつでも解除',copy:'フィードURLをコピー',copied:'コピーしました',open:'生のFeedを見る',back:'リセット状況に戻る',how:'3ステップで購読',steps:[['URLをコピー','上のボタンでCodex ResetsのRSS URLをコピーします。'],['リーダーを開く','Feedly、Inoreader、NetNewsWire、Reederなどを利用できます。'],['フィードを追加','URLを貼り付けて確定すると、新しい更新がタイムラインに表示されます。']],sends:'フィードに届く内容',sendsText:'新しいリセットの兆候、明確な予告、展開状況、完了確認。各項目にはTiboのX原文リンクが残ります。',why:'RSSを選ぶ理由',whyText:'メール、Telegram、ブラウザ権限は不要です。通知に追われず、読みたい時に確認できます。'
+},ko:{
+  title:'RSS로 Codex 재설정을 편하게 확인하세요',description:'가입이나 알림 권한이 필요 없습니다. 선호하는 RSS 리더에 추가하면 새로운 신호, 예고, 완료 확인이 자동으로 표시됩니다.',badge:'무료 · 추적 없음 · 언제든 해지',copy:'피드 주소 복사',copied:'복사됨',open:'원본 Feed 보기',back:'재설정 상태로 돌아가기',how:'세 단계로 구독하기',steps:[['주소 복사','위 버튼으로 Codex Resets RSS 주소를 복사합니다.'],['리더 열기','Feedly, Inoreader, NetNewsWire, Reeder 등 원하는 앱을 사용하세요.'],['피드 추가','주소를 붙여 넣고 확인하면 새 소식이 타임라인에 나타납니다.']],sends:'피드로 받는 내용',sendsText:'새로운 재설정 신호, 명확한 예고, 배포 진행 상황과 완료 확인을 받습니다. 모든 항목에 Tibo의 X 원문 링크가 포함됩니다.',why:'RSS를 선택하는 이유',whyText:'이메일, Telegram 또는 브라우저 권한이 필요 없습니다. 알림 소음 없이 원할 때 확인할 수 있습니다.'
+}};
+const words=translations[lang]||translations.en;
 ---
-<Base lang={lang} title={`${words.title} | Codex Resets`} description={words.description} alternate={zh ? '/rss/' : '/zh/rss/'}>
+<Base lang={lang} title={`${words.title} | Codex Resets`} description={words.description}>
   <div class="rss-page wrap">
     <section class="rss-hero">
       <div class="rss-orbit" aria-hidden="true"><span>◔</span><i></i><b></b></div>

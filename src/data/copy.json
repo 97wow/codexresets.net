@@ -77,85 +77,85 @@
     "sourceDetails": "Sources & update details",
     "reviewMode": "Manually reviewed archive",
     "liveMode": "Updates connected",
-    "sourceShort": "From"
-    ,"statusHeadline": "Reset status"
-    ,"lastConfirmed": "Time since the last confirmed reset"
-    ,"noConfirmed": "No confirmed reset yet"
-    ,"nextReset": "Next reset"
-    ,"nextAnnounced": "Announced"
-    ,"noAnnouncement": "No announcement yet"
-    ,"checkAnnouncement": "See the announcement below"
-    ,"noAnnouncementNote": "We’ll update this when Tibo posts"
-    ,"averageInterval": "Average interval"
-    ,"collecting": "Collecting data"
-    ,"confirmedSamples": "confirmed sample"
-    ,"confirmedAverage": "Based on confirmed reset events"
-    ,"getNotified": "Get the next reset alert"
-    ,"notifyAction": "Choose alert channels"
-    ,"notifyOn": "Browser alerts on"
-    ,"notifyNote": "Email, Telegram, Webhook, browser alerts and RSS."
-    ,"notifyOnNote": "This browser will alert you when a new reset update appears."
-    ,"notifyDenied": "Notifications are blocked in this browser. You can still use RSS."
-    ,"notifyBlocked": "Alerts blocked"
-    ,"notifyUnsupported": "Alerts unavailable"
-    ,"notifyUnsupportedNote": "This browser does not support notifications. Use RSS instead."
-    ,"notifyTitle": "New Codex reset update"
-    ,"notificationCenterTitle": "Reset alert center"
-    ,"notificationCenterIntro": "Choose how you want to hear about new signals, announcements, rollouts and confirmed resets."
-    ,"notificationClose": "Close"
-    ,"channelBrowser": "Browser"
-    ,"channelBrowserDesc": "A quick alert while this site is open."
-    ,"browserAction": "Enable browser alerts"
-    ,"channelEmail": "Email"
-    ,"channelEmailDesc": "Works in the background. Confirm the link we send you."
-    ,"emailPlaceholder": "you@example.com"
-    ,"emailAction": "Send confirmation"
-    ,"emailPending": "Check your inbox and confirm the subscription."
-    ,"emailInvalid": "Enter a valid email address."
-    ,"channelTelegram": "Telegram"
-    ,"channelTelegramDesc": "Connect the Codex Resets bot for instant messages."
-    ,"telegramAction": "Connect Telegram"
-    ,"telegramUnavailable": "Bot activation is being prepared."
-    ,"channelWebhook": "Webhook"
-    ,"channelWebhookDesc": "For your own tools. The endpoint must echo the verification challenge as JSON."
-    ,"webhookPlaceholder": "https://example.com/codex-reset"
-    ,"webhookAction": "Verify endpoint"
-    ,"webhookSaved": "Webhook connected. Save this signing secret:"
-    ,"channelRss": "RSS"
-    ,"channelRssDesc": "Use any feed reader. No account required."
-    ,"rssAction": "View RSS options"
-    ,"notifyPrivacy": "Email addresses and delivery settings are used only for reset alerts. Every email includes an unsubscribe link."
-    ,"notifyError": "Could not save this alert. Check the details and try again."
-    ,"notifyRateLimited": "Too many attempts. Try again later."
-    ,"emailConfirmed": "Email alerts are now active."
-    ,"notifyUnsubscribed": "Alerts have been turned off."
-    ,"calendarTitle": "Codex reset history"
-    ,"calendarIntro": "Hover for the reset note; select a marked day to open the X post"
-    ,"calendarRegular": "Regular"
-    ,"calendarNone": "No reset"
-    ,"confirmedDay": "Confirmed reset"
-    ,"xNav": "Tibo’s posts"
-    ,"xStreamTitle": "What Tibo is saying"
-    ,"xStreamIntro": "Every public post captured since tracking began"
-    ,"xStreamFresh": "Fresh from X"
-    ,"xResetPost": "Reset update"
-    ,"xGeneralPost": "Latest post"
-    ,"xOpenPost": "Open original"
-    ,"xCaptured": "posts captured"
-    ,"archiveMood": "A small trail of confirmed reset days"
-    ,"resetCount": "Confirmed resets"
-    ,"longestWait": "Longest wait"
-    ,"metricBasis": "From confirmed records"
-    ,"communityTitle": "Send a tiny reset wish"
-    ,"communityText": "Tap once, let it go, and get back to building. The counter starts fresh after each confirmed reset."
-    ,"begAction": "Beg for a reset 🙏"
-    ,"begDone": "Wish added"
-    ,"begAlready": "You already wished this round"
-    ,"begCount": "wishes this round"
-    ,"visitorCount": "visitors"
-    ,"onePerIp": "One anonymous wish per network each reset cycle"
-    ,"morePosts": "Show more posts"
-    ,"lessPosts": "Show recent posts only"
+    "sourceShort": "From",
+    "statusHeadline": "Reset status",
+    "lastConfirmed": "Time since the last confirmed reset",
+    "noConfirmed": "No confirmed reset yet",
+    "nextReset": "Next reset",
+    "nextAnnounced": "Announced",
+    "noAnnouncement": "No announcement yet",
+    "checkAnnouncement": "See the announcement below",
+    "noAnnouncementNote": "We’ll update this when Tibo posts",
+    "averageInterval": "Average interval",
+    "collecting": "Collecting data",
+    "confirmedSamples": "confirmed sample",
+    "confirmedAverage": "Based on confirmed reset events",
+    "getNotified": "Get the next reset alert",
+    "notifyAction": "Choose alert channels",
+    "notifyOn": "Browser alerts on",
+    "notifyNote": "Email, Telegram, Webhook, browser alerts and RSS.",
+    "notifyOnNote": "This browser will alert you when a new reset update appears.",
+    "notifyDenied": "Notifications are blocked in this browser. You can still use RSS.",
+    "notifyBlocked": "Alerts blocked",
+    "notifyUnsupported": "Alerts unavailable",
+    "notifyUnsupportedNote": "This browser does not support notifications. Use RSS instead.",
+    "notifyTitle": "New Codex reset update",
+    "notificationCenterTitle": "Reset alert center",
+    "notificationCenterIntro": "Choose how you want to hear about new signals, announcements, rollouts and confirmed resets.",
+    "notificationClose": "Close",
+    "channelBrowser": "Browser",
+    "channelBrowserDesc": "A quick alert while this site is open.",
+    "browserAction": "Enable browser alerts",
+    "channelEmail": "Email",
+    "channelEmailDesc": "Works in the background. Confirm the link we send you.",
+    "emailPlaceholder": "you@example.com",
+    "emailAction": "Send confirmation",
+    "emailPending": "Check your inbox and confirm the subscription.",
+    "emailInvalid": "Enter a valid email address.",
+    "channelTelegram": "Telegram",
+    "channelTelegramDesc": "Connect the Codex Resets bot for instant messages.",
+    "telegramAction": "Connect Telegram",
+    "telegramUnavailable": "Bot activation is being prepared.",
+    "channelWebhook": "Webhook",
+    "channelWebhookDesc": "For your own tools. The endpoint must echo the verification challenge as JSON.",
+    "webhookPlaceholder": "https://example.com/codex-reset",
+    "webhookAction": "Verify endpoint",
+    "webhookSaved": "Webhook connected. Save this signing secret:",
+    "channelRss": "RSS",
+    "channelRssDesc": "Use any feed reader. No account required.",
+    "rssAction": "View RSS options",
+    "notifyPrivacy": "Email addresses and delivery settings are used only for reset alerts. Every email includes an unsubscribe link.",
+    "notifyError": "Could not save this alert. Check the details and try again.",
+    "notifyRateLimited": "Too many attempts. Try again later.",
+    "emailConfirmed": "Email alerts are now active.",
+    "notifyUnsubscribed": "Alerts have been turned off.",
+    "calendarTitle": "Codex reset history",
+    "calendarIntro": "Hover for the reset note; select a marked day to open the X post",
+    "calendarRegular": "Regular",
+    "calendarNone": "No reset",
+    "confirmedDay": "Confirmed reset",
+    "xNav": "Tibo’s posts",
+    "xStreamTitle": "What Tibo is saying",
+    "xStreamIntro": "Every public post captured since tracking began",
+    "xStreamFresh": "Fresh from X",
+    "xResetPost": "Reset update",
+    "xGeneralPost": "Latest post",
+    "xOpenPost": "Open original",
+    "xCaptured": "posts captured",
+    "archiveMood": "A small trail of confirmed reset days",
+    "resetCount": "Confirmed resets",
+    "longestWait": "Longest wait",
+    "metricBasis": "From confirmed records",
+    "communityTitle": "Send a tiny reset wish",
+    "communityText": "Tap once, let it go, and get back to building. The counter starts fresh after each confirmed reset.",
+    "begAction": "Beg for a reset 🙏",
+    "begDone": "Wish added",
+    "begAlready": "You already wished this round",
+    "begCount": "wishes this round",
+    "visitorCount": "visitors",
+    "onePerIp": "One anonymous wish per network each reset cycle",
+    "morePosts": "Show more posts",
+    "lessPosts": "Show recent posts only"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -235,84 +235,558 @@
     "sourceDetails": "数据来源与更新说明",
     "reviewMode": "人工核查记录",
     "liveMode": "消息同步中",
-    "sourceShort": "消息来源"
-    ,"statusHeadline": "当前重置状态"
-    ,"lastConfirmed": "距离上次确认重置"
-    ,"noConfirmed": "尚无确认记录"
-    ,"nextReset": "下一次重置"
-    ,"nextAnnounced": "已经预告"
-    ,"noAnnouncement": "尚未预告"
-    ,"checkAnnouncement": "具体时间见下方预告"
-    ,"noAnnouncementNote": "Tibo 发布消息后会在这里更新"
-    ,"averageInterval": "平均重置间隔"
-    ,"collecting": "数据积累中"
-    ,"confirmedSamples": "次确认样本"
-    ,"confirmedAverage": "仅按确认完成的重置计算"
-    ,"getNotified": "下一次重置时提醒我"
-    ,"notifyAction": "选择提醒方式"
-    ,"notifyOn": "浏览器提醒已开启"
-    ,"notifyNote": "支持邮件、Telegram、Webhook、浏览器提醒和 RSS。"
-    ,"notifyOnNote": "出现新的重置动态时，这个浏览器会提醒你。"
-    ,"notifyDenied": "浏览器已禁止通知，你仍可使用 RSS 订阅。"
-    ,"notifyBlocked": "浏览器通知已禁用"
-    ,"notifyUnsupported": "无法使用浏览器提醒"
-    ,"notifyUnsupportedNote": "当前浏览器不支持通知，请使用 RSS 订阅。"
-    ,"notifyTitle": "Codex 有新的重置动态"
-    ,"notificationCenterTitle": "重置提醒中心"
-    ,"notificationCenterIntro": "出现新的信号、明确预告、发放进展或完成确认时，用你选择的方式提醒。"
-    ,"notificationClose": "关闭"
-    ,"channelBrowser": "浏览器"
-    ,"channelBrowserDesc": "打开本站时，快速弹出一条提醒。"
-    ,"browserAction": "开启浏览器提醒"
-    ,"channelEmail": "邮件"
-    ,"channelEmailDesc": "可在后台接收。我们会先发送一封确认邮件。"
-    ,"emailPlaceholder": "你的邮箱"
-    ,"emailAction": "发送确认邮件"
-    ,"emailPending": "确认邮件已发送，请到收件箱完成确认。"
-    ,"emailInvalid": "请输入有效的邮箱地址。"
-    ,"channelTelegram": "Telegram"
-    ,"channelTelegramDesc": "连接 Codex Resets 机器人，即时接收消息。"
-    ,"telegramAction": "连接 Telegram"
-    ,"telegramUnavailable": "机器人正在准备接入。"
-    ,"channelWebhook": "Webhook"
-    ,"channelWebhookDesc": "适合接入自己的工具；端点需以 JSON 原样返回验证 challenge。"
-    ,"webhookPlaceholder": "https://example.com/codex-reset"
-    ,"webhookAction": "验证并连接"
-    ,"webhookSaved": "Webhook 已连接，请保存签名密钥："
-    ,"channelRss": "RSS"
-    ,"channelRssDesc": "任意阅读器都能订阅，无需账号。"
-    ,"rssAction": "查看 RSS 订阅"
-    ,"notifyPrivacy": "邮箱和投递设置仅用于重置提醒；每封邮件都带有取消订阅链接。"
-    ,"notifyError": "提醒设置没有保存，请检查后重试。"
-    ,"notifyRateLimited": "操作太频繁，请稍后再试。"
-    ,"emailConfirmed": "邮件提醒已经开启。"
-    ,"notifyUnsubscribed": "提醒已经关闭。"
-    ,"calendarTitle": "Codex 重置历史"
-    ,"calendarIntro": "悬停查看重置消息；点击标记日期直达 X 原帖"
-    ,"calendarRegular": "常规"
-    ,"calendarNone": "未重置"
-    ,"confirmedDay": "确认重置"
-    ,"xNav": "Tibo 动态"
-    ,"xStreamTitle": "Tibo 最近在说什么"
-    ,"xStreamIntro": "展示接通采集后捕获到的每一条公开 X 文"
-    ,"xStreamFresh": "刚从 X 获取"
-    ,"xResetPost": "重置动态"
-    ,"xGeneralPost": "最新动态"
-    ,"xOpenPost": "查看原文"
-    ,"xCaptured": "条动态已捕获"
-    ,"archiveMood": "把每一次确认完成的重置，留成一串小小足迹"
-    ,"resetCount": "确认重置次数"
-    ,"longestWait": "最长等待"
-    ,"metricBasis": "按确认完成的记录计算"
-    ,"communityTitle": "小小求一次重置"
-    ,"communityText": "点一下，把期待留在这里，然后轻松回去继续创造。每次确认重置后，计数会重新开始。"
-    ,"begAction": "求一次重置 🙏"
-    ,"begDone": "愿望 +1"
-    ,"begAlready": "这一轮已经许过愿啦"
-    ,"begCount": "人正在等这一轮"
-    ,"visitorCount": "位访客来过"
-    ,"onePerIp": "每个网络在一个重置周期内匿名计数一次"
-    ,"morePosts": "查看更多动态"
-    ,"lessPosts": "收起，只看最近动态"
+    "sourceShort": "消息来源",
+    "statusHeadline": "当前重置状态",
+    "lastConfirmed": "距离上次确认重置",
+    "noConfirmed": "尚无确认记录",
+    "nextReset": "下一次重置",
+    "nextAnnounced": "已经预告",
+    "noAnnouncement": "尚未预告",
+    "checkAnnouncement": "具体时间见下方预告",
+    "noAnnouncementNote": "Tibo 发布消息后会在这里更新",
+    "averageInterval": "平均重置间隔",
+    "collecting": "数据积累中",
+    "confirmedSamples": "次确认样本",
+    "confirmedAverage": "仅按确认完成的重置计算",
+    "getNotified": "下一次重置时提醒我",
+    "notifyAction": "选择提醒方式",
+    "notifyOn": "浏览器提醒已开启",
+    "notifyNote": "支持邮件、Telegram、Webhook、浏览器提醒和 RSS。",
+    "notifyOnNote": "出现新的重置动态时，这个浏览器会提醒你。",
+    "notifyDenied": "浏览器已禁止通知，你仍可使用 RSS 订阅。",
+    "notifyBlocked": "浏览器通知已禁用",
+    "notifyUnsupported": "无法使用浏览器提醒",
+    "notifyUnsupportedNote": "当前浏览器不支持通知，请使用 RSS 订阅。",
+    "notifyTitle": "Codex 有新的重置动态",
+    "notificationCenterTitle": "重置提醒中心",
+    "notificationCenterIntro": "出现新的信号、明确预告、发放进展或完成确认时，用你选择的方式提醒。",
+    "notificationClose": "关闭",
+    "channelBrowser": "浏览器",
+    "channelBrowserDesc": "打开本站时，快速弹出一条提醒。",
+    "browserAction": "开启浏览器提醒",
+    "channelEmail": "邮件",
+    "channelEmailDesc": "可在后台接收。我们会先发送一封确认邮件。",
+    "emailPlaceholder": "你的邮箱",
+    "emailAction": "发送确认邮件",
+    "emailPending": "确认邮件已发送，请到收件箱完成确认。",
+    "emailInvalid": "请输入有效的邮箱地址。",
+    "channelTelegram": "Telegram",
+    "channelTelegramDesc": "连接 Codex Resets 机器人，即时接收消息。",
+    "telegramAction": "连接 Telegram",
+    "telegramUnavailable": "机器人正在准备接入。",
+    "channelWebhook": "Webhook",
+    "channelWebhookDesc": "适合接入自己的工具；端点需以 JSON 原样返回验证 challenge。",
+    "webhookPlaceholder": "https://example.com/codex-reset",
+    "webhookAction": "验证并连接",
+    "webhookSaved": "Webhook 已连接，请保存签名密钥：",
+    "channelRss": "RSS",
+    "channelRssDesc": "任意阅读器都能订阅，无需账号。",
+    "rssAction": "查看 RSS 订阅",
+    "notifyPrivacy": "邮箱和投递设置仅用于重置提醒；每封邮件都带有取消订阅链接。",
+    "notifyError": "提醒设置没有保存，请检查后重试。",
+    "notifyRateLimited": "操作太频繁，请稍后再试。",
+    "emailConfirmed": "邮件提醒已经开启。",
+    "notifyUnsubscribed": "提醒已经关闭。",
+    "calendarTitle": "Codex 重置历史",
+    "calendarIntro": "悬停查看重置消息；点击标记日期直达 X 原帖",
+    "calendarRegular": "常规",
+    "calendarNone": "未重置",
+    "confirmedDay": "确认重置",
+    "xNav": "Tibo 动态",
+    "xStreamTitle": "Tibo 最近在说什么",
+    "xStreamIntro": "展示接通采集后捕获到的每一条公开 X 文",
+    "xStreamFresh": "刚从 X 获取",
+    "xResetPost": "重置动态",
+    "xGeneralPost": "最新动态",
+    "xOpenPost": "查看原文",
+    "xCaptured": "条动态已捕获",
+    "archiveMood": "把每一次确认完成的重置，留成一串小小足迹",
+    "resetCount": "确认重置次数",
+    "longestWait": "最长等待",
+    "metricBasis": "按确认完成的记录计算",
+    "communityTitle": "小小求一次重置",
+    "communityText": "点一下，把期待留在这里，然后轻松回去继续创造。每次确认重置后，计数会重新开始。",
+    "begAction": "求一次重置 🙏",
+    "begDone": "愿望 +1",
+    "begAlready": "这一轮已经许过愿啦",
+    "begCount": "人正在等这一轮",
+    "visitorCount": "位访客来过",
+    "onePerIp": "每个网络在一个重置周期内匿名计数一次",
+    "morePosts": "查看更多动态",
+    "lessPosts": "收起，只看最近动态"
+  },
+  "zh-Hant": {
+    "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
+    "description": "及時掌握 Tibo 的 Codex 重置動態：重置預告、發放進度、原始公告與歷史消息。",
+    "archive": "歷史消息",
+    "guide": "讀懂重置",
+    "rss": "訂閱 RSS",
+    "headline": "不要錯過下一次重置。",
+    "intro": "跟進 Tibo 的預告、發放進度與補發訊息。",
+    "latest": "最近一次記錄的重置",
+    "original": "查看 X 原帖",
+    "reviewed": "檔案核查時間",
+    "all": "全部動態",
+    "automatic": "即時重置",
+    "banked": "備用重置",
+    "filterLabel": "篩選公告類型",
+    "empty": "目前檔案還沒有收錄此類型的公告。",
+    "reference": "公開檔案",
+    "guideTitle": "關於消息與來源",
+    "autoText": "適用帳號直接執行的額度重置，具體範圍請查看公告。",
+    "bankText": "可以稍後使用的備用重置機會，資格和有效期限請以帳號內說明為準。",
+    "official": "OpenAI 官方用量說明",
+    "methodText": "本站直接讀取 Tibo 的 X 公開訊息並獨立保存記錄，保留回覆和引用的上下文關係。自動分類僅作初步整理，不會因為預計時間已過就認定重置完成。",
+    "footer": "獨立愛好者項目，與 OpenAI 或 Tibo 無隸屬關係，也未獲其背書。",
+    "privacy": "無需註冊，不使用追蹤 Cookie。外部連結適用各自的隱私權政策。",
+    "skip": "跳到正文",
+    "feedDescription": "直接從 Tibo 的 X 原帖採集的 Codex 重置訊息。",
+    "noUpcoming": "在目前收錄的記錄中，沒有待執行的預告。",
+    "notGuarantee": "收錄範圍尚不完整，不能據此判斷接下來沒有重置。",
+    "scheduled": "已宣布，等待執行",
+    "scheduledTime": "公告預計執行時間",
+    "timeUnknown": "尚未公佈具體時間",
+    "overdue": "公告預計時間已過，尚未收到執行完成的確認。",
+    "watch": "可能的重置訊號 · 未確認",
+    "watchNote": "原文中的不確定訊號，不代表已確認的承諾。",
+    "total": "已記錄重置",
+    "average": "平均間隔",
+    "lastType": "最近重置類型",
+    "sync": "最近採集時間",
+    "sourceTime": "原始來源",
+    "refresh": "重新整理訊息",
+    "refreshing": "正在刷新…",
+    "liveNote": "刷新讀取本站最新儲存的訊息，不會觸發新的 X API 請求。",
+    "stale": "訊息同步已延遲，目前顯示上次數據，重置動態可能已變更。",
+    "offline": "暫時無法刷新，保留上次取得的訊息。",
+    "dataFrom": "原始來源",
+    "provenance": "消息直接來自 @thsottiaux 在 X 發布的公開原帖。",
+    "observed": "上下文待核查",
+    "more": "展開全部訊息",
+    "less": "只看近期消息",
+    "readMore": "原文與詳情",
+    "calendar": "重置記錄日曆",
+    "noRecord": "本站檔案無紀錄",
+    "historyWindow": "最近 12 週 · UTC",
+    "note": "獨立訊息追蹤站。帳號資格與剩餘額度請在自己的帳號中核對。",
+    "feedNote": "RSS 提供目前已收錄訊息，自動擷取接通前不會持續更新。",
+    "noEvents": "尚未獲得獨立採集的消息。",
+    "days": "天",
+    "historyTitle": "重置訊息",
+    "historyIntro": "按發佈時間排列",
+    "completed": "完成確認",
+    "announced": "重置預告",
+    "rollout": "發放進展",
+    "signal": "上下文待核查",
+    "compensation": "補發訊息",
+    "collectorBlocked": "自動採集尚未接通。以下訊息已直接檢查 X 原帖，目前不是即時訊息流。",
+    "collectorLive": "X 獨立採集已接通",
+    "manualReview": "最近原帖核查",
+    "latestNews": "最近已核對的重置動態",
+    "partial": "目前為直接核對 X 原帖的精選消息，歷史檔案尚未補齊。",
+    "related": "關聯原帖",
+    "excerptLabel": "原文摘錄",
+    "pendingNote": "預告只有在相關後續訊息明確確認時，才更新為已執行。",
+    "ruleLabel": "自動初步分類，請檢查原文",
+    "sourceChecked": "已核對原帖",
+    "statsNote": "統計的是訊息數量，不是獨立重置事件次數。",
+    "sourceDetails": "資料來源與更新說明",
+    "reviewMode": "人工核查記錄",
+    "liveMode": "訊息同步中",
+    "sourceShort": "消息來源",
+    "statusHeadline": "目前重置狀態",
+    "lastConfirmed": "距離上次確認重置",
+    "noConfirmed": "尚無確認記錄",
+    "nextReset": "下一次重置",
+    "nextAnnounced": "已經預告",
+    "noAnnouncement": "尚未預告",
+    "checkAnnouncement": "具體時間見下方預告",
+    "noAnnouncementNote": "Tibo 發布消息後會在這裡更新",
+    "averageInterval": "平均重置間隔",
+    "collecting": "數據累積中",
+    "confirmedSamples": "次確認樣本",
+    "confirmedAverage": "僅按確認完成的重置計算",
+    "getNotified": "下次重置時提醒我",
+    "notifyAction": "選擇提醒方式",
+    "notifyOn": "瀏覽器提醒已開啟",
+    "notifyNote": "支援郵件、Telegram、Webhook、瀏覽器提醒和 RSS。",
+    "notifyOnNote": "當出現新的重置動態時，這個瀏覽器會提醒你。",
+    "notifyDenied": "瀏覽器已禁止通知，你仍可使用 RSS 訂閱。",
+    "notifyBlocked": "瀏覽器通知已停用",
+    "notifyUnsupported": "無法使用瀏覽器提醒",
+    "notifyUnsupportedNote": "目前瀏覽器不支援通知，請使用 RSS 訂閱。",
+    "notifyTitle": "Codex 有新的重置動態",
+    "notificationCenterTitle": "重置提醒中心",
+    "notificationCenterIntro": "出現新的訊號、明確預告、發放進度或完成確認時，用你選擇的方式提醒。",
+    "notificationClose": "關閉",
+    "channelBrowser": "瀏覽器",
+    "channelBrowserDesc": "打開本站時，快速彈出一條提醒。",
+    "browserAction": "開啟瀏覽器提醒",
+    "channelEmail": "郵件",
+    "channelEmailDesc": "可在后台接收。我們會先發送一封確認郵件。",
+    "emailPlaceholder": "你的信箱",
+    "emailAction": "發送確認郵件",
+    "emailPending": "確認郵件已發送，請到收件匣完成確認。",
+    "emailInvalid": "請輸入有效的郵箱地址。",
+    "channelTelegram": "Telegram",
+    "channelTelegramDesc": "連接 Codex Resets 機器人，即時接收訊息。",
+    "telegramAction": "連接 Telegram",
+    "telegramUnavailable": "機器人正在準備接入。",
+    "channelWebhook": "Webhook",
+    "channelWebhookDesc": "適合接取自己的工具；端點需以 JSON 原樣回傳驗證 challenge。",
+    "webhookPlaceholder": "https://example.com/codex-reset",
+    "webhookAction": "驗證並連接",
+    "webhookSaved": "Webhook 已連接，請儲存簽署金鑰：",
+    "channelRss": "RSS",
+    "channelRssDesc": "任意閱讀器都能訂閱，無需帳號。",
+    "rssAction": "查看 RSS 訂閱",
+    "notifyPrivacy": "郵箱和投遞設定僅用於重置提醒；每封郵件都帶有取消訂閱連結。",
+    "notifyError": "提醒設定沒有儲存，請檢查後重試。",
+    "notifyRateLimited": "操作太頻繁，請稍後再試。",
+    "emailConfirmed": "郵件提醒已經開啟。",
+    "notifyUnsubscribed": "提醒已經關閉。",
+    "calendarTitle": "Codex 重置歷史",
+    "calendarIntro": "懸停查看重置訊息；點擊標記日期直達 X 原帖",
+    "calendarRegular": "常規",
+    "calendarNone": "未重置",
+    "confirmedDay": "確認重置",
+    "xNav": "Tibo 動態",
+    "xStreamTitle": "Tibo 最近在說什麼",
+    "xStreamIntro": "展示接通採集後捕獲的每一條公開 X 文",
+    "xStreamFresh": "剛從 X 獲取",
+    "xResetPost": "重置動態",
+    "xGeneralPost": "最新動態",
+    "xOpenPost": "看原文",
+    "xCaptured": "條動態已捕獲",
+    "archiveMood": "把每一次確認完成的重置，留成一串小小足跡",
+    "resetCount": "確認重置次數",
+    "longestWait": "最長等待",
+    "metricBasis": "按確認完成的記錄計算",
+    "communityTitle": "小小求一次重置",
+    "communityText": "點一下，把期待留在這裡，然後輕鬆回去繼續創作。每次確認重置後，計數會重新開始。",
+    "begAction": "求重置 🙏",
+    "begDone": "願望 +1",
+    "begAlready": "這一輪已經許過願啦",
+    "begCount": "人正在等待這一輪",
+    "visitorCount": "位訪客來過",
+    "onePerIp": "每個網路在一個重置週期內匿名計數一次",
+    "morePosts": "查看更多動態",
+    "lessPosts": "收起，只看最近動態"
+  },
+  "ja": {
+    "pageTitle": "Codex Resets — リセット情報・予告・履歴",
+    "description": "Tiboが発信するCodexリセット情報を追跡。次回の予告、展開状況、原文、過去の履歴をまとめています。",
+    "archive": "リセット履歴",
+    "guide": "リセットの仕組み",
+    "rss": "RSSで購読",
+    "headline": "次のリセットを見逃さない。",
+    "intro": "Tiboの予告、展開状況、補填情報を追跡します。",
+    "latest": "最新のリセット記録",
+    "original": "原文を読む",
+    "reviewed": "履歴確認済み",
+    "all": "すべてのアップデート",
+    "automatic": "通常リセット",
+    "banked": "ストック型リセット",
+    "filterLabel": "更新を絞り込む",
+    "empty": "この種類の記録はまだありません。",
+    "reference": "公開アーカイブ",
+    "guideTitle": "このトラッカーについて",
+    "autoText": "対象となるアカウントにリセットが適用されます。範囲についてはお知らせをご覧ください。",
+    "bankText": "後で使用するためのリセット クレジット。アカウントの資格と有効期限を確認してください。",
+    "official": "OpenAIの利用上限ドキュメント",
+    "methodText": "このトラッカーは Tibo の公開投稿を X から直接読み取り、独自の記録を保存します。返信と引用された投稿はソース関係を保持します。自動カテゴリは暫定的なものです。目標時間が経過しても、リセットが完了したことは証明されません。",
+    "footer": "独立したファンプロジェクトです。OpenAIおよびTiboとは提携しておらず、承認も受けていません。",
+    "privacy": "アカウント登録・追跡Cookieはありません。外部リンクには各サイトのプライバシーポリシーが適用されます。",
+    "skip": "本文へ移動",
+    "feedDescription": "X 上の Tibo から直接収集された Codex リセットのアナウンス。",
+    "noUpcoming": "収集済みの記録には保留中の予告がありません。",
+    "notGuarantee": "収集された履歴は不完全です。これは、今後のリセットが存在しないという主張ではありません。",
+    "scheduled": "予告済み・実施待ち",
+    "scheduledTime": "発表された目標タイム",
+    "timeUnknown": "正確な時刻は未発表",
+    "overdue": "発表された時間が経過しました。完成は確認されていない。",
+    "watch": "リセットの可能性・未確認",
+    "watchNote": "原文に不確実な兆候があります。確定した予告ではありません。",
+    "total": "記録済みリセット",
+    "average": "平均間隔",
+    "lastType": "最新のリセット種別",
+    "sync": "最終取得",
+    "sourceTime": "情報源",
+    "refresh": "更新",
+    "refreshing": "更新中…",
+    "liveNote": "「更新」は、保存されている最新のレコードを取得します。新しい X API リクエストはトリガーされません。",
+    "stale": "更新が遅れています。最後に取得した情報を表示しています。現在の状況は変わっている可能性があります。",
+    "offline": "更新できません。最後に取得した情報を表示しています。",
+    "dataFrom": "ソース",
+    "provenance": "X に関する @thsottiaux からの元の公開投稿。",
+    "observed": "内容の確認が必要",
+    "more": "すべての更新を表示",
+    "less": "最近の更新のみ表示",
+    "readMore": "情報源と詳細",
+    "calendar": "リセット履歴",
+    "noRecord": "この履歴には記録がありません",
+    "historyWindow": "過去 12 週間 · UTC",
+    "note": "独立したトラッカー。アカウントの資格と残りの使用量は、ご自身のアカウントで確認する必要があります。",
+    "feedNote": "RSS には、現在収集されているメッセージが含まれています。自動収集が接続されるまではライブになりません。",
+    "noEvents": "独自に収集された投稿はまだありません。",
+    "days": "日",
+    "historyTitle": "リセット更新",
+    "historyIntro": "投稿順",
+    "completed": "完了確認",
+    "announced": "予告",
+    "rollout": "展開中",
+    "signal": "要確認",
+    "compensation": "補填情報",
+    "collectorBlocked": "自動収集が接続されていません。これらの投稿は X で直接チェックされました。これはライブフィードではありません。",
+    "collectorLive": "ダイレクト X コレクションが接続されました",
+    "manualReview": "最終確認",
+    "latestNews": "最新のリセット情報",
+    "partial": "選択された投稿は X で直接検証されました。履歴アーカイブは完全ではありません。",
+    "related": "関連する予告",
+    "excerptLabel": "ソースの抜粋",
+    "pendingNote": "関連投稿で進展が確認されるまで、予告は保留として扱います。",
+    "ruleLabel": "自動分類・原本確認",
+    "sourceChecked": "元の投稿がチェックされました",
+    "statsNote": "これらはメッセージ数であり、個別のリセット イベントの数ではありません。",
+    "sourceDetails": "情報源と更新状況",
+    "reviewMode": "手動確認済み履歴",
+    "liveMode": "自動更新中",
+    "sourceShort": "から",
+    "statusHeadline": "現在のリセット状況",
+    "lastConfirmed": "前回の完了確認から",
+    "noConfirmed": "確認済みリセットはまだありません",
+    "nextReset": "次のリセット",
+    "nextAnnounced": "予告あり",
+    "noAnnouncement": "まだ予告はありません",
+    "checkAnnouncement": "下の予告を確認",
+    "noAnnouncementNote": "Tiboの投稿後に更新します",
+    "averageInterval": "平均リセット間隔",
+    "collecting": "データ収集中",
+    "confirmedSamples": "件の確認済み記録",
+    "confirmedAverage": "完了確認済みの記録から算出",
+    "getNotified": "次のリセットを通知",
+    "notifyAction": "通知方法を選ぶ",
+    "notifyOn": "ブラウザ通知は有効です",
+    "notifyNote": "メール、Telegram、Webhook、ブラウザ通知、RSSに対応。",
+    "notifyOnNote": "新しいリセット情報が出た時に、このブラウザで通知します。",
+    "notifyDenied": "ブラウザ通知が拒否されています。RSSは引き続き利用できます。",
+    "notifyBlocked": "通知はブロックされています",
+    "notifyUnsupported": "通知を利用できません",
+    "notifyUnsupportedNote": "このブラウザは通知に対応していません。RSSをご利用ください。",
+    "notifyTitle": "Codexリセットの新しい更新",
+    "notificationCenterTitle": "リセット通知",
+    "notificationCenterIntro": "新しい兆候、予告、展開状況、完了確認を受け取る方法を選んでください。",
+    "notificationClose": "閉じる",
+    "channelBrowser": "ブラウザ",
+    "channelBrowserDesc": "このサイトを開いている時にすぐ通知します。",
+    "browserAction": "ブラウザ通知を有効にする",
+    "channelEmail": "メール",
+    "channelEmailDesc": "バックグラウンドで受信できます。確認メールのリンクを開いてください。",
+    "emailPlaceholder": "you@example.com",
+    "emailAction": "確認メールを送る",
+    "emailPending": "受信箱を確認し、購読を確定してください。",
+    "emailInvalid": "有効なメールアドレスを入力してください。",
+    "channelTelegram": "Telegram",
+    "channelTelegramDesc": "Codex Resets Botを接続して即時通知を受け取ります。",
+    "telegramAction": "Telegramを接続",
+    "telegramUnavailable": "Botの準備中です。",
+    "channelWebhook": "Webhook",
+    "channelWebhookDesc": "自作ツール向け。エンドポイントは確認用challengeをJSONで返す必要があります。",
+    "webhookPlaceholder": "https://example.com/codex-reset",
+    "webhookAction": "確認して接続",
+    "webhookSaved": "Webhookを接続しました。署名シークレットを保存してください：",
+    "channelRss": "RSS",
+    "channelRssDesc": "好きなRSSリーダーで購読できます。アカウントは不要です。",
+    "rssAction": "RSS購読を見る",
+    "notifyPrivacy": "メールアドレスと配信設定はリセット通知にのみ使用します。各メールから購読解除できます。",
+    "notifyError": "通知設定を保存できませんでした。入力内容を確認して再試行してください。",
+    "notifyRateLimited": "操作が多すぎます。しばらくしてから再試行してください。",
+    "emailConfirmed": "メール通知を有効にしました。",
+    "notifyUnsubscribed": "通知を解除しました。",
+    "calendarTitle": "Codexリセット履歴",
+    "calendarIntro": "日付にカーソルを合わせると詳細、選択するとXの原文を表示",
+    "calendarRegular": "通常",
+    "calendarNone": "リセットなし",
+    "confirmedDay": "確認済みリセット",
+    "xNav": "Tiboの投稿",
+    "xStreamTitle": "Tiboの最新投稿",
+    "xStreamIntro": "追跡開始後に取得した公開投稿",
+    "xStreamFresh": "Xから新着",
+    "xResetPost": "リセット情報",
+    "xGeneralPost": "最新投稿",
+    "xOpenPost": "原文を開く",
+    "xCaptured": "件の投稿を取得",
+    "archiveMood": "確認されたリセット日の小さな軌跡",
+    "resetCount": "確認済みリセット",
+    "longestWait": "最長待ち時間",
+    "metricBasis": "確認済み記録から算出",
+    "communityTitle": "リセットをそっとお願い",
+    "communityText": "一度だけ押して、気持ちを置いて、また作業へ。完了確認のたびにカウンターはリセットされます。",
+    "begAction": "リセットをお願い 🙏",
+    "begDone": "お願いを追加しました",
+    "begAlready": "この回はすでにお願い済みです",
+    "begCount": "件のお願い",
+    "visitorCount": "人の訪問者",
+    "onePerIp": "1リセット周期につき、同じネットワークから匿名で1回",
+    "morePosts": "投稿をさらに表示",
+    "lessPosts": "最近の投稿だけ表示"
+  },
+  "ko": {
+    "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
+    "description": "Tibo가 전하는 Codex 재설정 소식을 확인하세요. 다음 재설정 예고, 배포 진행, 원문과 과거 기록을 모아 보여줍니다.",
+    "archive": "재설정 기록",
+    "guide": "재설정 작동 방식",
+    "rss": "RSS 구독",
+    "headline": "다음 재설정을 놓치지 마세요.",
+    "intro": "Tibo의 예고, 배포 진행과 보상 소식을 추적합니다.",
+    "latest": "최근 재설정 기록",
+    "original": "원문 보기",
+    "reviewed": "기록 확인됨",
+    "all": "모든 업데이트",
+    "automatic": "일반 재설정",
+    "banked": "저장형 재설정",
+    "filterLabel": "소식 필터",
+    "empty": "현재 기록에 이 유형의 항목이 없습니다.",
+    "reference": "공개 아카이브",
+    "guideTitle": "이 추적기 소개",
+    "autoText": "적격 계정에 재설정이 적용되었습니다. 범위에 대한 공지를 읽어보세요.",
+    "bankText": "나중에 사용할 재설정 크레딧입니다. 귀하의 계정에 대한 적격성 및 만료 여부를 확인하십시오.",
+    "official": "OpenAI 사용량 문서",
+    "methodText": "이 추적기는 X에서 직접 Tibo의 공개 게시물을 읽고 자체 기록을 저장합니다. 답글과 인용된 게시물은 원본 관계를 유지합니다. 자동 카테고리는 잠정적입니다. 목표 시간이 지나도 재설정이 완료되었음을 증명할 수 없습니다.",
+    "footer": "독립 팬 프로젝트이며 OpenAI 또는 Tibo와 제휴하거나 승인을 받지 않았습니다.",
+    "privacy": "가입과 추적 쿠키가 없습니다. 외부 링크에는 해당 사이트의 개인정보 정책이 적용됩니다.",
+    "skip": "본문으로 이동",
+    "feedDescription": "X의 Tibo에서 직접 수집한 Codex 재설정 공지입니다.",
+    "noUpcoming": "수집된 기록에 대기 중인 예고가 없습니다.",
+    "notGuarantee": "수집된 기록이 불완전합니다. 이는 향후 재설정이 없다는 주장이 아닙니다.",
+    "scheduled": "예고됨 · 실행 대기",
+    "scheduledTime": "목표 시간 발표",
+    "timeUnknown": "정확한 시간 미정",
+    "overdue": "공지된 시간이 지났습니다. 완료가 확인되지 않았습니다.",
+    "watch": "재설정 가능성 · 미확인",
+    "watchNote": "원문에 불확실한 신호가 있으며 확정된 약속은 아닙니다.",
+    "total": "기록된 재설정",
+    "average": "평균 간격",
+    "lastType": "최근 재설정 유형",
+    "sync": "최근 수집",
+    "sourceTime": "출처",
+    "refresh": "새로고침",
+    "refreshing": "새로고침 중…",
+    "liveNote": "새로 고침은 가장 최근에 저장된 기록을 검색합니다. 새로운 X API 요청을 트리거하지 않습니다.",
+    "stale": "업데이트가 지연되고 있습니다. 마지막 데이터를 표시하며 현재 상태는 달라졌을 수 있습니다.",
+    "offline": "새로고침할 수 없습니다. 마지막 데이터를 표시합니다.",
+    "dataFrom": "원천",
+    "provenance": "X의 @thsottiaux가 올린 원본 공개 게시물입니다.",
+    "observed": "내용 확인 필요",
+    "more": "모든 소식 보기",
+    "less": "최근 소식만 보기",
+    "readMore": "출처와 상세 정보",
+    "calendar": "재설정 기록",
+    "noRecord": "이 기록에는 항목이 없습니다",
+    "historyWindow": "지난 12주 · UTC",
+    "note": "독립 추적기. 계정 자격 및 남은 사용량은 본인 계정에서 확인해야 합니다.",
+    "feedNote": "RSS에는 현재 수집된 메시지가 포함되어 있습니다. 자동 수집이 연결될 때까지 라이브가 되지 않습니다.",
+    "noEvents": "아직 독립적으로 수집된 게시물이 없습니다.",
+    "days": "일",
+    "historyTitle": "재설정 소식",
+    "historyIntro": "게시 순서",
+    "completed": "완료 확인",
+    "announced": "예고",
+    "rollout": "배포 중",
+    "signal": "확인 필요",
+    "compensation": "보상 소식",
+    "collectorBlocked": "자동수집이 연결되지 않았습니다. 이 게시물은 X에서 직접 확인되었습니다. 이것은 라이브 피드가 아닙니다.",
+    "collectorLive": "Direct X 컬렉션이 연결되었습니다.",
+    "manualReview": "최근 출처 확인",
+    "latestNews": "최근 재설정 소식",
+    "partial": "선택한 게시물은 X에서 직접 확인되었습니다. 기록 보관소가 완전하지 않습니다.",
+    "related": "관련 예고",
+    "excerptLabel": "소스 발췌",
+    "pendingNote": "연결된 소식에서 진행이 확인될 때까지 예고 상태로 유지합니다.",
+    "ruleLabel": "자동분류 · 원본 확인",
+    "sourceChecked": "원본 게시물 확인됨",
+    "statsNote": "이는 개별 재설정 이벤트 수가 아닌 메시지 수입니다.",
+    "sourceDetails": "출처와 업데이트 정보",
+    "reviewMode": "수동 확인 기록",
+    "liveMode": "업데이트 연결됨",
+    "sourceShort": "에서",
+    "statusHeadline": "현재 재설정 상태",
+    "lastConfirmed": "마지막 완료 확인 이후",
+    "noConfirmed": "확인된 재설정이 없습니다",
+    "nextReset": "다음 재설정",
+    "nextAnnounced": "예고됨",
+    "noAnnouncement": "아직 예고 없음",
+    "checkAnnouncement": "아래 예고 확인",
+    "noAnnouncementNote": "Tibo가 게시하면 업데이트합니다",
+    "averageInterval": "평균 재설정 간격",
+    "collecting": "데이터 수집 중",
+    "confirmedSamples": "건의 확인 기록",
+    "confirmedAverage": "완료가 확인된 기록 기준",
+    "getNotified": "다음 재설정 알림 받기",
+    "notifyAction": "알림 방식 선택",
+    "notifyOn": "브라우저 알림 켜짐",
+    "notifyNote": "이메일, Telegram, Webhook, 브라우저 알림, RSS를 지원합니다.",
+    "notifyOnNote": "새 재설정 소식이 나타나면 이 브라우저로 알려드립니다.",
+    "notifyDenied": "브라우저 알림이 차단되었습니다. RSS는 계속 이용할 수 있습니다.",
+    "notifyBlocked": "알림 차단됨",
+    "notifyUnsupported": "알림 사용 불가",
+    "notifyUnsupportedNote": "이 브라우저는 알림을 지원하지 않습니다. RSS를 이용하세요.",
+    "notifyTitle": "새로운 Codex 재설정 소식",
+    "notificationCenterTitle": "재설정 알림",
+    "notificationCenterIntro": "새 신호, 예고, 배포 진행 또는 완료 확인을 받을 방식을 선택하세요.",
+    "notificationClose": "닫기",
+    "channelBrowser": "브라우저",
+    "channelBrowserDesc": "사이트를 열어 둔 동안 빠르게 알려드립니다.",
+    "browserAction": "브라우저 알림 켜기",
+    "channelEmail": "이메일",
+    "channelEmailDesc": "백그라운드에서 받을 수 있습니다. 보내드린 확인 링크를 열어주세요.",
+    "emailPlaceholder": "you@example.com",
+    "emailAction": "확인 메일 보내기",
+    "emailPending": "받은편지함에서 구독을 확인하세요.",
+    "emailInvalid": "올바른 이메일 주소를 입력하세요.",
+    "channelTelegram": "Telegram",
+    "channelTelegramDesc": "Codex Resets Bot을 연결해 즉시 메시지를 받습니다.",
+    "telegramAction": "Telegram 연결",
+    "telegramUnavailable": "Bot을 준비하고 있습니다.",
+    "channelWebhook": "Webhook",
+    "channelWebhookDesc": "직접 만든 도구용입니다. 엔드포인트가 확인 challenge를 JSON으로 반환해야 합니다.",
+    "webhookPlaceholder": "https://example.com/codex-reset",
+    "webhookAction": "확인 후 연결",
+    "webhookSaved": "Webhook이 연결되었습니다. 서명 비밀키를 저장하세요:",
+    "channelRss": "RSS",
+    "channelRssDesc": "원하는 RSS 리더로 구독할 수 있으며 계정이 필요 없습니다.",
+    "rssAction": "RSS 구독 보기",
+    "notifyPrivacy": "이메일 주소와 전송 설정은 재설정 알림에만 사용합니다. 모든 이메일에서 구독을 해지할 수 있습니다.",
+    "notifyError": "알림 설정을 저장하지 못했습니다. 내용을 확인하고 다시 시도하세요.",
+    "notifyRateLimited": "요청이 너무 많습니다. 잠시 후 다시 시도하세요.",
+    "emailConfirmed": "이메일 알림을 켰습니다.",
+    "notifyUnsubscribed": "알림을 껐습니다.",
+    "calendarTitle": "Codex 재설정 기록",
+    "calendarIntro": "날짜에 마우스를 올려 내용을 보고 선택하면 X 원문으로 이동",
+    "calendarRegular": "일반",
+    "calendarNone": "재설정 없음",
+    "confirmedDay": "확인된 재설정",
+    "xNav": "Tibo 게시물",
+    "xStreamTitle": "Tibo의 최근 이야기",
+    "xStreamIntro": "추적을 시작한 뒤 수집한 모든 공개 게시물",
+    "xStreamFresh": "X에서 새로 수집",
+    "xResetPost": "재설정 소식",
+    "xGeneralPost": "최근 게시물",
+    "xOpenPost": "원문 열기",
+    "xCaptured": "개 게시물 수집",
+    "archiveMood": "확인된 재설정 날짜의 작은 흔적",
+    "resetCount": "확인된 재설정",
+    "longestWait": "가장 긴 대기",
+    "metricBasis": "확인된 기록 기준",
+    "communityTitle": "작게 재설정 빌기",
+    "communityText": "한 번 누르고 마음을 내려놓은 뒤 다시 만들러 가세요. 완료가 확인될 때마다 카운터가 새로 시작됩니다.",
+    "begAction": "재설정 빌기 🙏",
+    "begDone": "소원을 추가했습니다",
+    "begAlready": "이번 주기에는 이미 참여했습니다",
+    "begCount": "명이 기다리는 중",
+    "visitorCount": "명 방문",
+    "onePerIp": "재설정 주기마다 네트워크당 익명으로 한 번",
+    "morePosts": "게시물 더 보기",
+    "lessPosts": "최근 게시물만 보기"
   }
 }

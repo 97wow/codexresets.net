@@ -1,0 +1,7 @@
+---
+import snapshot from '../../../data/snapshot.json';
+import ResetDetail from '../../../components/ResetDetail.astro';
+export function getStaticPaths(){return snapshot.events.map(event=>({params:{id:event.id},props:{event}}));}
+const {event}=Astro.props;
+---
+<ResetDetail event={event} lang="ko" />

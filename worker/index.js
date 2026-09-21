@@ -6,6 +6,7 @@ import {renderTracker} from '../src/lib/tracker.js';
 import {rssResponse} from '../src/lib/rss.js';
 import {communityStats,recordBeg,recordVisit} from '../src/lib/community.js';
 import {NotifyError,confirmEmailSubscription,dispatchNotifications,handleTelegramUpdate,requestEmailSubscription,requestTelegramConnection,requestWebhookSubscription,telegramConfig,unsubscribe} from '../src/lib/notifications.js';
+import {localeBase,locales} from '../src/lib/i18n.js';
 
 export async function synchronize(env,fetcher=fetch){
   const previous=await env.RESETS.get('state','json')||fallback;
@@ -51,7 +52,7 @@ export default {
         else if(url.pathname==='/api/notify/telegram/connect'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);result=await requestTelegramConnection(env,request);}
         else if(url.pathname==='/api/notify/telegram/update'&&request.method==='POST')result=await handleTelegramUpdate(env,request);
         else if(url.pathname==='/api/notify/confirm'&&request.method==='GET')return confirmationPage(url.searchParams.get('token'));
-        else if(url.pathname==='/api/notify/confirm'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);const form=await request.formData();result=await confirmEmailSubscription(env,form.get('token'));return Response.redirect(`${url.origin}${result.lang==='zh'?'/zh/':'/'}?notify=email-confirmed`,303);}
+        else if(url.pathname==='/api/notify/confirm'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);const form=await request.formData();result=await confirmEmailSubscription(env,form.get('token'));return Response.redirect(`${url.origin}${localeBase(result.lang)}?notify=email-confirmed`,303);}
         else if(url.pathname==='/api/notify/unsubscribe'&&request.method==='GET')return unsubscribePage(url.searchParams.get('token'));
         else if(url.pathname==='/api/notify/unsubscribe'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);const form=await request.formData();await unsubscribe(env,form.get('token'));return Response.redirect(`${url.origin}/?notify=unsubscribed`,303);}
         else return notifyResponse({error:'not_found'},404);
@@ -70,7 +71,8 @@ export default {
     }
     if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{Allow:'GET, HEAD',...securityHeaders}});
     if(url.pathname==='/api/'||url.pathname==='/api')return env.ASSETS.fetch(request);
-    const dynamic=['/','/zh/','/api/status','/api/v1/status','/api/v1/events','/api/v1/posts','/api/v1/openapi.json','/feed.xml','/zh/feed.xml'];
+    const localizedRoutes=locales.flatMap(lang=>[localeBase(lang),`${localeBase(lang)}feed.xml`]);
+    const dynamic=[...localizedRoutes,'/api/status','/api/v1/status','/api/v1/events','/api/v1/posts','/api/v1/openapi.json'];
     const eventMatch=url.pathname.match(/^\/api\/v1\/events\/(\d{10,25})$/);
     if(!dynamic.includes(url.pathname)&&!eventMatch)return env.ASSETS.fetch(request);
     let data=fallback,health;
@@ -85,8 +87,8 @@ export default {
       else if(url.pathname==='/api/v1/events')response=json({apiVersion:document.apiVersion,generatedAt:document.generatedAt,events:document.events});
       else if(url.pathname==='/api/v1/posts')response=json({apiVersion:document.apiVersion,generatedAt:document.generatedAt,posts:document.posts});
       else {const event=document.events.find(item=>item.id===eventMatch?.[1]);response=event?json({apiVersion:document.apiVersion,event}):json({error:'not_found'},404);}
-    }else if(url.pathname.endsWith('feed.xml'))response=rssResponse(view,url.pathname.startsWith('/zh/')?'zh':'en');
-    else response=new HTMLRewriter().on('#tracker',{element(element){element.setInnerContent(renderTracker(view,url.pathname==='/zh/'?'zh':'en'),{html:true});}}).transform(await env.ASSETS.fetch(request));
+    }else if(url.pathname.endsWith('feed.xml')){const lang=locales.find(code=>url.pathname===`${localeBase(code)}feed.xml`)||'en';response=rssResponse(view,lang);}
+    else {const lang=locales.find(code=>url.pathname===localeBase(code))||'en';response=new HTMLRewriter().on('#tracker',{element(element){element.setInnerContent(renderTracker(view,lang),{html:true});}}).transform(await env.ASSETS.fetch(request));}
     response=new Response(response.body,response);
     Object.entries(url.pathname.startsWith('/api/')?apiHeaders:securityHeaders).forEach(([key,value])=>response.headers.set(key,value));
     if(!url.pathname.startsWith('/api/'))response.headers.set('Cache-Control','public, max-age=30');

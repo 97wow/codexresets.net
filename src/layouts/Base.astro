@@ -1,13 +1,17 @@
 ---
 import copy from '../data/copy.json';
+import {localeBase,localeInfo,localePath,locales} from '../lib/i18n.js';
 import '../styles/site.css';
 const { lang = 'en', title, description, alternate = '/', type = 'website', jsonLd, noindex = false } = Astro.props;
 const t = copy[lang as keyof typeof copy];
-const base = lang === 'zh' ? '/zh/' : '/';
+const base = localeBase(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const suffix=Astro.url.pathname.startsWith(base)?Astro.url.pathname.slice(base.length):Astro.url.pathname.replace(/^\//,'');
+const themeLabel=lang==='zh'?'切换明暗模式':lang==='zh-Hant'?'切換明暗模式':lang==='ja'?'表示テーマを切り替える':lang==='ko'?'화면 테마 전환':'Toggle color theme';
+const navLabel=lang==='zh'?'主导航':lang==='zh-Hant'?'主導覽':lang==='ja'?'メインナビゲーション':lang==='ko'?'주요 탐색':'Main navigation';
 ---
 <!doctype html>
-<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+<html lang={localeInfo[lang]?.html||'en'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,9 +21,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     {noindex && <meta name="robots" content="noindex, follow" />}
     {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang={lang === 'zh' ? 'zh-CN' : 'en'} href={canonical} />
-    <link rel="alternate" hreflang={lang === 'zh' ? 'en' : 'zh-CN'} href={new URL(alternate, Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={lang === 'zh' ? new URL(alternate, Astro.site) : canonical} />
+    {locales.map(code=><link rel="alternate" hreflang={localeInfo[code].html} href={new URL(localePath(code,suffix),Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('en',suffix), Astro.site)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Codex Resets" href={`${base}feed.xml`} />
     <meta property="og:type" content={type} />
@@ -27,8 +30,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description || t.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Codex Resets" />
-    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
-    <meta property="og:locale:alternate" content={lang === 'zh' ? 'en_US' : 'zh_CN'} />
+    <meta property="og:locale" content={(localeInfo[lang]?.html||'en').replace('-','_')} />
     <meta property="og:image" content={new URL('/og-card.png', Astro.site)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -37,19 +39,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={description || t.description} />
     <meta name="twitter:image" content={new URL('/og-card.png', Astro.site)} />
     {type === 'article' && <meta property="article:published_time" content={jsonLd?.datePublished} />}
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd || { '@context':'https://schema.org','@type':'WebSite',name:'Codex Resets',url:'https://codexresets.net/',description:t.description,inLanguage:lang === 'zh' ? 'zh-CN' : 'en' }).replace(/</g,'\\u003c')}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd || { '@context':'https://schema.org','@type':'WebSite',name:'Codex Resets',url:'https://codexresets.net/',description:t.description,inLanguage:localeInfo[lang]?.html||'en' }).replace(/</g,'\\u003c')}></script>
+    <script is:inline>try{const saved=localStorage.getItem('codex-resets-theme');document.documentElement.dataset.theme=saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
   </head>
   <body>
     <a class="skip" href="#main">{t.skip}</a>
     <header class="site-header wrap">
       <a class="brand" href={base} aria-label="Codex Resets"><span class="brand-icon" aria-hidden="true">↻</span><span>codex<span class="brand-light">resets</span><small>.net</small></span></a>
-      <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
+      <nav aria-label={navLabel}>
         <a href={`${base}#posts`}>{t.xNav}</a><a href={`${base}#calendar`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
       </nav>
       <a class="api-shortcut" href="/api/">API</a>
-      <a class="language" href={alternate} lang={lang === 'zh' ? 'en' : 'zh-CN'}>{lang === 'zh' ? 'English' : '中文'} <span aria-hidden="true">⌄</span></a>
+      <button class="theme-toggle" type="button" aria-label={themeLabel} title={themeLabel}><span class="theme-sun" aria-hidden="true">☀</span><span class="theme-moon" aria-hidden="true">☾</span></button>
+      <details class="language-menu"><summary>{localeInfo[lang]?.label||'English'} <span aria-hidden="true">⌄</span></summary><div>{locales.map(code=><a href={localePath(code,suffix)} lang={localeInfo[code].html} aria-current={code===lang?'page':undefined}>{localeInfo[code].label}</a>)}</div></details>
     </header>
     <main id="main"><slot /></main>
     <footer class="wrap site-footer"><div class="footer-top"><a class="brand" href={base}><span class="brand-icon small" aria-hidden="true">↻</span>codexresets.net</a><a href={`${base}rss/`}>{t.rss} ↗</a></div><p>{t.footer}</p><p>{t.privacy}</p></footer>
   </body>
 </html>
+<script>
+  const button=document.querySelector<HTMLButtonElement>('.theme-toggle');
+  const apply=(value:string)=>{document.documentElement.dataset.theme=value;try{localStorage.setItem('codex-resets-theme',value)}catch{}};
+  button?.addEventListener('click',()=>apply(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+  const scheme=matchMedia('(prefers-color-scheme: dark)');scheme.addEventListener?.('change',event=>{try{if(!localStorage.getItem('codex-resets-theme'))document.documentElement.dataset.theme=event.matches?'dark':'light'}catch{}});
+  document.addEventListener('click',event=>{const menu=document.querySelector<HTMLDetailsElement>('.language-menu');if(menu?.open&&!menu.contains(event.target as Node))menu.open=false;});
+</script>

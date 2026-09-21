@@ -1,8 +1,10 @@
 import {AwsClient} from 'aws4fetch';
+import {localizedSummary} from './i18n.js';
 
 const encoder=new TextEncoder();
 const eventStates=new Set(['signal','announced','rollout','completed','compensation']);
-const langOf=value=>value==='zh'?'zh':'en';
+const supportedLanguages=new Set(['en','zh','zh-Hant','ja','ko']);
+const langOf=value=>supportedLanguages.has(value)?value:'en';
 const bytesToHex=bytes=>[...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('');
 const randomToken=(length=24)=>{const bytes=new Uint8Array(length);crypto.getRandomValues(bytes);return bytesToHex(bytes);};
 const digest=async value=>bytesToHex(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(value))));
@@ -29,7 +31,13 @@ async function rateLimit(env,request,scope,limit){
   if(count>=limit)throw new NotifyError('rate_limited',429);
   await env.RESETS.put(key,String(count+1),{expirationTtl:7200});
 }
-function emailWords(lang){return lang==='zh'?{confirmSubject:'确认 Codex Resets 邮件提醒',confirmTitle:'确认邮件提醒',confirmText:'点击下面的按钮确认订阅。确认后，出现新的重置信号、预告或完成消息时，我们会发邮件提醒你。',confirmAction:'确认订阅',alertSubject:'Codex 有新的重置动态',alertTitle:'新的 Codex 重置动态',source:'查看 X 原帖',unsubscribe:'取消邮件提醒'}:{confirmSubject:'Confirm your Codex Resets alerts',confirmTitle:'Confirm email alerts',confirmText:'Confirm your subscription below. We will email you when a new reset signal, announcement, rollout or completion update appears.',confirmAction:'Confirm alerts',alertSubject:'New Codex reset update',alertTitle:'New Codex reset update',source:'Open the X post',unsubscribe:'Unsubscribe'};}
+function emailWords(lang){return ({
+  zh:{confirmSubject:'确认 Codex Resets 邮件提醒',confirmTitle:'确认邮件提醒',confirmText:'点击下面的按钮确认订阅。确认后，出现新的重置信号、预告或完成消息时，我们会发邮件提醒你。',confirmAction:'确认订阅',alertSubject:'Codex 有新的重置动态',alertTitle:'新的 Codex 重置动态',source:'查看 X 原帖',unsubscribe:'取消邮件提醒'},
+  'zh-Hant':{confirmSubject:'確認 Codex Resets 郵件提醒',confirmTitle:'確認郵件提醒',confirmText:'點擊下方按鈕確認訂閱。出現新的重置信號、預告、發放進度或完成消息時，我們會寄信提醒你。',confirmAction:'確認訂閱',alertSubject:'Codex 有新的重置動態',alertTitle:'新的 Codex 重置動態',source:'查看 X 原文',unsubscribe:'取消郵件提醒'},
+  ja:{confirmSubject:'Codex Resets メール通知を確認',confirmTitle:'メール通知を確認',confirmText:'下のボタンで購読を確認してください。新しいリセットの兆候、予告、展開状況、完了確認をメールでお知らせします。',confirmAction:'通知を確認',alertSubject:'Codexリセットの新しい更新',alertTitle:'Codexリセットの新しい更新',source:'Xの原文を開く',unsubscribe:'メール通知を解除'},
+  ko:{confirmSubject:'Codex Resets 이메일 알림 확인',confirmTitle:'이메일 알림 확인',confirmText:'아래 버튼을 눌러 구독을 확인하세요. 새로운 재설정 신호, 예고, 배포 진행 또는 완료 소식이 있으면 이메일로 알려드립니다.',confirmAction:'알림 확인',alertSubject:'새로운 Codex 재설정 소식',alertTitle:'새로운 Codex 재설정 소식',source:'X 원문 열기',unsubscribe:'이메일 알림 해지'},
+  en:{confirmSubject:'Confirm your Codex Resets alerts',confirmTitle:'Confirm email alerts',confirmText:'Confirm your subscription below. We will email you when a new reset signal, announcement, rollout or completion update appears.',confirmAction:'Confirm alerts',alertSubject:'New Codex reset update',alertTitle:'New Codex reset update',source:'Open the X post',unsubscribe:'Unsubscribe'}
+})[lang]||({confirmSubject:'Confirm your Codex Resets alerts',confirmTitle:'Confirm email alerts',confirmText:'Confirm your subscription below. We will email you when a new reset update appears.',confirmAction:'Confirm alerts',alertSubject:'New Codex reset update',alertTitle:'New Codex reset update',source:'Open the X post',unsubscribe:'Unsubscribe'});}
 async function sendEmail(env,{to,subject,text,html}){
   if(!env.SES_ACCESS_KEY_ID||!env.SES_SECRET_ACCESS_KEY||!env.EMAIL_FROM)throw new NotifyError('email_unavailable',503);
   const region=env.SES_REGION||'us-east-1',aws=new AwsClient({accessKeyId:env.SES_ACCESS_KEY_ID,secretAccessKey:env.SES_SECRET_ACCESS_KEY,region,service:'ses'});
@@ -82,12 +90,12 @@ export async function handleTelegramUpdate(env,request){
   if(!env.TELEGRAM_WEBHOOK_SECRET||request.headers.get('X-Telegram-Bot-Api-Secret-Token')!==env.TELEGRAM_WEBHOOK_SECRET)throw new NotifyError('forbidden',403);
   const body=await jsonBody(request),message=body.message,text=String(message?.text||''),chatId=message?.chat?.id;
   if(!chatId)return {ok:true};
-  if(text==='/stop'){const key=`notify:subscriber:telegram:${await digest(String(chatId))}`;await env.RESETS.delete(key);await telegramSend(env,chatId,'Codex Resets notifications are off.');return {ok:true};}
+  if(text==='/stop'){const key=`notify:subscriber:telegram:${await digest(String(chatId))}`,subscriber=await env.RESETS.get(key,'json'),messages={zh:'Codex Resets 提醒已关闭。','zh-Hant':'Codex Resets 提醒已關閉。',ja:'Codex Resetsの通知を解除しました。',ko:'Codex Resets 알림을 껐습니다.',en:'Codex Resets notifications are off.'};await env.RESETS.delete(key);await telegramSend(env,chatId,messages[subscriber?.lang]||messages.en);return {ok:true};}
   const match=text.match(/^\/start\s+([a-f0-9]{24})$/i);if(!match){await telegramSend(env,chatId,'Open CodexResets.net and use the Telegram button to connect alerts.');return {ok:true};}
   const pendingKey=`notify:telegram:pending:${await digest(match[1])}`,pending=await env.RESETS.get(pendingKey,'json');if(!pending){await telegramSend(env,chatId,'This connection link expired. Please create a new one on CodexResets.net.');return {ok:true};}
-  await env.RESETS.put(`notify:subscriber:telegram:${await digest(String(chatId))}`,JSON.stringify({channel:'telegram',chatId:String(chatId),lang:langOf(pending.lang),createdAt:new Date().toISOString()}));await env.RESETS.delete(pendingKey);await telegramSend(env,chatId,pending.lang==='zh'?'已开启 Codex 重置提醒。发送 /stop 可随时关闭。':'Codex reset alerts are on. Send /stop at any time to unsubscribe.');return {ok:true};
+  const confirmations={zh:'已开启 Codex 重置提醒。发送 /stop 可随时关闭。','zh-Hant':'已開啟 Codex 重置提醒。傳送 /stop 可隨時關閉。',ja:'Codexリセット通知を有効にしました。/stop でいつでも解除できます。',ko:'Codex 재설정 알림을 켰습니다. /stop으로 언제든 해지할 수 있습니다.',en:'Codex reset alerts are on. Send /stop at any time to unsubscribe.'};await env.RESETS.put(`notify:subscriber:telegram:${await digest(String(chatId))}`,JSON.stringify({channel:'telegram',chatId:String(chatId),lang:langOf(pending.lang),createdAt:new Date().toISOString()}));await env.RESETS.delete(pendingKey);await telegramSend(env,chatId,confirmations[pending.lang]||confirmations.en);return {ok:true};
 }
-const eventText=(event,lang)=>event.summary?.[lang]||event.text;
+const eventText=(event,lang)=>localizedSummary(event,lang);
 async function deliver(env,subscriber,event,subscriberKey){
   const lang=langOf(subscriber.lang),summary=eventText(event,lang),source=event.source,origin='https://codexresets.net';
   if(subscriber.channel==='email'){
@@ -96,7 +104,7 @@ async function deliver(env,subscriber,event,subscriberKey){
     await sendEmail(env,{to:subscriber.email,subject:words.alertSubject,text:`${summary}\n\n${source}\n\n${words.unsubscribe}: ${unsubscribeUrl}`,html:`<div style="font-family:system-ui,sans-serif;max-width:600px;margin:auto;padding:32px;color:#302b49"><h1 style="font-size:22px">${words.alertTitle}</h1><p style="font-size:16px;line-height:1.7">${escape(summary)}</p><p><a href="${escape(source)}" style="color:#6255c7;font-weight:700">${words.source}</a></p><p style="margin-top:32px;font-size:11px"><a href="${escape(unsubscribeUrl)}" style="color:#777">${words.unsubscribe}</a></p></div>`});
   }else if(subscriber.channel==='webhook'){
     const payload=JSON.stringify({type:'codexresets.reset_update',createdAt:new Date().toISOString(),event:{id:event.id,state:event.state,kind:event.kind,summary,announcedAt:event.announcedAt,sourceUrl:source}}),signature=await hmac(subscriber.secret,payload),response=await fetch(subscriber.url,{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'CodexResets-Webhook/1.0','X-CodexResets-Event':event.id,'X-CodexResets-Signature':`sha256=${signature}`},body:payload,redirect:'error',signal:AbortSignal.timeout(10000)});if(!response.ok)throw new NotifyError('webhook_delivery_failed',502);
-  }else if(subscriber.channel==='telegram')await telegramSend(env,subscriber.chatId,`${lang==='zh'?'Codex 重置动态':'Codex reset update'}\n\n${summary}\n\n${source}`);
+  }else if(subscriber.channel==='telegram'){const titles={zh:'Codex 重置动态','zh-Hant':'Codex 重置動態',ja:'Codexリセット更新',ko:'Codex 재설정 소식',en:'Codex reset update'};await telegramSend(env,subscriber.chatId,`${titles[lang]||titles.en}\n\n${summary}\n\n${source}`);}
 }
 export function changedEvents(previous,next){const before=new Map((previous.events||[]).map(event=>[event.id,event.state]));return (next.events||[]).filter(event=>eventStates.has(event.state)&&before.get(event.id)!==event.state);}
 export async function dispatchNotifications(env,previous,next){
