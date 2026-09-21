@@ -10,6 +10,7 @@ const safeEvent=event=>({
   announcedAt:String(event.announcedAt||''),
   sourceUrl:safeSource(event.source),
   relatedPostIds:Array.isArray(event.relatedPostIds)?event.relatedPostIds.map(String):[],
+  timingText:String(event.timingText||''),
   review:event.review==='human_reviewed'?'human_reviewed':'rule_classified'
 });
 export function apiDocument(data){

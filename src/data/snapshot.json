@@ -3,6 +3,28 @@
   "source": "https://x.com/thsottiaux",
   "posts": [
     {
+      "id": "2101920928070562029",
+      "authorId": "1953337039510003712",
+      "text": "3am on a tuesday",
+      "createdAt": "2026-09-21T06:26:15.711Z",
+      "url": "https://x.com/thsottiaux/status/2101920928070562029",
+      "references": [],
+      "edits": [
+        "2101920928070562029"
+      ],
+      "collectedAt": "2026-09-21T15:30:00.000Z",
+      "method": "browser_review",
+      "excerpt": true,
+      "editorial": {
+        "state": "signal",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 回复“周二凌晨 3 点”。这可能是重置时间提示，但原文没有直接提到重置，也没有注明时区，因此尚未确认；若按美国太平洋夏令时推测，对应台北/北京时间周二 18:00。",
+          "en": "Tibo replied “3am on a Tuesday.” This may hint at reset timing, but the post does not explicitly mention a reset or specify a timezone. If interpreted as Pacific Daylight Time, it would be Tuesday 18:00 in Taipei/Beijing."
+        }
+      }
+    },
+    {
       "id": "2098685367058612394",
       "authorId": "1953337039510003712",
       "text": "Reset all propagated. Sweet dreams.",
@@ -125,6 +147,23 @@
   ],
   "events": [
     {
+      "id": "2101920928070562029",
+      "state": "signal",
+      "kind": "regular",
+      "text": "3am on a tuesday",
+      "announcedAt": "2026-09-21T06:26:15.711Z",
+      "source": "https://x.com/thsottiaux/status/2101920928070562029",
+      "relatedPostIds": [],
+      "timingText": "Possibly Tuesday at 3:00 AM; timezone not specified. If PDT, Tuesday 18:00 in Taipei/Beijing.",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "excerpt": true,
+      "summary": {
+        "zh": "Tibo 回复“周二凌晨 3 点”。这可能是重置时间提示，但原文没有直接提到重置，也没有注明时区，因此尚未确认；若按美国太平洋夏令时推测，对应台北/北京时间周二 18:00。",
+        "en": "Tibo replied “3am on a Tuesday.” This may hint at reset timing, but the post does not explicitly mention a reset or specify a timezone. If interpreted as Pacific Daylight Time, it would be Tuesday 18:00 in Taipei/Beijing."
+      }
+    },
+    {
       "id": "2098685367058612394",
       "state": "completed",
       "kind": "regular",
@@ -216,7 +255,7 @@
   ],
   "cursor": null,
   "lastSuccessAt": null,
-  "lastReviewAt": "2026-09-17T05:07:24.206070+00:00",
+  "lastReviewAt": "2026-09-21T15:30:00.000Z",
   "lastAttemptAt": "2026-09-17T05:07:24.206070+00:00",
   "collectorState": "authentication_required",
   "error": "invalid_credentials",
