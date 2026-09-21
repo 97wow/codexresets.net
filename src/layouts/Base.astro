@@ -42,7 +42,7 @@ const navLabel=navLabels[lang]||navLabels.en;
     <meta name="twitter:image" content={new URL('/og-card.png', Astro.site)} />
     {type === 'article' && <meta property="article:published_time" content={jsonLd?.datePublished} />}
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd || { '@context':'https://schema.org','@type':'WebSite',name:'Codex Resets',url:'https://codexresets.net/',description:t.description,inLanguage:localeInfo[lang]?.html||'en' }).replace(/</g,'\\u003c')}></script>
-    <script is:inline>!function(){const system=()=>matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';let saved='';try{saved=localStorage.getItem('codex-resets-theme')||''}catch{}document.documentElement.dataset.theme=saved||system();window.toggleCodexTheme=()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('codex-resets-theme',next)}catch{}};matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',event=>{try{if(!localStorage.getItem('codex-resets-theme'))document.documentElement.dataset.theme=event.matches?'dark':'light'}catch{}})}()</script>
+    <script is:inline src="/theme.js"></script>
   </head>
   <body>
     <a class="skip" href="#main">{t.skip}</a>
@@ -52,7 +52,7 @@ const navLabel=navLabels[lang]||navLabels.en;
         <a href={`${base}#posts`}>{t.xNav}</a><a href={`${base}#calendar`}>{t.archive}</a><a href={`${base}#guide`}>{t.guide}</a><a href="/api/">API</a>
       </nav>
       <a class="api-shortcut" href="/api/">API</a>
-      <button class="theme-toggle" type="button" aria-label={themeLabel} title={themeLabel} onclick="window.toggleCodexTheme()"><svg class="theme-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"/></svg><svg class="theme-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.3 15.2A8.6 8.6 0 0 1 8.8 3.7 8.7 8.7 0 1 0 20.3 15.2Z"/></svg></button>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label={themeLabel} title={themeLabel}><svg class="theme-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"/></svg><svg class="theme-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20.3 15.2A8.6 8.6 0 0 1 8.8 3.7 8.7 8.7 0 1 0 20.3 15.2Z"/></svg></button>
       <details class="language-menu"><summary>{localeInfo[lang]?.label||'English'} <span aria-hidden="true">⌄</span></summary><div>{locales.map(code=><a href={localePath(code,suffix)} lang={localeInfo[code].html} aria-current={code===lang?'page':undefined}>{localeInfo[code].label}</a>)}</div></details>
     </header>
     <main id="main"><slot /></main>
