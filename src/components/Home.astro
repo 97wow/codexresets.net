@@ -54,7 +54,7 @@ const t = copy[l];
     button.dataset.enabled=String(enabled);button.textContent=enabled?t.notifyOn:t.browserAction;
     note.textContent=Notification.permission==='denied'?t.notifyDenied:(enabled?t.notifyOnNote:t.channelBrowserDesc);
   }
-  function notificationDialog(){return root.querySelector<HTMLDialogElement>('.notify-dialog');}
+  function notificationCenter(){return root.querySelector<HTMLElement>('.notify-center');}
   function notificationResult(message:string,secret=''){
     const result=root.querySelector<HTMLElement>('.notify-result');if(!result)return;
     result.replaceChildren();result.textContent=message;
@@ -107,12 +107,10 @@ const t = copy[l];
       if(lastPayload!==identity) {
         const initialLoad=!lastPayload,knownIds=new Set(Array.from(root.querySelectorAll<HTMLElement>('[data-event-id]')).map(row=>row.dataset.eventId||''));
         const openIds=Array.from(root.querySelectorAll<HTMLDetailsElement>('details[open]')).map(d=>d.id);
-        const notifyWasOpen=Boolean(notificationDialog()?.open);
         root.innerHTML=renderTracker(payload,lang);
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
         const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['signal','announced','rollout','completed','compensation'].includes(item.state));
         if(!initialLoad&&newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
-        if(notifyWasOpen){const dialog=notificationDialog();if(dialog)typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');}
         lastPayload=identity;applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity(false);
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
@@ -127,8 +125,7 @@ const t = copy[l];
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
     if(target.matches('.beg-button'))void begForReset();
-    if(target.matches('.notify-open')){const dialog=notificationDialog();if(dialog){typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');void loadNotifyConfig();}}
-    if(target.matches('.notify-close'))notificationDialog()?.close();
+    if(target.matches('.notify-open'))void loadNotifyConfig();
     if(target.matches('.telegram-connect'))void (async()=>{if(notificationBusy)return;notificationBusy=true;target.setAttribute('aria-busy','true');try{const response=await fetch('/api/notify/telegram/connect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang}),signal:AbortSignal.timeout(8000)});const data=await response.json();if(!response.ok)throw new Error(data.error);location.href=data.url;}catch{notificationResult(t.notifyError);}finally{notificationBusy=false;target.removeAttribute('aria-busy');}})();
     if(target.matches('.post-show-more')){postsExpanded=!postsExpanded;applyPosts();}
     if(target.matches('.notify-toggle'))void (async()=>{if(!('Notification' in window))return;const permission=await Notification.requestPermission();if(permission==='granted')localStorage.setItem(notificationKey,'on');else localStorage.removeItem(notificationKey);updateNotificationButton();})();
@@ -150,7 +147,7 @@ const t = copy[l];
   const repositionTooltip=()=>{const target=tooltipTarget;if(target)requestAnimationFrame(()=>{if(target===tooltipTarget)showTooltip(target);});};
   window.addEventListener('scroll',repositionTooltip,{passive:true});window.addEventListener('resize',repositionTooltip,{passive:true});
   applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity();void refresh();
-  const notifyState=new URLSearchParams(location.search).get('notify');if(notifyState){const dialog=notificationDialog();if(dialog){typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');notificationResult(notifyState==='email-confirmed'?t.emailConfirmed:t.notifyUnsubscribed);history.replaceState({},'',location.pathname+location.hash);}}
+  const notifyState=new URLSearchParams(location.search).get('notify');if(notifyState){notificationResult(notifyState==='email-confirmed'?t.emailConfirmed:t.notifyUnsubscribed);notificationCenter()?.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState({},'',location.pathname+'#alerts');}
   setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 </script>

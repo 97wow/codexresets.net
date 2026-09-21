@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+const { lang = 'en' } = Astro.props;
+const zh = lang === 'zh';
+const base = zh ? '/zh/' : '/';
+const feedPath = `${base}feed.xml`;
+const feedUrl = new URL(feedPath, Astro.site).href;
+const words = zh ? {
+  title: '用 RSS 安静地关注 Codex 重置',
+  description: '不注册账号，不打开通知权限。把订阅地址交给你喜欢的阅读器，新的重置信号、预告和确认会自动出现。',
+  badge: '免费 · 无追踪 · 随时取消',
+  copy: '复制订阅地址', copied: '已复制', open: '查看原始 Feed', back: '返回重置状态',
+  how: '三步完成订阅',
+  steps: [
+    ['复制地址', '点击上方按钮，复制 Codex Resets 的 RSS 地址。'],
+    ['打开阅读器', '使用 Feedly、Inoreader、NetNewsWire、Reeder 或其他 RSS 阅读器。'],
+    ['添加订阅', '粘贴地址并确认，之后的新动态会自动进入你的时间线。']
+  ],
+  sends: '你会收到什么', sendsText: '新的重置信号、明确预告、发放进展和完成确认。每条记录都保留 Tibo 的 X 原文链接，方便核对来源。',
+  why: '为什么选择 RSS', whyText: 'RSS 不需要邮箱、Telegram 或浏览器权限。阅读频率由你决定，也不会产生额外通知噪音。'
+} : {
+  title: 'Follow Codex resets quietly with RSS',
+  description: 'No account and no notification permission. Add the feed to your favorite reader and new signals, announcements and confirmed resets will appear automatically.',
+  badge: 'Free · No tracking · Leave anytime',
+  copy: 'Copy feed address', copied: 'Copied', open: 'View raw feed', back: 'Back to reset status',
+  how: 'Subscribe in three steps',
+  steps: [
+    ['Copy the address', 'Use the button above to copy the Codex Resets RSS URL.'],
+    ['Open a reader', 'Use Feedly, Inoreader, NetNewsWire, Reeder or any RSS reader you prefer.'],
+    ['Add the feed', 'Paste the address and confirm. New updates will appear in your timeline.']
+  ],
+  sends: 'What arrives in the feed', sendsText: 'New reset signals, clear announcements, rollout progress and completion confirmations. Every item keeps the original X link from Tibo for provenance.',
+  why: 'Why RSS', whyText: 'RSS needs no email, Telegram account or browser permission. You choose when to read it, without extra notification noise.'
+};
+---
+<Base lang={lang} title={`${words.title} | Codex Resets`} description={words.description} alternate={zh ? '/rss/' : '/zh/rss/'}>
+  <div class="rss-page wrap">
+    <section class="rss-hero">
+      <div class="rss-orbit" aria-hidden="true"><span>◔</span><i></i><b></b></div>
+      <div class="rss-hero-copy">
+        <span class="rss-badge">{words.badge}</span>
+        <h1>{words.title}</h1>
+        <p>{words.description}</p>
+        <div class="feed-address"><code>{feedUrl}</code><button class="copy-feed" type="button" data-copy={feedUrl} data-default={words.copy} data-copied={words.copied}>{words.copy}</button></div>
+        <div class="rss-actions"><a class="rss-primary" href={feedPath} target="_blank">{words.open} ↗</a><a href={base}>{words.back} →</a></div>
+      </div>
+    </section>
+    <section class="rss-steps" aria-labelledby="rss-how"><h2 id="rss-how">{words.how}</h2><div>{words.steps.map(([title,text],index)=><article><span>{index+1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+    <section class="rss-notes"><article><span aria-hidden="true">✦</span><div><h2>{words.sends}</h2><p>{words.sendsText}</p></div></article><article><span aria-hidden="true">☁</span><div><h2>{words.why}</h2><p>{words.whyText}</p></div></article></section>
+  </div>
+</Base>
+<script>
+  document.querySelector<HTMLButtonElement>('.copy-feed')?.addEventListener('click',async event=>{
+    const button=event.currentTarget as HTMLButtonElement;
+    try{await navigator.clipboard.writeText(button.dataset.copy||'');button.textContent=button.dataset.copied||'Copied';setTimeout(()=>button.textContent=button.dataset.default||'Copy',1800);}catch{window.prompt('',button.dataset.copy||'');}
+  });
+</script>
