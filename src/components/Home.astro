@@ -19,7 +19,8 @@ const t = copy[l];
   const root = document.querySelector<HTMLElement>('#tracker')!;
   const lang = document.querySelector<HTMLElement>('[data-language]')!.dataset.language as 'en' | 'zh';
   const t = copy[lang];
-  let expanded = false, postsExpanded = false, filter = 'all', busy = false, communityBusy = false, lastPayload = '';
+  let expanded = false, postsExpanded = false, filter = 'all', busy = false, communityBusy = false, notificationBusy = false, lastPayload = '';
+  let floatingTooltip:HTMLElement|null=null,tooltipTarget:HTMLElement|null=null;
   const notificationKey = 'codex-resets-browser-alerts';
   const visitKey = 'codex-resets-visit-v1';
   const flagEmoji=(country:string)=>/^[A-Z]{2}$/.test(country)&&country!=='XX'?[...country].map(char=>String.fromCodePoint(127397+char.charCodeAt(0))).join(''):'🌍';
@@ -45,14 +46,36 @@ const t = copy[l];
   }
   function updateNotificationButton() {
     const button = root.querySelector<HTMLButtonElement>('.notify-toggle');
-    const note = root.querySelector<HTMLElement>('.notify-note');
+    const note = root.querySelector<HTMLElement>('.browser-channel p');
     if (!button || !note) return;
     if (!('Notification' in window)) { button.disabled=true; button.textContent=t.notifyUnsupported; note.textContent=t.notifyUnsupportedNote; return; }
     if(Notification.permission==='denied'){button.disabled=true;button.textContent=t.notifyBlocked;note.textContent=t.notifyDenied;return;}
     const enabled=localStorage.getItem(notificationKey)==='on'&&Notification.permission==='granted';
-    button.dataset.enabled=String(enabled);button.textContent=enabled?t.notifyOn:t.notifyAction;
-    note.textContent=Notification.permission==='denied'?t.notifyDenied:(enabled?t.notifyOnNote:t.notifyNote);
+    button.dataset.enabled=String(enabled);button.textContent=enabled?t.notifyOn:t.browserAction;
+    note.textContent=Notification.permission==='denied'?t.notifyDenied:(enabled?t.notifyOnNote:t.channelBrowserDesc);
   }
+  function notificationDialog(){return root.querySelector<HTMLDialogElement>('.notify-dialog');}
+  function notificationResult(message:string,secret=''){
+    const result=root.querySelector<HTMLElement>('.notify-result');if(!result)return;
+    result.replaceChildren();result.textContent=message;
+    if(secret){const code=document.createElement('code');code.textContent=secret;result.append(document.createElement('br'),code);}
+  }
+  async function loadNotifyConfig(){
+    try{const response=await fetch('/api/notify/config',{signal:AbortSignal.timeout(8000)});if(!response.ok)return;const config=await response.json();
+      const email=root.querySelector<HTMLFormElement>('.email-form'),telegram=root.querySelector<HTMLButtonElement>('.telegram-connect'),unavailable=root.querySelector<HTMLElement>('.telegram-unavailable');
+      if(email&&!config.channels?.email){email.querySelectorAll<HTMLInputElement|HTMLButtonElement>('input,button').forEach(item=>item.disabled=true);}
+      if(telegram){telegram.hidden=!config.channels?.telegram?.enabled;telegram.disabled=!config.channels?.telegram?.enabled;}if(unavailable)unavailable.hidden=Boolean(config.channels?.telegram?.enabled);
+    }catch{/* Other alert channels remain usable. */}
+  }
+  function showTooltip(target:HTMLElement){
+    const source=target.querySelector<HTMLElement>('.calendar-tooltip');if(!source)return;tooltipTarget=target;floatingTooltip?.remove();
+    floatingTooltip=source.cloneNode(true) as HTMLElement;floatingTooltip.removeAttribute('id');floatingTooltip.className='calendar-tooltip-floating';document.body.append(floatingTooltip);
+    const anchor=target.getBoundingClientRect(),tip=floatingTooltip.getBoundingClientRect(),margin=10;
+    const left=Math.min(window.innerWidth-tip.width-margin,Math.max(margin,anchor.left+anchor.width/2-tip.width/2));
+    const above=anchor.top-tip.height-12,top=above>margin?above:anchor.bottom+12;
+    floatingTooltip.dataset.placement=above>margin?'top':'bottom';floatingTooltip.style.left=`${left}px`;floatingTooltip.style.top=`${top}px`;
+  }
+  function hideTooltip(){floatingTooltip?.remove();floatingTooltip=null;tooltipTarget=null;}
   function applyFilters() {
     const rows = Array.from(root.querySelectorAll<HTMLElement>('.message-row'));
     if(!rows.length)return;
@@ -80,15 +103,17 @@ const t = copy[l];
       if(!response.ok) throw new Error('Unavailable');
       const payload=await response.json();
       if(payload.version!==1 || !Array.isArray(payload.events)) throw new Error('Invalid response');
-      const identity=JSON.stringify(payload);
+      const identity=JSON.stringify({events:payload.events,posts:payload.posts,collectorState:payload.collectorState});
       if(lastPayload!==identity) {
-        const knownIds=new Set(Array.from(root.querySelectorAll<HTMLElement>('.message-row')).map(row=>row.id.replace('event-','')));
+        const initialLoad=!lastPayload,knownIds=new Set(Array.from(root.querySelectorAll<HTMLElement>('[data-event-id]')).map(row=>row.dataset.eventId||''));
         const openIds=Array.from(root.querySelectorAll<HTMLDetailsElement>('details[open]')).map(d=>d.id);
+        const notifyWasOpen=Boolean(notificationDialog()?.open);
         root.innerHTML=renderTracker(payload,lang);
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
-        const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['announced','rollout','completed','compensation'].includes(item.state));
-        if(newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
-        lastPayload=identity;applyFilters();applyPosts();updateNotificationButton();void loadCommunity(false);
+        const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['signal','announced','rollout','completed','compensation'].includes(item.state));
+        if(!initialLoad&&newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
+        if(notifyWasOpen){const dialog=notificationDialog();if(dialog)typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');}
+        lastPayload=identity;applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity(false);
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
       time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.textContent=dateLabel(time.dateTime,lang);
@@ -102,13 +127,30 @@ const t = copy[l];
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
     if(target.matches('.beg-button'))void begForReset();
+    if(target.matches('.notify-open')){const dialog=notificationDialog();if(dialog){typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');void loadNotifyConfig();}}
+    if(target.matches('.notify-close'))notificationDialog()?.close();
+    if(target.matches('.telegram-connect'))void (async()=>{if(notificationBusy)return;notificationBusy=true;target.setAttribute('aria-busy','true');try{const response=await fetch('/api/notify/telegram/connect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lang}),signal:AbortSignal.timeout(8000)});const data=await response.json();if(!response.ok)throw new Error(data.error);location.href=data.url;}catch{notificationResult(t.notifyError);}finally{notificationBusy=false;target.removeAttribute('aria-busy');}})();
     if(target.matches('.post-show-more')){postsExpanded=!postsExpanded;applyPosts();}
     if(target.matches('.notify-toggle'))void (async()=>{if(!('Notification' in window))return;const permission=await Notification.requestPermission();if(permission==='granted')localStorage.setItem(notificationKey,'on');else localStorage.removeItem(notificationKey);updateNotificationButton();})();
     if(target.dataset.filter){filter=target.dataset.filter;expanded=false;applyFilters();}
     if(target.matches('.show-more')){expanded=!expanded;applyFilters();}
     if(target.matches('.day')){filter='all';expanded=true;applyFilters();}
   });
-  applyFilters();applyPosts();updateNotificationButton();void loadCommunity();void refresh();
+  root.addEventListener('submit',event=>{const form=event.target as HTMLFormElement;if(!form.matches('.notify-form'))return;event.preventDefault();void (async()=>{
+    if(notificationBusy)return;notificationBusy=true;const button=form.querySelector<HTMLButtonElement>('button[type=submit]');if(button)button.disabled=true;notificationResult('');
+    try{const isEmail=form.matches('.email-form'),input=form.querySelector<HTMLInputElement>('input')!,value=input.value.trim();if(isEmail&&!input.validity.valid){notificationResult(t.emailInvalid);return;}
+      const response=await fetch(isEmail?'/api/notify/email':'/api/notify/webhook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(isEmail?{email:value,lang}:{url:value,lang}),signal:AbortSignal.timeout(12000)}),data=await response.json();
+      if(!response.ok){notificationResult(data.error==='rate_limited'?t.notifyRateLimited:t.notifyError);return;}notificationResult(isEmail?t.emailPending:t.webhookSaved,data.secret||'');if(isEmail)form.reset();
+    }catch{notificationResult(t.notifyError);}finally{notificationBusy=false;if(button)button.disabled=false;}
+  })});
+  root.addEventListener('mouseover',event=>{const day=(event.target as HTMLElement).closest<HTMLElement>('.reset-day');if(day&&!day.contains(event.relatedTarget as Node|null))showTooltip(day);});
+  root.addEventListener('mouseout',event=>{const day=(event.target as HTMLElement).closest<HTMLElement>('.reset-day');if(day&&!day.contains(event.relatedTarget as Node|null))hideTooltip();});
+  root.addEventListener('focusin',event=>{const day=(event.target as HTMLElement).closest<HTMLElement>('.reset-day');if(day)showTooltip(day);});
+  root.addEventListener('focusout',event=>{if((event.target as HTMLElement).closest('.reset-day'))hideTooltip();});
+  const repositionTooltip=()=>{const target=tooltipTarget;if(target)requestAnimationFrame(()=>{if(target===tooltipTarget)showTooltip(target);});};
+  window.addEventListener('scroll',repositionTooltip,{passive:true});window.addEventListener('resize',repositionTooltip,{passive:true});
+  applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity();void refresh();
+  const notifyState=new URLSearchParams(location.search).get('notify');if(notifyState){const dialog=notificationDialog();if(dialog){typeof dialog.showModal==='function'?dialog.showModal():dialog.setAttribute('open','');notificationResult(notifyState==='email-confirmed'?t.emailConfirmed:t.notifyUnsubscribed);history.replaceState({},'',location.pathname+location.hash);}}
   setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
 </script>

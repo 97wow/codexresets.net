@@ -5,6 +5,7 @@ import {apiDocument,openAPI} from '../src/lib/api.js';
 import {renderTracker} from '../src/lib/tracker.js';
 import {rssResponse} from '../src/lib/rss.js';
 import {communityStats,recordBeg,recordVisit} from '../src/lib/community.js';
+import {NotifyError,confirmEmailSubscription,dispatchNotifications,handleTelegramUpdate,requestEmailSubscription,requestTelegramConnection,requestWebhookSubscription,telegramConfig,unsubscribe} from '../src/lib/notifications.js';
 
 export async function synchronize(env,fetcher=fetch){
   const previous=await env.RESETS.get('state','json')||fallback;
@@ -14,6 +15,7 @@ export async function synchronize(env,fetcher=fetch){
     if(!next)next=await collectXPublic(previous,env.BROWSER);
     await env.RESETS.put('state',JSON.stringify(next));
     await env.RESETS.put('health',JSON.stringify({state:'connected',method:next.collectorMethod||'x_api',attemptedAt:next.lastAttemptAt,officialApi:officialError instanceof XError?officialError.code:undefined}));
+    try{await dispatchNotifications(env,previous,next);}catch(error){console.error('notification_dispatch_failed',{code:error?.code||'unknown'});}
     return next;
   }catch(error){
     const sourceError=error instanceof XError&&error.code!=='browser_unavailable'?error:officialError||error;
@@ -27,9 +29,12 @@ export function publicState(data,health){
   return {version:1,events:data.events,posts,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
-const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, OPTIONS','Cache-Control':'public, max-age=60, s-maxage=300'};
+const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'public, max-age=60, s-maxage=300'};
 const json=(body,status=200)=>Response.json(body,{status,headers:apiHeaders});
 const allowedMutation=request=>{const origin=request.headers.get('Origin');return !origin||origin===new URL(request.url).origin;};
+const notifyResponse=(body,status=200)=>{const response=json(body,status);response.headers.set('Cache-Control','no-store');return response;};
+const confirmationPage=token=>{const safe=/^[a-f0-9]{32,128}$/i.test(token||'')?token:'';return new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Confirm Codex Resets alerts</title><style>body{font-family:system-ui,sans-serif;background:#f5f3ff;color:#302b49;display:grid;place-items:center;min-height:100vh;margin:0}.card{width:min(460px,calc(100% - 40px));background:#fff;border-radius:22px;padding:30px;box-shadow:0 20px 60px #554a9425}h1{font-size:24px}p{line-height:1.7;color:#6f6980}button{border:0;border-radius:11px;padding:12px 18px;background:#6255c7;color:#fff;font-weight:700;cursor:pointer}</style><main class="card"><h1>Confirm reset alerts</h1><p>确认开启 Codex Resets 邮件提醒。邮件安全扫描器访问此页面不会自动完成订阅。</p><form method="post" action="/api/notify/confirm"><input type="hidden" name="token" value="${safe}"><button type="submit">Confirm · 确认订阅</button></form></main>`,{status:safe?200:400,headers:{...securityHeaders,'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"}});};
+const unsubscribePage=token=>{const safe=/^[a-f0-9]{32,128}$/i.test(token||'')?token:'';return new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Turn off Codex Resets alerts</title><style>body{font-family:system-ui,sans-serif;background:#fff9df;color:#302b49;display:grid;place-items:center;min-height:100vh;margin:0}.card{width:min(460px,calc(100% - 40px));background:#fff;border-radius:22px;padding:30px;box-shadow:0 20px 60px #554a9425}h1{font-size:24px}p{line-height:1.7;color:#6f6980}button{border:0;border-radius:11px;padding:12px 18px;background:#6255c7;color:#fff;font-weight:700;cursor:pointer}</style><main class="card"><h1>Turn off alerts</h1><p>确认取消 Codex Resets 邮件提醒。仅打开此页面不会取消订阅。</p><form method="post" action="/api/notify/unsubscribe"><input type="hidden" name="token" value="${safe}"><button type="submit">Unsubscribe · 取消提醒</button></form></main>`,{status:safe?200:400,headers:{...securityHeaders,'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"}});};
 
 export default {
   async scheduled(_event,env,ctx){if(env.COLLECTOR_ENABLED==='true')ctx.waitUntil(synchronize(env));},
@@ -37,6 +42,22 @@ export default {
     const url=new URL(request.url);
     if(url.hostname==='www.codexresets.net'){url.hostname='codexresets.net';return Response.redirect(url,308);}
     if(url.pathname.startsWith('/api/')&&request.method==='OPTIONS')return new Response(null,{status:204,headers:apiHeaders});
+    if(url.pathname.startsWith('/api/notify/')){
+      try{
+        let result;
+        if(url.pathname==='/api/notify/config'&&request.method==='GET')result={ok:true,channels:{browser:true,email:Boolean(env.SES_ACCESS_KEY_ID&&env.SES_SECRET_ACCESS_KEY&&env.EMAIL_FROM),webhook:true,telegram:await telegramConfig(env),rss:true}};
+        else if(url.pathname==='/api/notify/email'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);result=await requestEmailSubscription(env,request,url.origin);}
+        else if(url.pathname==='/api/notify/webhook'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);result=await requestWebhookSubscription(env,request);}
+        else if(url.pathname==='/api/notify/telegram/connect'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);result=await requestTelegramConnection(env,request);}
+        else if(url.pathname==='/api/notify/telegram/update'&&request.method==='POST')result=await handleTelegramUpdate(env,request);
+        else if(url.pathname==='/api/notify/confirm'&&request.method==='GET')return confirmationPage(url.searchParams.get('token'));
+        else if(url.pathname==='/api/notify/confirm'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);const form=await request.formData();result=await confirmEmailSubscription(env,form.get('token'));return Response.redirect(`${url.origin}${result.lang==='zh'?'/zh/':'/'}?notify=email-confirmed`,303);}
+        else if(url.pathname==='/api/notify/unsubscribe'&&request.method==='GET')return unsubscribePage(url.searchParams.get('token'));
+        else if(url.pathname==='/api/notify/unsubscribe'&&request.method==='POST'){if(!allowedMutation(request))throw new NotifyError('forbidden',403);const form=await request.formData();await unsubscribe(env,form.get('token'));return Response.redirect(`${url.origin}/?notify=unsubscribed`,303);}
+        else return notifyResponse({error:'not_found'},404);
+        return notifyResponse(result);
+      }catch(error){const status=error instanceof NotifyError?error.status:500,code=error instanceof NotifyError?error.code:'notification_error';if(status>=500)console.error('notification_api_error',{path:url.pathname,code});return notifyResponse({error:code},status);}
+    }
     if(url.pathname.startsWith('/api/community/')){
       if(!['GET','POST','HEAD'].includes(request.method))return json({error:'method_not_allowed'},405);
       if(request.method==='POST'&&!allowedMutation(request))return json({error:'forbidden'},403);
