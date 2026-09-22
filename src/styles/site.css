@@ -119,6 +119,9 @@ html[data-theme=dark] .history-credit{border-color:#423d37;color:#aaa097}html[da
 @media(min-width:801px){.heatmap-board{width:100%;min-width:0}.heatmap-months{grid-template-columns:repeat(var(--heat-weeks),minmax(0,1fr));column-gap:3px}.heatmap-body{min-width:0}.heatmap-weekdays{grid-template-rows:repeat(7,12px);row-gap:3px;line-height:12px}.heatmap-grid{flex:1;min-width:0;grid-template-rows:repeat(7,12px);grid-auto-columns:minmax(0,1fr);gap:3px}.heat-day{width:100%;height:12px;border-radius:4px}}
 .heat-day.reset-day:hover,.heat-day.reset-day:focus-visible{transform:none}
 
+/* Priority flow: announcement, status, metrics, community request, history. */
+.upcoming:first-child{margin-top:0}.upcoming+.status-panel{margin-top:22px}
+
 /* One timezone switch sits beside the timestamp it changes. */
 .primary-time-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px}.time-zone-toggle{display:flex;flex:0 0 auto;gap:2px;padding:2px;border:1px solid #dcddea;border-radius:9px;background:#fff9;box-shadow:0 3px 10px rgba(70,62,112,.08)}.time-zone-toggle button{border:0;border-radius:6px;padding:4px 7px;background:transparent;color:#73788a;font-size:8px;font-weight:700;white-space:nowrap}.time-zone-toggle button:hover{color:#5147a8}.time-zone-toggle button[aria-pressed=true]{background:#6557d5;color:#fff;box-shadow:0 2px 6px rgba(68,55,151,.22)}html[data-theme=dark] .time-zone-toggle{border-color:#454151;background:#1c1b22cc;box-shadow:none}html[data-theme=dark] .time-zone-toggle button{color:#aaa5b8}html[data-theme=dark] .time-zone-toggle button:hover{color:#fff}html[data-theme=dark] .time-zone-toggle button[aria-pressed=true]{background:#7869e5;color:#fff}
 @media(max-width:650px){.primary-time-line{gap:6px}.time-zone-toggle button{padding:4px 6px;font-size:8px}}
