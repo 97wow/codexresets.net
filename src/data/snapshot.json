@@ -3,6 +3,27 @@
   "source": "https://x.com/thsottiaux",
   "posts": [
     {
+      "id": "2102254445082116335",
+      "authorId": "1953337039510003712",
+      "text": "Ladies and gentlemen... start... your... ENGINES. We are almost Tuesday and I promised a reset for Tuesday. Among some other things. See you soon.",
+      "createdAt": "2026-09-22T04:31:32.363Z",
+      "url": "https://x.com/thsottiaux/status/2102254445082116335",
+      "references": [],
+      "edits": [
+        "2102254445082116335"
+      ],
+      "collectedAt": "2026-09-22T07:15:55.987Z",
+      "method": "browser_review",
+      "editorial": {
+        "state": "announced",
+        "kind": "regular",
+        "summary": {
+          "zh": "Tibo 明确表示他已经承诺周二进行重置，并称周二将近、很快见。原文没有给出具体时刻或时区；在后续确认完成前保持“已预告”状态。",
+          "en": "Tibo explicitly said he had promised a reset for Tuesday and that Tuesday was almost here. The post gives no exact time or timezone; it remains announced until a later update confirms completion."
+        }
+      }
+    },
+    {
       "id": "2101920928070562029",
       "authorId": "1953337039510003712",
       "text": "3am on a tuesday",
@@ -147,6 +168,22 @@
   ],
   "events": [
     {
+      "id": "2102254445082116335",
+      "state": "announced",
+      "kind": "regular",
+      "text": "Ladies and gentlemen... start... your... ENGINES. We are almost Tuesday and I promised a reset for Tuesday. Among some other things. See you soon.",
+      "announcedAt": "2026-09-22T04:31:32.363Z",
+      "source": "https://x.com/thsottiaux/status/2102254445082116335",
+      "relatedPostIds": [],
+      "timingText": "Tuesday; exact time and timezone not specified.",
+      "review": "human_reviewed",
+      "method": "browser_review",
+      "summary": {
+        "zh": "Tibo 明确表示他已经承诺周二进行重置，并称周二将近、很快见。原文没有给出具体时刻或时区；在后续确认完成前保持“已预告”状态。",
+        "en": "Tibo explicitly said he had promised a reset for Tuesday and that Tuesday was almost here. The post gives no exact time or timezone; it remains announced until a later update confirms completion."
+      }
+    },
+    {
       "id": "2101920928070562029",
       "state": "signal",
       "kind": "regular",
@@ -255,7 +292,7 @@
   ],
   "cursor": null,
   "lastSuccessAt": null,
-  "lastReviewAt": "2026-09-21T15:30:00.000Z",
+  "lastReviewAt": "2026-09-22T07:15:55.987Z",
   "lastAttemptAt": "2026-09-17T05:07:24.206070+00:00",
   "collectorState": "authentication_required",
   "error": "invalid_credentials",

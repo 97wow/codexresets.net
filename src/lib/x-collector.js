@@ -20,12 +20,13 @@ export function classify(post, context = []) {
   if(!hasReset && !(inherited && /\b(done|landed|live|propagat\w*)\b/.test(text)))return null;
   if(/\b(password|factory|git|hard drive)\s+reset\b|\breset\s+(?:(?:your|the|my)\s+)?(password|branch|pc)\b/.test(text))return null;
   const uncertain=/\b(maybe|perhaps|might|could|hope|wish|would|if|no reset|not resetting|won't reset)\b/.test(text);
-  const future=/\b(will|going to|tonight|tomorrow|later|lands? (?:at|around|by|in)|in ~?\s*\d+\s*hours?)\b/.test(text);
+  const explicitCommitment=/\b(?:promis(?:e|ed|ing)|schedul(?:e|ed|ing)|plan(?:ned|ning)?|confirm(?:ed|ing)?)\s+(?:a\s+|the\s+)?reset\b|\breset\s+(?:is\s+)?(?:coming|scheduled|planned)\b/.test(text);
+  const future=explicitCommitment||/\b(will|going to|tonight|tomorrow|later|lands? (?:at|around|by|in)|in ~?\s*\d+\s*hours?)\b/.test(text);
   const complete=/\b(reset all propagated|all reset|(?:have|has|just) (?:been )?reset|reset (?:is |has )?(?:done|complete|completed)|reset\w*.*(?:has|have) (?:been )?(?:applied|propagated))\b/.test(text)||(inherited&&/\b(it is done|it’s done|all propagated)\b/.test(text));
   const rollout=/\b(rolling out|propagating|being applied|resetting|reseting)\b/.test(text);
   let state=uncertain?'signal':complete?'completed':rollout?'rollout':future?'announced':'signal';
   const kind=/\bbanked\b/.test(text)||(!hasReset&&context.some(p=>/\bbanked\b/i.test(p.text)))?'banked':'regular';
-  return {id:post.id,state,kind,text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:post.references.filter(r=>r.type!=='retweeted').map(r=>r.id),timingText:post.text.split(/\n|(?<=[.!?])\s+/).filter(s=>/\b(tonight|tomorrow|today|lands?|\d+\s*(?:am|pm|hours?|minutes?)|PT|PST|PDT)\b/i.test(s)).join(' '),review:'rule_classified',method:post.method,excerpt:post.excerpt===true};
+  return {id:post.id,state,kind,text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:post.references.filter(r=>r.type!=='retweeted').map(r=>r.id),timingText:post.text.split(/\n|(?<=[.!?])\s+/).filter(s=>/\b(tonight|tomorrow|today|lands?|monday|tuesday|wednesday|thursday|friday|saturday|sunday|\d+\s*(?:am|pm|hours?|minutes?)|PT|PST|PDT)\b/i.test(s)).join(' '),review:'rule_classified',method:post.method,excerpt:post.excerpt===true};
 }
 export function mergePosts(existing, incoming) {
   const map=new Map(existing.map(p=>[p.id,p]));
