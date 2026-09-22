@@ -29,7 +29,7 @@ const t = copy[l];
   function applyTimeMode(){
     const locale=document.documentElement.lang||'en',timeZone=timeMode==='tibo'?'America/Los_Angeles':undefined;
     const formatter=new Intl.DateTimeFormat(locale,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone});
-    root.querySelectorAll<HTMLElement>('[data-timestamp]').forEach(item=>{const date=new Date(item.dataset.timestamp||'');if(Number.isFinite(date.getTime()))item.textContent=`${item.hasAttribute('data-time-primary')?(timeMode==='tibo'?t.tiboTime:t.localTime)+' · ':''}${formatter.format(date)}`;});
+    root.querySelectorAll<HTMLElement>('[data-timestamp]').forEach(item=>{const date=new Date(item.dataset.timestamp||'');if(Number.isFinite(date.getTime()))item.textContent=formatter.format(date);});
     root.querySelectorAll<HTMLButtonElement>('[data-time-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.timeMode===timeMode)));
   }
   function setTimeMode(mode:string){if(mode!=='tibo'&&mode!=='local')return;timeMode=mode;localStorage.setItem(timeModeKey,mode);applyTimeMode();hideTooltip();}
@@ -111,8 +111,8 @@ const t = copy[l];
   async function refresh() {
     if (busy) return;
     busy=true;
-    const button = root.querySelector<HTMLButtonElement>('.refresh')!;
-    button.disabled=true;button.textContent=t.refreshing;
+    const button = root.querySelector<HTMLButtonElement>('.refresh');
+    if(button){button.disabled=true;button.textContent=t.refreshing;}
     try {
       const response=await fetch('/api/status', {signal:AbortSignal.timeout(12000)});
       if(!response.ok) throw new Error('Unavailable');
@@ -131,7 +131,7 @@ const t = copy[l];
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
       time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.dataset.timestamp=time.dateTime;time.textContent=dateLabel(time.dateTime,lang);applyTimeMode();
     } catch {/* Keep the last verified snapshot visible when refresh is unavailable. */}
-    finally { const b=root.querySelector<HTMLButtonElement>('.refresh')!; b.disabled=false;b.textContent=`↻ ${t.refresh}`;busy=false; }
+    finally { if(button){button.disabled=false;button.textContent=`↻ ${t.refresh}`;}busy=false; }
   }
   root.addEventListener('click', event=>{
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
