@@ -160,7 +160,8 @@
     "xRepliesSource": "Posts and replies",
     "friendLinks": "Friend link",
     "apiRelayStation": "AI API relay service",
-    "openSourceRelayPanel": "Open-source AI API relay panel · GitHub"
+    "openSourceRelayPanel": "Open-source AI API relay panel · GitHub",
+    "historyCredit": "Historical catalog backfilled from"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -323,7 +324,8 @@
     "xRepliesSource": "帖子与回复",
     "friendLinks": "友情链接",
     "apiRelayStation": "AI API 中转站",
-    "openSourceRelayPanel": "开源 AI API 中转面板 · GitHub"
+    "openSourceRelayPanel": "开源 AI API 中转面板 · GitHub",
+    "historyCredit": "历史目录补充自"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -486,7 +488,8 @@
     "xRepliesSource": "貼文與回覆",
     "friendLinks": "友情連結",
     "apiRelayStation": "AI API 中轉站",
-    "openSourceRelayPanel": "開源 AI API 中轉面板 · GitHub"
+    "openSourceRelayPanel": "開源 AI API 中轉面板 · GitHub",
+    "historyCredit": "歷史目錄補充自"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -649,7 +652,8 @@
     "xRepliesSource": "投稿と返信",
     "friendLinks": "関連リンク",
     "apiRelayStation": "AI API 中継サービス",
-    "openSourceRelayPanel": "オープンソース AI API 中継パネル · GitHub"
+    "openSourceRelayPanel": "オープンソース AI API 中継パネル · GitHub",
+    "historyCredit": "履歴カタログ提供"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -812,7 +816,8 @@
     "xRepliesSource": "게시물 및 답글",
     "friendLinks": "관련 링크",
     "apiRelayStation": "AI API 중계 서비스",
-    "openSourceRelayPanel": "오픈 소스 AI API 중계 패널 · GitHub"
+    "openSourceRelayPanel": "오픈 소스 AI API 중계 패널 · GitHub",
+    "historyCredit": "과거 기록 제공"
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -975,7 +980,8 @@
     "xRepliesSource": "Publicaciones y respuestas",
     "friendLinks": "Enlace amigo",
     "apiRelayStation": "Servicio intermediario de API de IA",
-    "openSourceRelayPanel": "Panel de código abierto para API de IA · GitHub"
+    "openSourceRelayPanel": "Panel de código abierto para API de IA · GitHub",
+    "historyCredit": "Catálogo histórico proporcionado por"
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1138,7 +1144,8 @@
     "xRepliesSource": "Publications et réponses",
     "friendLinks": "Lien ami",
     "apiRelayStation": "Service relais d’API d’IA",
-    "openSourceRelayPanel": "Panneau relais d’API d’IA open source · GitHub"
+    "openSourceRelayPanel": "Panneau relais d’API d’IA open source · GitHub",
+    "historyCredit": "Catalogue historique fourni par"
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1301,7 +1308,8 @@
     "xRepliesSource": "Beiträge und Antworten",
     "friendLinks": "Partnerlink",
     "apiRelayStation": "AI-API-Vermittlungsdienst",
-    "openSourceRelayPanel": "Open-Source-Panel für AI-API-Vermittlung · GitHub"
+    "openSourceRelayPanel": "Open-Source-Panel für AI-API-Vermittlung · GitHub",
+    "historyCredit": "Historischer Katalog von"
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1464,7 +1472,8 @@
     "xRepliesSource": "Publicações e respostas",
     "friendLinks": "Link parceiro",
     "apiRelayStation": "Serviço intermediário de API de IA",
-    "openSourceRelayPanel": "Painel open source para intermediação de API de IA · GitHub"
+    "openSourceRelayPanel": "Painel open source para intermediação de API de IA · GitHub",
+    "historyCredit": "Catálogo histórico fornecido por"
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1627,6 +1636,7 @@
     "xRepliesSource": "Публикации и ответы",
     "friendLinks": "Дружественная ссылка",
     "apiRelayStation": "Сервис-посредник для AI API",
-    "openSourceRelayPanel": "Открытая панель-посредник для AI API · GitHub"
+    "openSourceRelayPanel": "Открытая панель-посредник для AI API · GitHub",
+    "historyCredit": "Исторический каталог предоставлен"
   }
 }
