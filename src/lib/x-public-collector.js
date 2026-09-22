@@ -59,10 +59,11 @@ async function readPublicTimeline(browser,url){
 export async function collectXPublic(previous,browser){
   const profileUrl=`https://x.com/${AUTHOR}`;
   const repliesUrl=`${profileUrl}/with_replies`;
-  // The replies timeline is a superset of the profile timeline. One render keeps
-  // the scheduled Worker within Browser Rendering's per-run execution budget.
-  const received=await readPublicTimeline(browser,repliesUrl);
+  // X blocks the replies tab for Cloudflare's unauthenticated browser. Keep the
+  // automated profile collection healthy; independently reviewed replies already
+  // stored in the state are retained by mergePosts.
+  const received=await readPublicTimeline(browser,profileUrl);
   const posts=mergePosts(previous.posts||[],received);
   const now=new Date().toISOString();
-  return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:repliesUrl,sources:[profileUrl,repliesUrl],coverage:'partial'};
+  return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:profileUrl,sources:[profileUrl,repliesUrl],coverage:'partial'};
 }

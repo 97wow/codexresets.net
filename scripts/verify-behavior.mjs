@@ -31,7 +31,7 @@ const state=await collectX(previous,'test-only-token',paged);
 assert.equal(state.cursor,'102');assert.equal(state.posts.length,2);assert.equal(state.collectorMethod,'x_api');assert.equal(previous.cursor,'100');
 const publicUrls=[];
 const browserState=await collectXPublic(previous,{quickAction:async(action,options)=>{assert.equal(action,'markdown');assert.equal(options.waitForSelector.selector,'article');publicUrls.push(options.url);return options.url.endsWith('/with_replies')?publicReplyMarkdown:publicMarkdown;}});
-assert.deepEqual(publicUrls,['https://x.com/thsottiaux/with_replies']);assert.equal(browserState.collectorMethod,'browser_rendering');assert.equal(browserState.posts.length,2);assert.equal(browserState.posts.find(post=>post.id==='2100364668051603608').isReply,true);assert.equal(browserState.source,'https://x.com/thsottiaux/with_replies');
+assert.deepEqual(publicUrls,['https://x.com/thsottiaux']);assert.equal(browserState.collectorMethod,'browser_rendering');assert.equal(browserState.posts.length,1);assert.equal(browserState.source,'https://x.com/thsottiaux');
 const browserResponseState=await collectXPublic(previous,{quickAction:async()=>Response.json({success:true,result:publicMarkdown,meta:{}})});
 assert.equal(browserResponseState.collectorMethod,'browser_rendering');assert.equal(browserResponseState.posts[0].id,'2100363668051603608');
 await assert.rejects(collectX(previous,'test-only-token',async()=>new Response('',{status:401})),e=>e.code==='invalid_credentials');
