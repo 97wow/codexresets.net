@@ -161,7 +161,10 @@
     "friendLinks": "Friend link",
     "apiRelayStation": "AI API relay service",
     "openSourceRelayPanel": "Open-source AI API relay panel · GitHub",
-    "historyCredit": "Historical catalog backfilled from"
+    "historyCredit": "Historical catalog backfilled from",
+    "tiboTime": "Tibo time",
+    "localTime": "Local time",
+    "timeDisplay": "Time display"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -325,7 +328,10 @@
     "friendLinks": "友情链接",
     "apiRelayStation": "AI API 中转站",
     "openSourceRelayPanel": "开源 AI API 中转面板 · GitHub",
-    "historyCredit": "历史目录补充自"
+    "historyCredit": "历史目录补充自",
+    "tiboTime": "Tibo 时间",
+    "localTime": "本地时间",
+    "timeDisplay": "时间显示"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -489,7 +495,10 @@
     "friendLinks": "友情連結",
     "apiRelayStation": "AI API 中轉站",
     "openSourceRelayPanel": "開源 AI API 中轉面板 · GitHub",
-    "historyCredit": "歷史目錄補充自"
+    "historyCredit": "歷史目錄補充自",
+    "tiboTime": "Tibo 時間",
+    "localTime": "本地時間",
+    "timeDisplay": "時間顯示"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -653,7 +662,10 @@
     "friendLinks": "関連リンク",
     "apiRelayStation": "AI API 中継サービス",
     "openSourceRelayPanel": "オープンソース AI API 中継パネル · GitHub",
-    "historyCredit": "履歴カタログ提供"
+    "historyCredit": "履歴カタログ提供",
+    "tiboTime": "Tiboの時間",
+    "localTime": "現地時間",
+    "timeDisplay": "時刻表示"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -817,7 +829,10 @@
     "friendLinks": "관련 링크",
     "apiRelayStation": "AI API 중계 서비스",
     "openSourceRelayPanel": "오픈 소스 AI API 중계 패널 · GitHub",
-    "historyCredit": "과거 기록 제공"
+    "historyCredit": "과거 기록 제공",
+    "tiboTime": "Tibo 시간",
+    "localTime": "현지 시간",
+    "timeDisplay": "시간 표시"
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -981,7 +996,10 @@
     "friendLinks": "Enlace amigo",
     "apiRelayStation": "Servicio intermediario de API de IA",
     "openSourceRelayPanel": "Panel de código abierto para API de IA · GitHub",
-    "historyCredit": "Catálogo histórico proporcionado por"
+    "historyCredit": "Catálogo histórico proporcionado por",
+    "tiboTime": "Hora de Tibo",
+    "localTime": "Hora local",
+    "timeDisplay": "Visualización de hora"
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1145,7 +1163,10 @@
     "friendLinks": "Lien ami",
     "apiRelayStation": "Service relais d’API d’IA",
     "openSourceRelayPanel": "Panneau relais d’API d’IA open source · GitHub",
-    "historyCredit": "Catalogue historique fourni par"
+    "historyCredit": "Catalogue historique fourni par",
+    "tiboTime": "Heure de Tibo",
+    "localTime": "Heure locale",
+    "timeDisplay": "Affichage de l’heure"
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1309,7 +1330,10 @@
     "friendLinks": "Partnerlink",
     "apiRelayStation": "AI-API-Vermittlungsdienst",
     "openSourceRelayPanel": "Open-Source-Panel für AI-API-Vermittlung · GitHub",
-    "historyCredit": "Historischer Katalog von"
+    "historyCredit": "Historischer Katalog von",
+    "tiboTime": "Tibo-Zeit",
+    "localTime": "Ortszeit",
+    "timeDisplay": "Zeitanzeige"
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1473,7 +1497,10 @@
     "friendLinks": "Link parceiro",
     "apiRelayStation": "Serviço intermediário de API de IA",
     "openSourceRelayPanel": "Painel open source para intermediação de API de IA · GitHub",
-    "historyCredit": "Catálogo histórico fornecido por"
+    "historyCredit": "Catálogo histórico fornecido por",
+    "tiboTime": "Hora do Tibo",
+    "localTime": "Hora local",
+    "timeDisplay": "Exibição de horário"
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1637,6 +1664,9 @@
     "friendLinks": "Дружественная ссылка",
     "apiRelayStation": "Сервис-посредник для AI API",
     "openSourceRelayPanel": "Открытая панель-посредник для AI API · GitHub",
-    "historyCredit": "Исторический каталог предоставлен"
+    "historyCredit": "Исторический каталог предоставлен",
+    "tiboTime": "Время Тибо",
+    "localTime": "Местное время",
+    "timeDisplay": "Отображение времени"
   }
 }

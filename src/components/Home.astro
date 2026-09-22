@@ -23,6 +23,16 @@ const t = copy[l];
   let floatingTooltip:HTMLElement|null=null,tooltipTarget:HTMLElement|null=null;
   const notificationKey = 'codex-resets-browser-alerts';
   const visitKey = 'codex-resets-visit-v1';
+  const timeModeKey = 'codex-resets-time-mode';
+  type TimeMode='tibo'|'local';
+  let timeMode:TimeMode=localStorage.getItem(timeModeKey)==='tibo'?'tibo':'local';
+  function applyTimeMode(){
+    const locale=document.documentElement.lang||'en',timeZone=timeMode==='tibo'?'America/Los_Angeles':undefined;
+    const formatter=new Intl.DateTimeFormat(locale,{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short',timeZone});
+    root.querySelectorAll<HTMLElement>('[data-timestamp]').forEach(item=>{const date=new Date(item.dataset.timestamp||'');if(Number.isFinite(date.getTime()))item.textContent=formatter.format(date);});
+    root.querySelectorAll<HTMLButtonElement>('[data-time-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.timeMode===timeMode)));
+  }
+  function setTimeMode(mode:string){if(mode!=='tibo'&&mode!=='local')return;timeMode=mode;localStorage.setItem(timeModeKey,mode);applyTimeMode();hideTooltip();}
   const flagEmoji=(country:string)=>/^[A-Z]{2}$/.test(country)&&country!=='XX'?[...country].map(char=>String.fromCodePoint(127397+char.charCodeAt(0))).join(''):'🌍';
   function paintCommunity(stats:{visitors?:number,beg?:{count?:number,countries?:Record<string,number>},country?:string},message='') {
     const total=root.querySelector<HTMLElement>('.beg-total'),visitors=root.querySelector<HTMLElement>('.visitor-total'),flags=root.querySelector<HTMLElement>('.country-flags'),feedback=root.querySelector<HTMLElement>('.beg-feedback');
@@ -116,10 +126,10 @@ const t = copy[l];
         openIds.forEach(id=>{const d=document.getElementById(id) as HTMLDetailsElement | null;if(d)d.open=true;});
         const newEvent=payload.events.find((item:{id:string,state:string,summary?:Record<string,string>,text:string})=>!knownIds.has(item.id)&&['signal','announced','rollout','completed','compensation'].includes(item.state));
         if(!initialLoad&&newEvent&&localStorage.getItem(notificationKey)==='on'&&'Notification' in window&&Notification.permission==='granted')new Notification(t.notifyTitle,{body:newEvent.summary?.[lang]||newEvent.text,tag:`codex-reset-${newEvent.id}`});
-        if(openChannel)openNotification(openChannel);lastPayload=identity;applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity(false);
+        if(openChannel)openNotification(openChannel);lastPayload=identity;applyFilters();applyPosts();applyTimeMode();updateNotificationButton();void loadNotifyConfig();void loadCommunity(false);
       }
       const time=root.querySelector<HTMLTimeElement>('.freshness time')!;
-      time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.textContent=dateLabel(time.dateTime,lang);
+      time.dateTime=payload.lastSuccessAt||payload.lastReviewAt||'';time.dataset.timestamp=time.dateTime;time.textContent=dateLabel(time.dateTime,lang);applyTimeMode();
       const warning=root.querySelector<HTMLElement>('.connection-warning')!;
       warning.textContent=payload.collectorState==='connected'?t.stale:t.collectorBlocked;warning.hidden=payload.collectorState==='connected'&&Date.now()-Date.parse(payload.lastSuccessAt)<900000;
     } catch {
@@ -129,6 +139,7 @@ const t = copy[l];
   root.addEventListener('click', event=>{
     const target=(event.target as HTMLElement).closest<HTMLElement>('button,a');if(!target)return;
     if(target.matches('.refresh'))void refresh();
+    if(target.dataset.timeMode)setTimeMode(target.dataset.timeMode);
     if(target.matches('.beg-button'))void begForReset();
     if(target.dataset.notifyChannel)openNotification(target.dataset.notifyChannel);
     if(target.matches('.notify-close'))notificationDialog()?.close();
@@ -152,7 +163,7 @@ const t = copy[l];
   root.addEventListener('focusout',event=>{if((event.target as HTMLElement).closest('.reset-day'))hideTooltip();});
   const repositionTooltip=()=>{const target=tooltipTarget;if(target)requestAnimationFrame(()=>{if(target===tooltipTarget)showTooltip(target);});};
   window.addEventListener('scroll',repositionTooltip,{passive:true});window.addEventListener('resize',repositionTooltip,{passive:true});
-  applyFilters();applyPosts();updateNotificationButton();void loadNotifyConfig();void loadCommunity();void refresh();
+  applyFilters();applyPosts();applyTimeMode();updateNotificationButton();void loadNotifyConfig();void loadCommunity();void refresh();
   const notifyState=new URLSearchParams(location.search).get('notify');if(notifyState){openNotification('email');notificationResult(notifyState==='email-confirmed'?t.emailConfirmed:t.notifyUnsubscribed);history.replaceState({},'',location.pathname);}
   setInterval(()=>void refresh(),60000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
