@@ -1,4 +1,4 @@
-const MODEL='@cf/meta/llama-3.1-8b-instruct';
+const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const labels=new Set(['unrelated','signal','announced','rollout','completed','compensation']);
 const kinds=new Set(['regular','banked']);
 const schema={
