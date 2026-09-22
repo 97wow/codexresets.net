@@ -158,7 +158,8 @@
     "lessPosts": "Show recent posts only",
     "xReplyPost": "Reply",
     "xRepliesSource": "Posts and replies",
-    "friendLinks": "Friend link"
+    "friendLinks": "Friend link",
+    "apiRelayStation": "AI API relay service"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -319,7 +320,8 @@
     "lessPosts": "收起，只看最近动态",
     "xReplyPost": "回复",
     "xRepliesSource": "帖子与回复",
-    "friendLinks": "友情链接"
+    "friendLinks": "友情链接",
+    "apiRelayStation": "AI API 中转站"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -480,7 +482,8 @@
     "lessPosts": "收起，只看最近動態",
     "xReplyPost": "回覆",
     "xRepliesSource": "貼文與回覆",
-    "friendLinks": "友情連結"
+    "friendLinks": "友情連結",
+    "apiRelayStation": "AI API 中轉站"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -641,7 +644,8 @@
     "lessPosts": "最近の投稿だけ表示",
     "xReplyPost": "返信",
     "xRepliesSource": "投稿と返信",
-    "friendLinks": "関連リンク"
+    "friendLinks": "関連リンク",
+    "apiRelayStation": "AI API 中継サービス"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -802,7 +806,8 @@
     "lessPosts": "최근 게시물만 보기",
     "xReplyPost": "답글",
     "xRepliesSource": "게시물 및 답글",
-    "friendLinks": "관련 링크"
+    "friendLinks": "관련 링크",
+    "apiRelayStation": "AI API 중계 서비스"
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -963,7 +968,8 @@
     "lessPosts": "Mostrar solo publicaciones recientes",
     "xReplyPost": "Respuesta",
     "xRepliesSource": "Publicaciones y respuestas",
-    "friendLinks": "Enlace amigo"
+    "friendLinks": "Enlace amigo",
+    "apiRelayStation": "Servicio intermediario de API de IA"
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1124,7 +1130,8 @@
     "lessPosts": "Afficher uniquement les messages récents",
     "xReplyPost": "Réponse",
     "xRepliesSource": "Publications et réponses",
-    "friendLinks": "Lien ami"
+    "friendLinks": "Lien ami",
+    "apiRelayStation": "Service relais d’API d’IA"
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1285,7 +1292,8 @@
     "lessPosts": "Nur aktuelle Beiträge anzeigen",
     "xReplyPost": "Antwort",
     "xRepliesSource": "Beiträge und Antworten",
-    "friendLinks": "Partnerlink"
+    "friendLinks": "Partnerlink",
+    "apiRelayStation": "AI-API-Vermittlungsdienst"
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1446,7 +1454,8 @@
     "lessPosts": "Mostrar apenas postagens recentes",
     "xReplyPost": "Resposta",
     "xRepliesSource": "Publicações e respostas",
-    "friendLinks": "Link parceiro"
+    "friendLinks": "Link parceiro",
+    "apiRelayStation": "Serviço intermediário de API de IA"
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1607,6 +1616,7 @@
     "lessPosts": "Показать только последние сообщения",
     "xReplyPost": "Ответ",
     "xRepliesSource": "Публикации и ответы",
-    "friendLinks": "Дружественная ссылка"
+    "friendLinks": "Дружественная ссылка",
+    "apiRelayStation": "Сервис-посредник для AI API"
   }
 }
