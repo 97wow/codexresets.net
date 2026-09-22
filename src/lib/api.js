@@ -11,7 +11,8 @@ const safeEvent=event=>({
   sourceUrl:safeSource(event.source),
   relatedPostIds:Array.isArray(event.relatedPostIds)?event.relatedPostIds.map(String):[],
   timingText:String(event.timingText||''),
-  review:event.review==='human_reviewed'?'human_reviewed':'rule_classified'
+  review:['human_reviewed','ai_classified','rule_classified'].includes(event.review)?event.review:'rule_classified',
+  confidence:Number.isFinite(event.confidence)&&event.confidence>=0&&event.confidence<=1?event.confidence:null
 });
 export function apiDocument(data){
   const events=(data.events||[]).map(safeEvent);
