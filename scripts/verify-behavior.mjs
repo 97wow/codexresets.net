@@ -13,6 +13,8 @@ const promisedText='Ladies and gentlemen... start... your... ENGINES. We are alm
 let aiRequest;
 const aiClassified=await classifyPostsWithAI([normalizePost(raw('1031',promisedText))],{run:async(model,request)=>{aiRequest={model,request};return {response:{classifications:[{id:'1031',label:'announced',confidence:.98,kind:'regular',timingText:'Tuesday; exact time and timezone not specified.',summaryZh:'Tibo 明确承诺周二重置。',summaryEn:'Tibo explicitly promised a reset for Tuesday.',reason:'Explicit future promise.'}]}};}});
 assert.equal(classify(aiClassified[0]).state,'announced');assert.match(classify(aiClassified[0]).timingText,/Tuesday/i);assert.match(aiRequest.model,/llama/);assert.match(aiRequest.request.messages[0].content,/meaning and conversational context/);assert.match(aiRequest.request.messages[1].content,/promised a reset/);
+const choicesClassified=await classifyPostsWithAI([normalizePost(raw('1033',promisedText))],{run:async()=>({choices:[{message:{content:JSON.stringify({classifications:[{id:'1033',label:'announced',confidence:'0.91',kind:'regular',timingText:'Tuesday',summaryZh:'Tibo 明确承诺周二重置。',summaryEn:'Tibo explicitly promised a Tuesday reset.',reason:'Explicit promise.'}]})}}]})});
+assert.equal(classify(choicesClassified[0]).state,'announced');
 const lowConfidence=structuredClone(aiClassified[0]);lowConfidence.aiClassification.label='completed';lowConfidence.aiClassification.confidence=.55;assert.equal(classify(lowConfidence).state,'signal');
 assert.equal(classify(normalizePost(raw('104','Reset your password.'))),null);
 assert.equal(classify(normalizePost(raw('105','A new release tomorrow.'))),null);

@@ -20,6 +20,16 @@ Use banked only for a stored/redeemable or replacement reset; otherwise regular.
 const text=value=>String(value||'').replace(/\s+/g,' ').trim().slice(0,5000);
 const validDecision=(decision,ids)=>decision&&ids.has(decision.id)&&labels.has(decision.label)&&kinds.has(decision.kind)&&Number.isFinite(decision.confidence)&&decision.confidence>=0&&decision.confidence<=1&&typeof decision.timingText==='string'&&typeof decision.summaryZh==='string'&&typeof decision.summaryEn==='string'&&typeof decision.reason==='string';
 const batches=(items,size)=>Array.from({length:Math.ceil(items.length/size)},(_,index)=>items.slice(index*size,(index+1)*size));
+const parseJSON=value=>{
+  if(value&&typeof value==='object')return value;
+  if(typeof value!=='string')return null;
+  try{return JSON.parse(value);}catch{return null;}
+};
+const responseFrom=result=>{
+  const choices=result?.choices||result?.result?.choices;
+  return parseJSON(result?.response)||parseJSON(result?.result?.response)||parseJSON(choices?.[0]?.message?.content)||parseJSON(result);
+};
+const normalizeDecision=decision=>decision&&typeof decision==='object'?{...decision,confidence:Number(decision.confidence)}:decision;
 
 export async function classifyPostsWithAI(posts,ai){
   if(!ai?.run)return posts;
@@ -32,9 +42,11 @@ export async function classifyPostsWithAI(posts,ai){
     const ids=new Set(input.map(item=>item.id));
     try{
       const result=await ai.run(MODEL,{messages:[{role:'system',content:system},{role:'user',content:JSON.stringify({posts:input})}],response_format:{type:'json_schema',json_schema:schema},temperature:0,max_tokens:2200});
-      const response=typeof result?.response==='string'?JSON.parse(result.response):result?.response;
-      for(const decision of response?.classifications||[])if(validDecision(decision,ids))decisions.set(decision.id,decision);
-    }catch(error){console.error('ai_classification_failed',{model:MODEL,batchSize:batch.length,code:error?.name||'unknown'});}
+      const response=responseFrom(result);
+      let accepted=0;
+      for(const raw of response?.classifications||[]){const decision=normalizeDecision(raw);if(validDecision(decision,ids)){decisions.set(decision.id,decision);accepted++;}}
+      if(!accepted)console.error('ai_classification_empty',{model:MODEL,batchSize:batch.length,responseShape:result?.response?'response':result?.result?.response?'nested_response':result?.choices?'choices':result?.result?.choices?'nested_choices':'unknown'});
+    }catch(error){console.error('ai_classification_failed',{model:MODEL,batchSize:batch.length,code:error?.name||'unknown',message:String(error?.message||'unknown').slice(0,160)});}
   }
   const classifiedAt=new Date().toISOString();
   return posts.map(post=>{const decision=decisions.get(post.id);return decision?{...post,aiClassification:{...decision,model:MODEL,classifiedAt}}:post;});
