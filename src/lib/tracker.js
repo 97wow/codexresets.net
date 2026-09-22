@@ -35,6 +35,7 @@ function calendarHeatmap(completed,lang,t,now){
 export function renderTracker(data,lang='en',now=Date.now()){
   const t=copy[lang],events=data.events||[],posts=(data.posts||[]).slice().sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt)),live=data.collectorState==='connected',fresh=live&&data.lastSuccessAt&&now-Date.parse(data.lastSuccessAt)<900000;
   const sourceLink=event=>`<a href="${escape(sourceURL(event.source))}" target="_blank" rel="noopener noreferrer">${t.original} ↗</a>`;
+  const announcementText=event=>String(event.text||'').replace(/\s+\[[^\]]+\]\(https:\/\/x\.com\/thsottiaux\/status\/\d+\)[\d.KMB]+$/i,'').trim();
   const active=events.filter(e=>e.state==='announced'&&!events.some(other=>['completed','rollout'].includes(other.state)&&other.relatedPostIds.includes(e.id)));
   const completed=events.filter(e=>e.state==='completed').sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt));
   const lastCompleted=completed[0];
@@ -63,7 +64,7 @@ export function renderTracker(data,lang='en',now=Date.now()){
     <div class="status-foot"><span class="collection-mode ${fresh?'connected':''}"><i aria-hidden="true"></i>${fresh?t.liveMode:t.reviewMode}</span><button class="refresh" type="button">↻ ${t.refresh}</button></div></section>
     ${notificationCenter}
     <p class="connection-warning" role="status" ${fresh?'hidden':''}>${live?t.stale:t.collectorBlocked}</p>
-    ${active.length?`<section class="upcoming"><h2>${t.announced}</h2>${active.map(e=>`<p>${escape(localizedSummary(e,lang))}</p>${sourceLink(e)}`).join('')}<small>${t.pendingNote}</small></section>`:''}
+    ${active.length?`<section class="upcoming"><div class="announcement-effects" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="announcement-orbit" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4 28.4 19.6 44 24l-15.6 4.4L24 44l-4.4-15.6L4 24l15.6-4.4L24 4Z"/><circle cx="24" cy="24" r="6"/></svg></div><div class="announcement-copy"><h2>${t.announced}</h2>${active.map(e=>`<p class="announcement-summary">${escape(localizedSummary(e,lang))}</p><blockquote class="announcement-source" lang="en"><div><img src="/tibo.jpg" alt="" width="30" height="30"><span><strong>Tibo <i aria-label="Verified">✓</i></strong><small>@thsottiaux · ${escape(dateLabel(e.announcedAt,lang))}</small></span></div><p>${escape(announcementText(e))}</p></blockquote>${sourceLink(e)}`).join('')}<small class="announcement-note">${t.pendingNote}</small></div></section>`:''}
     ${metrics}
     ${calendar}
     ${xStream}
