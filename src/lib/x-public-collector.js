@@ -1,4 +1,5 @@
 import {AUTHOR,AUTHOR_ID,XError,deriveEvents,mergePosts} from './x-collector.js';
+import {classifyPostsWithAI} from './ai-classifier.js';
 
 const statusPattern=new RegExp(`https://x\\.com/${AUTHOR}/status/(\\d{10,25})`,'g');
 const decodeMarkdown=value=>value
@@ -56,14 +57,14 @@ async function readPublicTimeline(browser,url){
   return posts;
 }
 
-export async function collectXPublic(previous,browser){
+export async function collectXPublic(previous,browser,ai){
   const profileUrl=`https://x.com/${AUTHOR}`;
   const repliesUrl=`${profileUrl}/with_replies`;
   // X blocks the replies tab for Cloudflare's unauthenticated browser. Keep the
   // automated profile collection healthy; independently reviewed replies already
   // stored in the state are retained by mergePosts.
   const received=await readPublicTimeline(browser,profileUrl);
-  const posts=mergePosts(previous.posts||[],received);
+  const posts=await classifyPostsWithAI(mergePosts(previous.posts||[],received),ai);
   const now=new Date().toISOString();
   return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:profileUrl,sources:[profileUrl,repliesUrl],coverage:'partial'};
 }

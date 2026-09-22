@@ -11,9 +11,9 @@ import {localeBase,locales} from '../src/lib/i18n.js';
 export async function synchronize(env,fetcher=fetch){
   const previous=await env.RESETS.get('state','json')||fallback;
   let next,officialError;
-  try{if(env.X_BEARER_TOKEN)next=await collectX(previous,env.X_BEARER_TOKEN,fetcher);}catch(error){officialError=error;}
+  try{if(env.X_BEARER_TOKEN)next=await collectX(previous,env.X_BEARER_TOKEN,fetcher,{ai:env.AI});}catch(error){officialError=error;}
   try{
-    if(!next)next=await collectXPublic(previous,env.BROWSER);
+    if(!next)next=await collectXPublic(previous,env.BROWSER,env.AI);
     await env.RESETS.put('state',JSON.stringify(next));
     await env.RESETS.put('health',JSON.stringify({state:'connected',method:next.collectorMethod||'x_api',attemptedAt:next.lastAttemptAt,officialApi:officialError instanceof XError?officialError.code:undefined}));
     try{await dispatchNotifications(env,previous,next);}catch(error){console.error('notification_dispatch_failed',{code:error?.code||'unknown'});}

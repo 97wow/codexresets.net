@@ -1,3 +1,5 @@
+import {classifyPostsWithAI,eventFromAI} from './ai-classifier.js';
+
 export const AUTHOR_ID = '1953337039510003712';
 export const AUTHOR = 'thsottiaux';
 export class XError extends Error {
@@ -14,14 +16,14 @@ export function normalizePost(post) {
 export function classify(post, context = []) {
   if (post.references.some(r=>r.type==='retweeted')) return null;
   if(post.editorial)return {id:post.id,state:post.editorial.state,kind:post.editorial.kind,text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:post.references.map(r=>r.id),timingText:'',review:'human_reviewed',method:post.method,excerpt:post.excerpt===true,summary:post.editorial.summary};
+  const aiEvent=eventFromAI(post);if(aiEvent!==undefined)return aiEvent;
   const text=post.text.toLowerCase();
   const hasReset=/\b(reset\w*|replenish\w*)\b/.test(text);
   const inherited=context.some(p=>/\breset\w*\b/i.test(p.text));
   if(!hasReset && !(inherited && /\b(done|landed|live|propagat\w*)\b/.test(text)))return null;
   if(/\b(password|factory|git|hard drive)\s+reset\b|\breset\s+(?:(?:your|the|my)\s+)?(password|branch|pc)\b/.test(text))return null;
   const uncertain=/\b(maybe|perhaps|might|could|hope|wish|would|if|no reset|not resetting|won't reset)\b/.test(text);
-  const explicitCommitment=/\b(?:promis(?:e|ed|ing)|schedul(?:e|ed|ing)|plan(?:ned|ning)?|confirm(?:ed|ing)?)\s+(?:a\s+|the\s+)?reset\b|\breset\s+(?:is\s+)?(?:coming|scheduled|planned)\b/.test(text);
-  const future=explicitCommitment||/\b(will|going to|tonight|tomorrow|later|lands? (?:at|around|by|in)|in ~?\s*\d+\s*hours?)\b/.test(text);
+  const future=/\b(will|going to|tonight|tomorrow|later|lands? (?:at|around|by|in)|in ~?\s*\d+\s*hours?)\b/.test(text);
   const complete=/\b(reset all propagated|all reset|(?:have|has|just) (?:been )?reset|reset (?:is |has )?(?:done|complete|completed)|reset\w*.*(?:has|have) (?:been )?(?:applied|propagated))\b/.test(text)||(inherited&&/\b(it is done|it’s done|all propagated)\b/.test(text));
   const rollout=/\b(rolling out|propagating|being applied|resetting|reseting)\b/.test(text);
   let state=uncertain?'signal':complete?'completed':rollout?'rollout':future?'announced':'signal';
@@ -33,7 +35,7 @@ export function mergePosts(existing, incoming) {
   for(const post of incoming){
     for(const old of post.edits||[])if(old!==post.id)map.delete(old);
     const current=map.get(post.id);
-    map.set(post.id,{...post,...(current?.editorial?{editorial:current.editorial}:{}),...(current?.excerpt?{excerpt:true}:{}),...(!post.references?.length&&current?.references?.length?{references:current.references}:{})});
+    map.set(post.id,{...post,...(current?.editorial?{editorial:current.editorial}:{}),...(current?.aiClassification&&current.text===post.text?{aiClassification:current.aiClassification}:{}),...(current?.excerpt?{excerpt:true}:{}),...(!post.references?.length&&current?.references?.length?{references:current.references}:{})});
   }
   return [...map.values()].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
 }
@@ -64,7 +66,7 @@ export async function collectX(previous, token, fetcher = fetch, options = {}) {
     if(!previous.cursor)next=undefined;
     if(++pages>=5&&next)throw new XError('backlog_requires_backfill'); // Never advance past an uncollected page.
   }while(next);
-  const posts=mergePosts(previous.posts||[],received);
+  const posts=await classifyPostsWithAI(mergePosts(previous.posts||[],received),options.ai);
   // First connection is a bounded seed. Do not mistake manually reviewed historic posts for the API cursor.
   const cursor=received.reduce((max,p)=>!max||BigInt(p.id)>BigInt(max)?p.id:max,previous.cursor||null);
   return {...previous,version:1,posts,events:deriveEvents(posts),cursor,lastAttemptAt:new Date().toISOString(),lastSuccessAt:new Date().toISOString(),collectorState:'connected',collectorMethod:'x_api',error:null,source:'https://x.com/thsottiaux',coverage:'partial'};
