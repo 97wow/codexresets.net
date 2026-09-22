@@ -33,7 +33,8 @@ export function parsePublicTimeline(markdown,now=new Date().toISOString()){
     if(cut!==undefined)text=text.slice(0,cut);
     text=cleanPublicPostText(decodeMarkdown(text));
     if(!text||text.length>100000)continue;
-    posts.push({id,authorId:AUTHOR_ID,text,createdAt:createdAtFromSnowflake(id),url:`https://x.com/${AUTHOR}/status/${id}`,references:[],edits:[id],collectedAt:now,method:'browser_rendering'});
+    const isReply=/\bReplying to\b/i.test(item);
+    posts.push({id,authorId:AUTHOR_ID,text,createdAt:createdAtFromSnowflake(id),url:`https://x.com/${AUTHOR}/status/${id}`,references:[],isReply,edits:[id],collectedAt:now,method:'browser_rendering'});
   }
   return [...new Map(posts.map(post=>[post.id,post])).values()];
 }
@@ -58,10 +59,9 @@ async function readPublicTimeline(browser,url){
 export async function collectXPublic(previous,browser){
   const profileUrl=`https://x.com/${AUTHOR}`;
   const repliesUrl=`${profileUrl}/with_replies`;
-  const profilePosts=await readPublicTimeline(browser,profileUrl);
-  const profileIds=new Set(profilePosts.map(post=>post.id));
-  const replyTimeline=await readPublicTimeline(browser,repliesUrl);
-  const received=mergePosts(profilePosts,replyTimeline.map(post=>({...post,isReply:!profileIds.has(post.id)})));
+  // The replies timeline is a superset of the profile timeline. One render keeps
+  // the scheduled Worker within Browser Rendering's per-run execution budget.
+  const received=await readPublicTimeline(browser,repliesUrl);
   const posts=mergePosts(previous.posts||[],received);
   const now=new Date().toISOString();
   return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:repliesUrl,sources:[profileUrl,repliesUrl],coverage:'partial'};
