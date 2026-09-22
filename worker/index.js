@@ -1,5 +1,5 @@
 import fallback from '../src/data/snapshot.json';
-import {collectX,XError} from '../src/lib/x-collector.js';
+import {collectX,deriveEvents,mergePosts,XError} from '../src/lib/x-collector.js';
 import {collectXPublic,cleanPublicPostText} from '../src/lib/x-public-collector.js';
 import {apiDocument,openAPI} from '../src/lib/api.js';
 import {renderTracker} from '../src/lib/tracker.js';
@@ -8,8 +8,10 @@ import {communityStats,recordBeg,recordVisit} from '../src/lib/community.js';
 import {NotifyError,confirmEmailSubscription,dispatchNotifications,handleTelegramUpdate,requestEmailSubscription,requestTelegramConnection,requestWebhookSubscription,telegramConfig,unsubscribe} from '../src/lib/notifications.js';
 import {localeBase,locales} from '../src/lib/i18n.js';
 
+const withCatalogHistory=data=>{const posts=mergePosts(fallback.posts||[],data.posts||[]);return {...data,posts,events:deriveEvents(posts),catalogSource:fallback.catalogSource,coverage:'catalog_backfilled'};};
+
 export async function synchronize(env,fetcher=fetch){
-  const previous=await env.RESETS.get('state','json')||fallback;
+  const previous=withCatalogHistory(await env.RESETS.get('state','json')||fallback);
   let next,officialError;
   try{if(env.X_BEARER_TOKEN)next=await collectX(previous,env.X_BEARER_TOKEN,fetcher,{ai:env.AI});}catch(error){officialError=error;}
   try{
@@ -26,8 +28,9 @@ export async function synchronize(env,fetcher=fetch){
   }
 }
 export function publicState(data,health){
-  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`,isReply:post.isReply===true}));
-  return {version:1,events:data.events,posts,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
+  const hydrated=withCatalogHistory(data);
+  const posts=hydrated.posts.filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`,isReply:post.isReply===true}));
+  return {version:1,events:hydrated.events,posts,lastSuccessAt:hydrated.lastSuccessAt,lastReviewAt:hydrated.lastReviewAt,coverage:hydrated.coverage,catalogSource:hydrated.catalogSource,collectorMethod:health?.method||hydrated.collectorMethod||null,collectorState:health?.state==='error'?'error':hydrated.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
 const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'public, max-age=60, s-maxage=300'};
@@ -77,6 +80,7 @@ export default {
     if(!dynamic.includes(url.pathname)&&!eventMatch)return env.ASSETS.fetch(request);
     let data=fallback,health;
     try{data=await env.RESETS.get('state','json')||fallback;health=await env.RESETS.get('health','json');}catch{health={state:'error'};}
+    data=withCatalogHistory(data);
     const view=publicState(data,health);
     let response;
     if(url.pathname==='/api/status')response=json(view);
