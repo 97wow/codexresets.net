@@ -11,8 +11,10 @@ assert.equal(classify(normalizePost(raw('103','Maybe a reset tomorrow.'))).state
 assert.equal(classify(normalizePost(raw('104','Reset your password.'))),null);
 assert.equal(classify(normalizePost(raw('105','A new release tomorrow.'))),null);
 assert.equal(normalizePost(raw('106','Short',{note_tweet:{text:'The full source message'}})).text,'The full source message');
+assert.equal(normalizePost(raw('1061','A reply',{referenced_tweets:[{type:'replied_to',id:'99'}]})).isReply,true);
 assert.throws(()=>normalizePost(raw('107','A reset',{author_id:'123'})));
 const publicMarkdown=`# Tibo\n\n- [![@thsottiaux](avatar)](https://x.com/thsottiaux) [Tibo](https://x.com/thsottiaux) [@thsottiaux](https://x.com/thsottiaux) [1m](https://x.com/thsottiaux/status/2100363668051603608)We will reset usage tonight. [21](https://x.com/i/status/2100363668051603608)44`;
+const publicReplyMarkdown=`${publicMarkdown}\n- [![@thsottiaux](avatar)](https://x.com/thsottiaux) [Tibo](https://x.com/thsottiaux) [@thsottiaux](https://x.com/thsottiaux) [1m](https://x.com/thsottiaux/status/2100364668051603608)Probably nothing, do not worry. [8](https://x.com/i/status/2100364668051603608)31`;
 const publicPosts=parsePublicTimeline(publicMarkdown);
 assert.equal(publicPosts.length,1);assert.equal(publicPosts[0].text,'We will reset usage tonight.');assert.equal(publicPosts[0].method,'browser_rendering');assert.equal(publicPosts[0].createdAt,createdAtFromSnowflake(publicPosts[0].id));
 assert.equal(cleanPublicPostText('What is ChatGPT When you make a selection it cannot be changedAn agentAn assistant70,220 votes'),'What is ChatGPT');
@@ -27,8 +29,9 @@ const paged=async url=>{
 };
 const state=await collectX(previous,'test-only-token',paged);
 assert.equal(state.cursor,'102');assert.equal(state.posts.length,2);assert.equal(state.collectorMethod,'x_api');assert.equal(previous.cursor,'100');
-const browserState=await collectXPublic(previous,{quickAction:async(action,options)=>{assert.equal(action,'markdown');assert.equal(options.url,'https://x.com/thsottiaux');assert.equal(options.waitForSelector.selector,'article');return publicMarkdown;}});
-assert.equal(browserState.collectorMethod,'browser_rendering');assert.equal(browserState.posts.length,1);
+const publicUrls=[];
+const browserState=await collectXPublic(previous,{quickAction:async(action,options)=>{assert.equal(action,'markdown');assert.equal(options.waitForSelector.selector,'article');publicUrls.push(options.url);return options.url.endsWith('/with_replies')?publicReplyMarkdown:publicMarkdown;}});
+assert.deepEqual(publicUrls,['https://x.com/thsottiaux','https://x.com/thsottiaux/with_replies']);assert.equal(browserState.collectorMethod,'browser_rendering');assert.equal(browserState.posts.length,2);assert.equal(browserState.posts.find(post=>post.id==='2100364668051603608').isReply,true);assert.equal(browserState.source,'https://x.com/thsottiaux/with_replies');
 const browserResponseState=await collectXPublic(previous,{quickAction:async()=>Response.json({success:true,result:publicMarkdown,meta:{}})});
 assert.equal(browserResponseState.collectorMethod,'browser_rendering');assert.equal(browserResponseState.posts[0].id,'2100363668051603608');
 await assert.rejects(collectX(previous,'test-only-token',async()=>new Response('',{status:401})),e=>e.code==='invalid_credentials');

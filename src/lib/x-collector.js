@@ -8,7 +8,8 @@ export function normalizePost(post) {
   if (!post || !/^\d+$/.test(post.id) || post.author_id !== AUTHOR_ID || !validDate(post.created_at)) throw new XError('invalid_post');
   const text = post.note_tweet?.text || post.text;
   if (typeof text !== 'string' || !text.trim() || text.length > 100000) throw new XError('invalid_text');
-  return {id:post.id,authorId:post.author_id,text,createdAt:post.created_at,url:`https://x.com/${AUTHOR}/status/${post.id}`,references:(post.referenced_tweets||[]).filter(r=>['quoted','replied_to','retweeted'].includes(r.type)&&/^\d+$/.test(r.id)),edits:(post.edit_history_tweet_ids||[post.id]).filter(id=>/^\d+$/.test(id)),collectedAt:new Date().toISOString(),method:'x_api'};
+  const references=(post.referenced_tweets||[]).filter(r=>['quoted','replied_to','retweeted'].includes(r.type)&&/^\d+$/.test(r.id));
+  return {id:post.id,authorId:post.author_id,text,createdAt:post.created_at,url:`https://x.com/${AUTHOR}/status/${post.id}`,references,isReply:references.some(reference=>reference.type==='replied_to'),edits:(post.edit_history_tweet_ids||[post.id]).filter(id=>/^\d+$/.test(id)),collectedAt:new Date().toISOString(),method:'x_api'};
 }
 export function classify(post, context = []) {
   if (post.references.some(r=>r.type==='retweeted')) return null;

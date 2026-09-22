@@ -38,11 +38,11 @@ export function parsePublicTimeline(markdown,now=new Date().toISOString()){
   return [...new Map(posts.map(post=>[post.id,post])).values()];
 }
 
-export async function collectXPublic(previous,browser){
+async function readPublicTimeline(browser,url){
   if(!browser?.quickAction)throw new XError('browser_unavailable');
   let result,markdown;
   try{
-    result=await browser.quickAction('markdown',{url:`https://x.com/${AUTHOR}`,gotoOptions:{waitUntil:'domcontentloaded',timeout:30000},waitForSelector:{selector:'article',timeout:15000},waitForTimeout:750});
+    result=await browser.quickAction('markdown',{url,gotoOptions:{waitUntil:'domcontentloaded',timeout:30000},waitForSelector:{selector:'article',timeout:15000},waitForTimeout:750});
     if(result instanceof Response){
       if(!result.ok)throw new XError(result.status===429?'rate_limited':'source_unavailable',result.status);
       const body=await result.json();
@@ -50,9 +50,19 @@ export async function collectXPublic(previous,browser){
       markdown=body.result;
     }else markdown=typeof result==='string'?result:result?.result;
   }catch{throw new XError('source_unavailable');}
-  const received=parsePublicTimeline(markdown);
-  if(!received.length)throw new XError('invalid_response');
+  const posts=parsePublicTimeline(markdown);
+  if(!posts.length)throw new XError('invalid_response');
+  return posts;
+}
+
+export async function collectXPublic(previous,browser){
+  const profileUrl=`https://x.com/${AUTHOR}`;
+  const repliesUrl=`${profileUrl}/with_replies`;
+  const profilePosts=await readPublicTimeline(browser,profileUrl);
+  const profileIds=new Set(profilePosts.map(post=>post.id));
+  const replyTimeline=await readPublicTimeline(browser,repliesUrl);
+  const received=mergePosts(profilePosts,replyTimeline.map(post=>({...post,isReply:!profileIds.has(post.id)})));
   const posts=mergePosts(previous.posts||[],received);
   const now=new Date().toISOString();
-  return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:`https://x.com/${AUTHOR}`,coverage:'partial'};
+  return {...previous,version:1,posts,events:deriveEvents(posts),lastAttemptAt:now,lastSuccessAt:now,collectorState:'connected',collectorMethod:'browser_rendering',error:null,source:repliesUrl,sources:[profileUrl,repliesUrl],coverage:'partial'};
 }

@@ -136,7 +136,7 @@
     "confirmedDay": "Confirmed reset",
     "xNav": "Tibo’s posts",
     "xStreamTitle": "What Tibo is saying",
-    "xStreamIntro": "Every public post captured since tracking began",
+    "xStreamIntro": "Posts and replies captured directly from Tibo’s public X timeline.",
     "xStreamFresh": "Fresh from X",
     "xResetPost": "Reset update",
     "xGeneralPost": "Latest post",
@@ -155,7 +155,10 @@
     "visitorCount": "visitors",
     "onePerIp": "One anonymous wish per network each reset cycle",
     "morePosts": "Show more posts",
-    "lessPosts": "Show recent posts only"
+    "lessPosts": "Show recent posts only",
+    "xReplyPost": "Reply",
+    "xRepliesSource": "Posts and replies",
+    "friendLinks": "Friend link"
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -294,7 +297,7 @@
     "confirmedDay": "确认重置",
     "xNav": "Tibo 动态",
     "xStreamTitle": "Tibo 最近在说什么",
-    "xStreamIntro": "展示接通采集后捕获到的每一条公开 X 文",
+    "xStreamIntro": "直接展示从 Tibo 的公开 X 时间线采集到的帖子和回复。",
     "xStreamFresh": "刚从 X 获取",
     "xResetPost": "重置动态",
     "xGeneralPost": "最新动态",
@@ -313,7 +316,10 @@
     "visitorCount": "位访客来过",
     "onePerIp": "每个网络在一个重置周期内匿名计数一次",
     "morePosts": "查看更多动态",
-    "lessPosts": "收起，只看最近动态"
+    "lessPosts": "收起，只看最近动态",
+    "xReplyPost": "回复",
+    "xRepliesSource": "帖子与回复",
+    "friendLinks": "友情链接"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -452,7 +458,7 @@
     "confirmedDay": "確認重置",
     "xNav": "Tibo 動態",
     "xStreamTitle": "Tibo 最近在說什麼",
-    "xStreamIntro": "展示接通採集後捕獲的每一條公開 X 文",
+    "xStreamIntro": "直接展示從 Tibo 的公開 X 時間線收集到的貼文和回覆。",
     "xStreamFresh": "剛從 X 獲取",
     "xResetPost": "重置動態",
     "xGeneralPost": "最新動態",
@@ -471,7 +477,10 @@
     "visitorCount": "位訪客來過",
     "onePerIp": "每個網路在一個重置週期內匿名計數一次",
     "morePosts": "查看更多動態",
-    "lessPosts": "收起，只看最近動態"
+    "lessPosts": "收起，只看最近動態",
+    "xReplyPost": "回覆",
+    "xRepliesSource": "貼文與回覆",
+    "friendLinks": "友情連結"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -610,7 +619,7 @@
     "confirmedDay": "確認済みリセット",
     "xNav": "Tiboの投稿",
     "xStreamTitle": "Tiboの最新投稿",
-    "xStreamIntro": "追跡開始後に取得した公開投稿",
+    "xStreamIntro": "Tiboの公開Xタイムラインから取得した投稿と返信を表示します。",
     "xStreamFresh": "Xから新着",
     "xResetPost": "リセット情報",
     "xGeneralPost": "最新投稿",
@@ -629,7 +638,10 @@
     "visitorCount": "人の訪問者",
     "onePerIp": "1リセット周期につき、同じネットワークから匿名で1回",
     "morePosts": "投稿をさらに表示",
-    "lessPosts": "最近の投稿だけ表示"
+    "lessPosts": "最近の投稿だけ表示",
+    "xReplyPost": "返信",
+    "xRepliesSource": "投稿と返信",
+    "friendLinks": "関連リンク"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -768,7 +780,7 @@
     "confirmedDay": "확인된 재설정",
     "xNav": "Tibo 게시물",
     "xStreamTitle": "Tibo의 최근 이야기",
-    "xStreamIntro": "추적을 시작한 뒤 수집한 모든 공개 게시물",
+    "xStreamIntro": "Tibo의 공개 X 타임라인에서 수집한 게시물과 답글을 표시합니다.",
     "xStreamFresh": "X에서 새로 수집",
     "xResetPost": "재설정 소식",
     "xGeneralPost": "최근 게시물",
@@ -787,7 +799,10 @@
     "visitorCount": "명 방문",
     "onePerIp": "재설정 주기마다 네트워크당 익명으로 한 번",
     "morePosts": "게시물 더 보기",
-    "lessPosts": "최근 게시물만 보기"
+    "lessPosts": "최근 게시물만 보기",
+    "xReplyPost": "답글",
+    "xRepliesSource": "게시물 및 답글",
+    "friendLinks": "관련 링크"
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -926,7 +941,7 @@
     "confirmedDay": "Reinicio confirmado",
     "xNav": "publicaciones de Tibo",
     "xStreamTitle": "Lo último de Tibo",
-    "xStreamIntro": "Cada publicación pública capturada desde que comenzó el seguimiento",
+    "xStreamIntro": "Publicaciones y respuestas obtenidas directamente de la cronología pública de Tibo en X.",
     "xStreamFresh": "Recién salido de X",
     "xResetPost": "Restablecer actualización",
     "xGeneralPost": "Última publicación",
@@ -945,7 +960,10 @@
     "visitorCount": "visitantes",
     "onePerIp": "Un deseo anónimo por red en cada ciclo de reinicio",
     "morePosts": "Mostrar más publicaciones",
-    "lessPosts": "Mostrar solo publicaciones recientes"
+    "lessPosts": "Mostrar solo publicaciones recientes",
+    "xReplyPost": "Respuesta",
+    "xRepliesSource": "Publicaciones y respuestas",
+    "friendLinks": "Enlace amigo"
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1084,7 +1102,7 @@
     "confirmedDay": "Réinitialisation confirmée",
     "xNav": "Les messages de Tibo",
     "xStreamTitle": "Les dernières nouvelles de Tibo",
-    "xStreamIntro": "Chaque publication publique capturée depuis le début du suivi",
+    "xStreamIntro": "Publications et réponses récupérées directement depuis le fil X public de Tibo.",
     "xStreamFresh": "Fraîchement sorti de X",
     "xResetPost": "Réinitialiser la mise à jour",
     "xGeneralPost": "Dernier message",
@@ -1103,7 +1121,10 @@
     "visitorCount": "visiteurs",
     "onePerIp": "Un souhait anonyme par réseau à chaque cycle de réinitialisation",
     "morePosts": "Afficher plus de messages",
-    "lessPosts": "Afficher uniquement les messages récents"
+    "lessPosts": "Afficher uniquement les messages récents",
+    "xReplyPost": "Réponse",
+    "xRepliesSource": "Publications et réponses",
+    "friendLinks": "Lien ami"
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1242,7 +1263,7 @@
     "confirmedDay": "Bestätigter Reset",
     "xNav": "Tibos Beiträge",
     "xStreamTitle": "Aktuelles von Tibo",
-    "xStreamIntro": "Jeder öffentliche Beitrag, der seit Beginn der Verfolgung erfasst wurde",
+    "xStreamIntro": "Beiträge und Antworten direkt aus Tibos öffentlicher X-Timeline.",
     "xStreamFresh": "Frisch von X",
     "xResetPost": "Update zurücksetzen",
     "xGeneralPost": "Letzter Beitrag",
@@ -1261,7 +1282,10 @@
     "visitorCount": "Besucher",
     "onePerIp": "Ein anonymer Wunsch pro Netzwerk bei jedem Reset-Zyklus",
     "morePosts": "Weitere Beiträge anzeigen",
-    "lessPosts": "Nur aktuelle Beiträge anzeigen"
+    "lessPosts": "Nur aktuelle Beiträge anzeigen",
+    "xReplyPost": "Antwort",
+    "xRepliesSource": "Beiträge und Antworten",
+    "friendLinks": "Partnerlink"
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1400,7 +1424,7 @@
     "confirmedDay": "Redefinição confirmada",
     "xNav": "Postagens de Tibo",
     "xStreamTitle": "Novidades do Tibo",
-    "xStreamIntro": "Cada postagem pública capturada desde o início do rastreamento",
+    "xStreamIntro": "Publicações e respostas coletadas diretamente da linha do tempo pública de Tibo no X.",
     "xStreamFresh": "Fresco do X",
     "xResetPost": "Redefinir atualização",
     "xGeneralPost": "Última postagem",
@@ -1419,7 +1443,10 @@
     "visitorCount": "visitantes",
     "onePerIp": "Um desejo anônimo por rede a cada ciclo de redefinição",
     "morePosts": "Mostrar mais postagens",
-    "lessPosts": "Mostrar apenas postagens recentes"
+    "lessPosts": "Mostrar apenas postagens recentes",
+    "xReplyPost": "Resposta",
+    "xRepliesSource": "Publicações e respostas",
+    "friendLinks": "Link parceiro"
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1558,7 +1585,7 @@
     "confirmedDay": "Подтвержденный сброс",
     "xNav": "Сообщения Тибо",
     "xStreamTitle": "Последние публикации Tibo",
-    "xStreamIntro": "Все общедоступные публикации, зафиксированные с момента начала отслеживания.",
+    "xStreamIntro": "Публикации и ответы из открытой ленты Tibo в X.",
     "xStreamFresh": "Только что из X",
     "xResetPost": "Сбросить обновление",
     "xGeneralPost": "Последнее сообщение",
@@ -1577,6 +1604,9 @@
     "visitorCount": "посетители",
     "onePerIp": "Одно анонимное желание на сеть в каждом цикле сброса.",
     "morePosts": "Показать больше сообщений",
-    "lessPosts": "Показать только последние сообщения"
+    "lessPosts": "Показать только последние сообщения",
+    "xReplyPost": "Ответ",
+    "xRepliesSource": "Публикации и ответы",
+    "friendLinks": "Дружественная ссылка"
   }
 }

@@ -26,7 +26,7 @@ export async function synchronize(env,fetcher=fetch){
   }
 }
 export function publicState(data,health){
-  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`}));
+  const posts=(data.posts||[]).filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`,isReply:post.isReply===true}));
   return {version:1,events:data.events,posts,lastSuccessAt:data.lastSuccessAt,lastReviewAt:data.lastReviewAt,coverage:data.coverage,collectorMethod:health?.method||data.collectorMethod||null,collectorState:health?.state==='error'?'error':data.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
