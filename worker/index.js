@@ -9,7 +9,7 @@ import {NotifyError,confirmEmailSubscription,dispatchNotifications,handleTelegra
 import {localeBase,locales} from '../src/lib/i18n.js';
 import {collectCatalogStatus} from '../src/lib/catalog-status.js';
 
-const withCatalogHistory=data=>{const posts=mergePosts(fallback.posts||[],data.posts||[]);return {...data,posts,events:deriveEvents(posts),catalogSource:fallback.catalogSource,coverage:'catalog_backfilled'};};
+export const withCatalogHistory=data=>{const catalogPosts=new Map((fallback.posts||[]).map(post=>[post.id,post])),currentPosts=(data.posts||[]).map(post=>{const catalog=catalogPosts.get(post.id),truncated=post.excerpt===true||/\bshow more\s*$/i.test(post.text||'');return catalog&&truncated&&catalog.text.length>String(post.text||'').length?{...post,text:catalog.text,excerpt:false,method:catalog.method||post.method}:post;}),posts=mergePosts(fallback.posts||[],currentPosts);return {...data,posts,events:deriveEvents(posts),catalogSource:fallback.catalogSource,catalogStatusSource:data.catalogStatusSource||fallback.catalogStatusSource,coverage:'catalog_backfilled'};};
 
 export async function synchronize(env,fetcher=fetch){
   const previous=withCatalogHistory(await env.RESETS.get('state','json')||fallback);
