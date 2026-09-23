@@ -1,8 +1,9 @@
+import {resetOpportunities} from './reset-state.js';
 const encoder=new TextEncoder();
 const validCountry=value=>typeof value==='string'&&/^[A-Z]{2}$/.test(value)?value:'XX';
 const readNumber=async(kv,key)=>Math.max(0,Number.parseInt(await kv.get(key)||'0',10)||0);
 const readCountries=async(kv,key)=>{try{const value=await kv.get(key,'json');return value&&typeof value==='object'?value:{};}catch{return {};}};
-export const resetCycle=data=>(data.events||[]).filter(event=>event.state==='completed'&&/^\d{10,25}$/.test(event.id)).sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt))[0]?.id||'none';
+export const resetCycle=data=>resetOpportunities(data.events).find(event=>/^\d{10,25}$/.test(event.id))?.id||'none';
 async function visitorHash(request,scope,secret){
   const ip=request.headers.get('CF-Connecting-IP')||'unknown';
   const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);

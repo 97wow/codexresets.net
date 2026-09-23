@@ -1,5 +1,5 @@
 const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
-const labels=new Set(['unrelated','signal','announced','rollout','completed','compensation']);
+const labels=new Set(['unrelated','signal','announced','rollout','available','completed','compensation']);
 const schema={
   type:'object',
   properties:{classifications:{type:'array',items:{type:'object',properties:{id:{type:'string'},label:{type:'string',enum:[...labels]},confidence:{type:'number',minimum:0,maximum:1},timingText:{type:'string',maxLength:160}},required:['id','label','confidence','timingText'],additionalProperties:false}}},
@@ -12,10 +12,11 @@ Labels:
 - signal: a vague hint, joke, wish, or ambiguous timing clue without a clear commitment.
 - announced: an explicit future commitment, promise, schedule, or statement that a usage reset will happen. "I promised a reset for Tuesday" is announced even when playful.
 - rollout: the usage reset is currently being applied or propagated.
+- available: a banked reset credit is being loaded, has been credited, or is available in an account for the user to redeem manually. This does not mean current usage was automatically refilled.
 - completed: the author explicitly confirms the usage reset has been applied or completed. A promised time passing never proves completion.
-- compensation: a replacement or banked reset is being granted because of an earlier problem.
+- compensation: a replacement reset is being granted because an earlier reset or redemption failed. Do not use this merely because a normal banked reset is offered.
 
-Use compensation only for a replacement or stored/redeemable reset. Extract stated timing without inventing a timezone. Keep timingText under 160 characters. Return exactly one compact result for every supplied id and no commentary.`;
+Use compensation only for a replacement issued because an earlier reset or redemption failed. Use available for an ordinary stored/redeemable banked reset. Extract stated timing without inventing a timezone. Keep timingText under 160 characters. Return exactly one compact result for every supplied id and no commentary.`;
 const text=value=>String(value||'').replace(/\s+/g,' ').trim().slice(0,5000);
 const validDecision=(decision,ids)=>decision&&ids.has(decision.id)&&labels.has(decision.label)&&Number.isFinite(decision.confidence)&&decision.confidence>=0&&decision.confidence<=1&&typeof decision.timingText==='string'&&decision.timingText.length<=160;
 const batches=(items,size)=>Array.from({length:Math.ceil(items.length/size)},(_,index)=>items.slice(index*size,(index+1)*size));
@@ -56,6 +57,7 @@ export function eventFromAI(post){
   if(!decision||!validDecision(decision,new Set([post.id])))return undefined;
   if(decision.label==='unrelated')return null;
   const state=decision.confidence>=.7?decision.label:'signal';
-  const summaries={signal:{zh:'Tibo 提到了可能与重置有关的信息，但尚未明确承诺。',en:'Tibo mentioned a possible reset signal without a clear commitment.'},announced:{zh:'Tibo 已明确预告将进行重置。',en:'Tibo explicitly announced an upcoming reset.'},rollout:{zh:'Tibo 表示重置正在进行。',en:'Tibo said the reset is being rolled out.'},completed:{zh:'Tibo 已明确确认重置完成。',en:'Tibo explicitly confirmed that the reset is complete.'},compensation:{zh:'Tibo 宣布提供补偿或可保留的重置。',en:'Tibo announced a compensation or banked reset.'}};
-  return {id:post.id,state:state==='unrelated'?'signal':state,kind:decision.label==='compensation'?'banked':'regular',text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:(post.references||[]).filter(reference=>reference.type!=='retweeted').map(reference=>reference.id),timingText:decision.timingText,review:'ai_classified',method:post.method,excerpt:post.excerpt===true,confidence:decision.confidence,reason:'semantic_ai_classification',summary:summaries[state]||summaries.signal};
+  const summaries={signal:{zh:'Tibo 提到了可能与重置有关的信息，但尚未明确承诺。',en:'Tibo mentioned a possible reset signal without a clear commitment.'},announced:{zh:'Tibo 已明确预告将进行重置。',en:'Tibo explicitly announced an upcoming reset.'},rollout:{zh:'Tibo 表示重置正在进行。',en:'Tibo said the reset is being rolled out.'},available:{zh:'Tibo 正在向适用账号发放备用重置额度；到账后需由用户自行启用，不会自动恢复当前用量。',en:'Tibo is crediting eligible accounts with a banked reset. Once it appears, the user must redeem it manually; it does not refill current usage automatically.'},completed:{zh:'Tibo 已明确确认重置完成。',en:'Tibo explicitly confirmed that the reset is complete.'},compensation:{zh:'Tibo 宣布为此前出现问题的重置提供补发。',en:'Tibo announced a replacement for an earlier reset problem.'}};
+  const kind=decision.label==='available'||decision.label==='compensation'||/\bbanked\s+reset\b/i.test(post.text)?'banked':'regular';
+  return {id:post.id,state:state==='unrelated'?'signal':state,kind,text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:(post.references||[]).filter(reference=>reference.type!=='retweeted').map(reference=>reference.id),timingText:decision.timingText,review:'ai_classified',method:post.method,excerpt:post.excerpt===true,confidence:decision.confidence,reason:'semantic_ai_classification',summary:summaries[state]||summaries.signal};
 }

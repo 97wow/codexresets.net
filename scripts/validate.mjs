@@ -11,8 +11,9 @@ for(const lang of languages){
 }
 assert.equal(data.version,1);
 for(const post of data.posts){assert.equal(post.authorId,AUTHOR_ID);assert.equal(post.url,`https://x.com/thsottiaux/status/${post.id}`);assert.ok(Number.isFinite(Date.parse(post.createdAt)));}
-for(const event of data.events){assert.ok(['announced','rollout','completed','signal','compensation'].includes(event.state));assert.ok(data.posts.some(p=>p.id===event.id));}
+for(const event of data.events){assert.ok(['announced','rollout','available','completed','signal','compensation'].includes(event.state));assert.ok(data.posts.some(p=>p.id===event.id));}
 assert.equal(data.catalogSource,'https://codex-resets.com/api/resets');
 assert.equal(data.events.filter(event=>event.state==='completed').length,53,'Historical catalog backfill must remain complete');
+assert.equal(data.events.filter(event=>event.state==='available').length,1,'The latest banked reset must remain distinct from an automatic completed reset');
 assert.ok(data.posts.filter(post=>post.method==='catalog_import').length>=49);
 console.log(`Validated ${data.events.length} records including 53 catalog-backed resets; i18n: ${keys.length} UI keys × ${languages.length} languages, 0 missing or empty translations.`);

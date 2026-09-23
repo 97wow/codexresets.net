@@ -26,8 +26,9 @@ export function classify(post, context = []) {
   const future=/\b(will|going to|tonight|tomorrow|later|lands? (?:at|around|by|in)|in ~?\s*\d+\s*hours?)\b/.test(text);
   const complete=/\b(reset all propagated|all reset|(?:have|has|just) (?:been )?reset|reset (?:is |has )?(?:done|complete|completed)|reset\w*.*(?:has|have) (?:been )?(?:applied|propagated))\b/.test(text)||(inherited&&/\b(it is done|it’s done|all propagated)\b/.test(text));
   const rollout=/\b(rolling out|propagating|being applied|resetting|reseting)\b/.test(text);
-  let state=uncertain?'signal':complete?'completed':rollout?'rollout':future?'announced':'signal';
   const kind=/\bbanked\b/.test(text)||(!hasReset&&context.some(p=>/\bbanked\b/i.test(p.text)))?'banked':'regular';
+  const available=kind==='banked'&&/\b(load(?:ing|ed)?|credit(?:ing|ed)?|add(?:ing|ed)?|deposit(?:ing|ed)?|available)\b[\s\S]{0,120}\b(?:banked\s+)?reset\b|\bbanked\s+reset\b[\s\S]{0,120}\b(account|available|redeem|apply|use)\b/.test(text);
+  let state=uncertain?'signal':complete?'completed':available?'available':rollout?'rollout':future?'announced':'signal';
   return {id:post.id,state,kind,text:post.text,announcedAt:post.createdAt,source:post.url,relatedPostIds:post.references.filter(r=>r.type!=='retweeted').map(r=>r.id),timingText:post.text.split(/\n|(?<=[.!?])\s+/).filter(s=>/\b(tonight|tomorrow|today|lands?|monday|tuesday|wednesday|thursday|friday|saturday|sunday|\d+\s*(?:am|pm|hours?|minutes?)|PT|PST|PDT)\b/i.test(s)).join(' '),review:'rule_classified',method:post.method,excerpt:post.excerpt===true};
 }
 export function mergePosts(existing, incoming) {

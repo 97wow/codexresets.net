@@ -2,7 +2,7 @@ import {AwsClient} from 'aws4fetch';
 import {localizedSummary} from './i18n.js';
 
 const encoder=new TextEncoder();
-const eventStates=new Set(['signal','announced','rollout','completed','compensation']);
+const eventStates=new Set(['signal','announced','rollout','available','completed','compensation']);
 const supportedLanguages=new Set(['en','zh','zh-Hant','es','fr','de','pt','ru','ja','ko']);
 const langOf=value=>supportedLanguages.has(value)?value:'en';
 const bytesToHex=bytes=>[...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('');

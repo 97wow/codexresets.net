@@ -165,7 +165,10 @@
     "historyCredit": "Historical catalog backfilled from",
     "tiboTime": "Tibo time",
     "localTime": "Local time",
-    "timeDisplay": "Time display"
+    "timeDisplay": "Time display",
+    "available": "Banked reset available",
+    "bankedAvailable": "Banked reset available",
+    "bankedUseHint": "Open Codex → Profile → Usage to redeem it when you choose. It does not refill current usage automatically."
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -257,8 +260,8 @@
     "noAnnouncementNote": "Tibo 发布消息后会在这里更新",
     "averageInterval": "平均重置间隔",
     "collecting": "数据积累中",
-    "confirmedSamples": "次确认样本",
-    "confirmedAverage": "仅按确认完成的重置计算",
+    "confirmedSamples": "次确认记录",
+    "confirmedAverage": "按已确认的重置机会计算",
     "getNotified": "下一次重置时提醒我",
     "notifyAction": "选择提醒方式",
     "notifyOn": "浏览器提醒已开启",
@@ -312,9 +315,9 @@
     "xOpenPost": "查看原文",
     "xCaptured": "条动态已捕获",
     "archiveMood": "把每一次确认完成的重置，留成一串小小足迹",
-    "resetCount": "确认重置次数",
+    "resetCount": "确认重置机会",
     "longestWait": "最长等待",
-    "metricBasis": "按确认完成的记录计算",
+    "metricBasis": "按已确认的重置机会计算",
     "communityTitle": "小小求一次重置",
     "communityText": "点一下，把期待留在这里，然后轻松回去继续创造。每次确认重置后，计数会重新开始。",
     "begAction": "求一次重置 🙏",
@@ -333,7 +336,10 @@
     "historyCredit": "历史目录补充自",
     "tiboTime": "Tibo 时间",
     "localTime": "本地时间",
-    "timeDisplay": "时间显示"
+    "timeDisplay": "时间显示",
+    "available": "备用重置可用",
+    "bankedAvailable": "备用重置可用",
+    "bankedUseHint": "打开 Codex → 个人资料 → 用量，按需手动启用；它不会自动恢复当前用量。"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -425,8 +431,8 @@
     "noAnnouncementNote": "Tibo 發布消息後會在這裡更新",
     "averageInterval": "平均重置間隔",
     "collecting": "數據累積中",
-    "confirmedSamples": "次確認樣本",
-    "confirmedAverage": "僅按確認完成的重置計算",
+    "confirmedSamples": "次確認記錄",
+    "confirmedAverage": "按已確認的重置機會計算",
     "getNotified": "下次重置時提醒我",
     "notifyAction": "選擇提醒方式",
     "notifyOn": "瀏覽器提醒已開啟",
@@ -480,9 +486,9 @@
     "xOpenPost": "看原文",
     "xCaptured": "條動態已捕獲",
     "archiveMood": "把每一次確認完成的重置，留成一串小小足跡",
-    "resetCount": "確認重置次數",
+    "resetCount": "確認重置機會",
     "longestWait": "最長等待",
-    "metricBasis": "按確認完成的記錄計算",
+    "metricBasis": "按已確認的重置機會計算",
     "communityTitle": "小小求一次重置",
     "communityText": "點一下，把期待留在這裡，然後輕鬆回去繼續創作。每次確認重置後，計數會重新開始。",
     "begAction": "求重置 🙏",
@@ -501,7 +507,10 @@
     "historyCredit": "歷史目錄補充自",
     "tiboTime": "Tibo 時間",
     "localTime": "本地時間",
-    "timeDisplay": "時間顯示"
+    "timeDisplay": "時間顯示",
+    "available": "備用重置可用",
+    "bankedAvailable": "備用重置可用",
+    "bankedUseHint": "開啟 Codex → 個人資料 → 用量，按需手動啟用；它不會自動恢復目前用量。"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -669,7 +678,10 @@
     "historyCredit": "履歴カタログ提供",
     "tiboTime": "Tiboの時間",
     "localTime": "現地時間",
-    "timeDisplay": "時刻表示"
+    "timeDisplay": "時刻表示",
+    "available": "ストック型リセット利用可",
+    "bankedAvailable": "ストック型リセットが利用可能",
+    "bankedUseHint": "Codex → プロフィール → 使用量から、必要なときに手動で適用してください。現在の使用量は自動回復しません。"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -837,7 +849,10 @@
     "historyCredit": "과거 기록 제공",
     "tiboTime": "Tibo 시간",
     "localTime": "현지 시간",
-    "timeDisplay": "시간 표시"
+    "timeDisplay": "시간 표시",
+    "available": "저장형 재설정 사용 가능",
+    "bankedAvailable": "저장형 재설정 지급됨",
+    "bankedUseHint": "Codex → 프로필 → 사용량에서 필요할 때 직접 적용하세요. 현재 사용량이 자동으로 복구되지는 않습니다."
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -1005,7 +1020,10 @@
     "historyCredit": "Catálogo histórico proporcionado por",
     "tiboTime": "Hora de Tibo",
     "localTime": "Hora local",
-    "timeDisplay": "Visualización de hora"
+    "timeDisplay": "Visualización de hora",
+    "available": "Reinicio guardado disponible",
+    "bankedAvailable": "Reinicio guardado disponible",
+    "bankedUseHint": "Abre Codex → Perfil → Uso para aplicarlo cuando quieras. No repone automáticamente el uso actual."
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1173,7 +1191,10 @@
     "historyCredit": "Catalogue historique fourni par",
     "tiboTime": "Heure de Tibo",
     "localTime": "Heure locale",
-    "timeDisplay": "Affichage de l’heure"
+    "timeDisplay": "Affichage de l’heure",
+    "available": "Réinitialisation en réserve disponible",
+    "bankedAvailable": "Réinitialisation en réserve disponible",
+    "bankedUseHint": "Ouvrez Codex → Profil → Utilisation pour l’appliquer au moment voulu. Elle ne recharge pas automatiquement l’utilisation actuelle."
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1341,7 +1362,10 @@
     "historyCredit": "Historischer Katalog von",
     "tiboTime": "Tibo-Zeit",
     "localTime": "Ortszeit",
-    "timeDisplay": "Zeitanzeige"
+    "timeDisplay": "Zeitanzeige",
+    "available": "Gespeicherter Reset verfügbar",
+    "bankedAvailable": "Gespeicherter Reset verfügbar",
+    "bankedUseHint": "Öffne Codex → Profil → Nutzung und löse ihn bei Bedarf manuell ein. Die aktuelle Nutzung wird nicht automatisch aufgefüllt."
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1509,7 +1533,10 @@
     "historyCredit": "Catálogo histórico fornecido por",
     "tiboTime": "Hora do Tibo",
     "localTime": "Hora local",
-    "timeDisplay": "Exibição de horário"
+    "timeDisplay": "Exibição de horário",
+    "available": "Redefinição guardada disponível",
+    "bankedAvailable": "Redefinição guardada disponível",
+    "bankedUseHint": "Abra Codex → Perfil → Uso para aplicá-la quando quiser. Ela não restaura automaticamente o uso atual."
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1677,6 +1704,9 @@
     "historyCredit": "Исторический каталог предоставлен",
     "tiboTime": "Время Тибо",
     "localTime": "Местное время",
-    "timeDisplay": "Отображение времени"
+    "timeDisplay": "Отображение времени",
+    "available": "Отложенный сброс доступен",
+    "bankedAvailable": "Отложенный сброс доступен",
+    "bankedUseHint": "Откройте Codex → Профиль → Использование и примените его вручную, когда потребуется. Текущий лимит не восстановится автоматически."
   }
 }

@@ -26,7 +26,8 @@
     "crons": ["*/30 * * * *"]
   },
   "vars": {
-    "COLLECTOR_ENABLED": "true"
+    "COLLECTOR_ENABLED": "true",
+    "CATALOG_STATUS_FALLBACK": "true"
   },
   "account_id": "59dc946124fa89b2df0f002b8a701862",
   "kv_namespaces": [
