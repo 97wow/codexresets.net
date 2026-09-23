@@ -36,7 +36,7 @@ export function mergePosts(existing, incoming) {
   for(const post of incoming){
     for(const old of post.edits||[])if(old!==post.id)map.delete(old);
     const current=map.get(post.id);
-    map.set(post.id,{...post,...(current?.editorial?{editorial:current.editorial}:{}),...(current?.aiClassification&&current.text===post.text?{aiClassification:current.aiClassification}:{}),...(current?.excerpt?{excerpt:true}:{}),...(!post.references?.length&&current?.references?.length?{references:current.references}:{})});
+    map.set(post.id,{...post,...(current?.editorial?{editorial:current.editorial}:{}),...(current?.aiClassification&&current.text===post.text?{aiClassification:current.aiClassification}:{}),...(current?.excerpt&&post.excerpt!==false?{excerpt:true}:{}),...(!post.references?.length&&current?.references?.length?{references:current.references}:{})});
   }
   return [...map.values()].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
 }

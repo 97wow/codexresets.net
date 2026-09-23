@@ -18,8 +18,8 @@ export async function collectCatalogStatus(previous,fetcher=fetch,ai){
   const raw=await response.text();if(raw.length>2_000_000)throw new XError('invalid_response');
   let body;try{body=JSON.parse(raw);}catch{throw new XError('invalid_response');}
   if(!Array.isArray(body?.events))throw new XError('invalid_response');
-  const known=new Set((previous.posts||[]).map(post=>post.id)),now=new Date().toISOString();
-  const received=body.events.filter(validCatalogEvent).filter(event=>!known.has(String(event.tweet_id))).slice(0,10).map(event=>({id:String(event.tweet_id),authorId:AUTHOR_ID,text:cleanText(event.display_text||event.text),createdAt:event.announced_at,url:`https://x.com/${AUTHOR}/status/${event.tweet_id}`,references:[],isReply:false,edits:[String(event.tweet_id)],collectedAt:now,method:'catalog_status_fallback'}));
+  const known=new Map((previous.posts||[]).map(post=>[post.id,post])),now=new Date().toISOString();
+  const received=body.events.filter(validCatalogEvent).filter(event=>{const current=known.get(String(event.tweet_id)),catalogText=cleanText(event.display_text||event.text);return !current||current.excerpt===true||/\bshow more\s*$/i.test(current.text)||catalogText.length>String(current.text||'').length+80;}).slice(0,10).map(event=>({id:String(event.tweet_id),authorId:AUTHOR_ID,text:cleanText(event.display_text||event.text),createdAt:event.announced_at,url:`https://x.com/${AUTHOR}/status/${event.tweet_id}`,references:[],isReply:false,edits:[String(event.tweet_id)],collectedAt:now,method:'catalog_status_fallback',excerpt:false}));
   if(!received.length)return {...previous,catalogStatusSource:CATALOG_STATUS_URL,catalogStatusCheckedAt:now};
   const posts=await classifyPostsWithAI(mergePosts(previous.posts||[],received),ai);
   return {...previous,posts,events:deriveEvents(posts),catalogStatusSource:CATALOG_STATUS_URL,catalogStatusCheckedAt:now};
