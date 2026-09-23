@@ -54,6 +54,7 @@ const bundle=await build({stdin:{contents:"export {renderTracker} from './src/li
 const api=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
 const seed=JSON.parse(readFileSync('src/data/snapshot.json'));
 const truncatedSeed=structuredClone(seed);truncatedSeed.posts[0].text='GPT-6 Sol and Luna are out. Show more';truncatedSeed.posts[0].excerpt=true;const enrichedSeed=api.withCatalogHistory(truncatedSeed);assert.match(enrichedSeed.posts[0].text,/banked reset into all accounts/);assert.equal(enrichedSeed.posts[0].excerpt,false);assert.equal(enrichedSeed.catalogStatusSource,'https://codex-resets.com/api/resets');
+const previousCycleSeed=structuredClone(seed);previousCycleSeed.posts=previousCycleSeed.posts.filter(post=>post.id!==seed.posts[0].id);previousCycleSeed.events=previousCycleSeed.events.filter(event=>event.id!==seed.events[0].id);assert.notEqual(api.resetCycle(previousCycleSeed),api.resetCycle(api.withCatalogHistory(previousCycleSeed)),'Community stats must use the same enriched reset cycle as the status API');
 const entries=new Map([['state',JSON.stringify(seed)]]);
 const env={X_BEARER_TOKEN:'test-only-token',RESETS:{get:async(k,type)=>{const s=entries.get(k);return s&&type==='json'?JSON.parse(s):s;},put:async(k,v)=>entries.set(k,v)}};
 await assert.rejects(api.synchronize(env,async()=>new Response('',{status:401})));

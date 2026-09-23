@@ -70,6 +70,7 @@ export default {
       if(!['GET','POST','HEAD'].includes(request.method))return json({error:'method_not_allowed'},405);
       if(request.method==='POST'&&!allowedMutation(request))return json({error:'forbidden'},403);
       let data=fallback;try{data=await env.RESETS.get('state','json')||fallback;}catch{}
+      data=withCatalogHistory(data);
       try{
         const result=url.pathname==='/api/community/stats'?await communityStats(env,data,request):url.pathname==='/api/community/visit'&&request.method==='POST'?await recordVisit(env,data,request):url.pathname==='/api/community/beg'&&request.method==='POST'?await recordBeg(env,data,request):null;
         if(!result)return json({error:'not_found'},404);
