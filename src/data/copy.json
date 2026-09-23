@@ -5,7 +5,7 @@
     "archive": "Reset history",
     "guide": "How resets work",
     "rss": "Subscribe via RSS",
-    "headline": "Catch the next reset.",
+    "headline": "Codex reset tracker",
     "intro": "Follow Tibo’s announcements, rollouts and compensation updates.",
     "latest": "Latest recorded reset",
     "original": "Read the original post",
@@ -79,7 +79,7 @@
     "reviewMode": "Manually reviewed archive",
     "liveMode": "Updates connected",
     "sourceShort": "From",
-    "statusHeadline": "Reset status",
+    "statusHeadline": "Latest reset status",
     "lastConfirmed": "Time since the last confirmed reset",
     "noConfirmed": "No confirmed reset yet",
     "nextReset": "Next reset",
@@ -168,7 +168,9 @@
     "timeDisplay": "Time display",
     "available": "Banked reset available",
     "bankedAvailable": "Banked reset available",
-    "bankedUseHint": "Open Codex → Profile → Usage to redeem it when you choose. It does not refill current usage automatically."
+    "bankedAction": "Ready to redeem",
+    "announcedAgo": "Announced by Tibo {time}",
+    "bankedUseHint": "Go to Codex → Profile → Usage and choose Redeem. This reset will not refill your current usage automatically."
   },
   "zh": {
     "pageTitle": "Codex Resets — 重置动态、预告与历史消息",
@@ -176,7 +178,7 @@
     "archive": "历史消息",
     "guide": "读懂重置",
     "rss": "订阅 RSS",
-    "headline": "不错过下一次重置。",
+    "headline": "Codex 重置追踪",
     "intro": "跟进 Tibo 的预告、发放进展与补发消息。",
     "latest": "最近一次记录的重置",
     "original": "查看 X 原帖",
@@ -250,7 +252,7 @@
     "reviewMode": "人工核查记录",
     "liveMode": "消息同步中",
     "sourceShort": "消息来源",
-    "statusHeadline": "当前重置状态",
+    "statusHeadline": "最新重置状态",
     "lastConfirmed": "距离上次确认重置",
     "noConfirmed": "尚无确认记录",
     "nextReset": "下一次重置",
@@ -339,7 +341,9 @@
     "timeDisplay": "时间显示",
     "available": "备用重置可用",
     "bankedAvailable": "备用重置可用",
-    "bankedUseHint": "打开 Codex → 个人资料 → 用量，按需手动启用；它不会自动恢复当前用量。"
+    "bankedAction": "现在可手动启用",
+    "announcedAgo": "Tibo 于 {time}发布",
+    "bankedUseHint": "前往 Codex → 个人资料 → 用量，选择“启用”。该机会不会自动补充当前用量。"
   },
   "zh-Hant": {
     "pageTitle": "Codex Resets — 重置動態、預告與歷史消息",
@@ -347,7 +351,7 @@
     "archive": "歷史消息",
     "guide": "讀懂重置",
     "rss": "訂閱 RSS",
-    "headline": "不要錯過下一次重置。",
+    "headline": "Codex 重置追蹤",
     "intro": "跟進 Tibo 的預告、發放進度與補發訊息。",
     "latest": "最近一次記錄的重置",
     "original": "查看 X 原帖",
@@ -421,7 +425,7 @@
     "reviewMode": "人工核查記錄",
     "liveMode": "訊息同步中",
     "sourceShort": "消息來源",
-    "statusHeadline": "目前重置狀態",
+    "statusHeadline": "最新重置狀態",
     "lastConfirmed": "距離上次確認重置",
     "noConfirmed": "尚無確認記錄",
     "nextReset": "下一次重置",
@@ -510,7 +514,9 @@
     "timeDisplay": "時間顯示",
     "available": "備用重置可用",
     "bankedAvailable": "備用重置可用",
-    "bankedUseHint": "開啟 Codex → 個人資料 → 用量，按需手動啟用；它不會自動恢復目前用量。"
+    "bankedAction": "現在可手動啟用",
+    "announcedAgo": "Tibo 於 {time}發布",
+    "bankedUseHint": "前往 Codex → 個人資料 → 用量，選擇「啟用」。此機會不會自動補充目前用量。"
   },
   "ja": {
     "pageTitle": "Codex Resets — リセット情報・予告・履歴",
@@ -518,7 +524,7 @@
     "archive": "リセット履歴",
     "guide": "リセットの仕組み",
     "rss": "RSSで購読",
-    "headline": "次のリセットを見逃さない。",
+    "headline": "Codex リセット追跡",
     "intro": "Tiboの予告、展開状況、補填情報を追跡します。",
     "latest": "最新のリセット記録",
     "original": "原文を読む",
@@ -592,7 +598,7 @@
     "reviewMode": "手動確認済み履歴",
     "liveMode": "自動更新中",
     "sourceShort": "から",
-    "statusHeadline": "現在のリセット状況",
+    "statusHeadline": "最新のリセット状況",
     "lastConfirmed": "前回の完了確認から",
     "noConfirmed": "確認済みリセットはまだありません",
     "nextReset": "次のリセット",
@@ -681,7 +687,9 @@
     "timeDisplay": "時刻表示",
     "available": "ストック型リセット利用可",
     "bankedAvailable": "ストック型リセットが利用可能",
-    "bankedUseHint": "Codex → プロフィール → 使用量から、必要なときに手動で適用してください。現在の使用量は自動回復しません。"
+    "bankedAction": "今すぐ手動で適用できます",
+    "announcedAgo": "Tibo が{time}に発表",
+    "bankedUseHint": "Codex → プロフィール → 使用量を開き、「適用」を選択してください。現在の使用量は自動では回復しません。"
   },
   "ko": {
     "pageTitle": "Codex Resets — 재설정 소식·예고·기록",
@@ -689,7 +697,7 @@
     "archive": "재설정 기록",
     "guide": "재설정 작동 방식",
     "rss": "RSS 구독",
-    "headline": "다음 재설정을 놓치지 마세요.",
+    "headline": "Codex 재설정 추적",
     "intro": "Tibo의 예고, 배포 진행과 보상 소식을 추적합니다.",
     "latest": "최근 재설정 기록",
     "original": "원문 보기",
@@ -763,7 +771,7 @@
     "reviewMode": "수동 확인 기록",
     "liveMode": "업데이트 연결됨",
     "sourceShort": "에서",
-    "statusHeadline": "현재 재설정 상태",
+    "statusHeadline": "최신 재설정 상태",
     "lastConfirmed": "마지막 완료 확인 이후",
     "noConfirmed": "확인된 재설정이 없습니다",
     "nextReset": "다음 재설정",
@@ -851,8 +859,10 @@
     "localTime": "현지 시간",
     "timeDisplay": "시간 표시",
     "available": "저장형 재설정 사용 가능",
-    "bankedAvailable": "저장형 재설정 지급됨",
-    "bankedUseHint": "Codex → 프로필 → 사용량에서 필요할 때 직접 적용하세요. 현재 사용량이 자동으로 복구되지는 않습니다."
+    "bankedAvailable": "저장형 재설정 사용 가능",
+    "bankedAction": "지금 직접 적용할 수 있습니다",
+    "announcedAgo": "Tibo가 {time} 발표",
+    "bankedUseHint": "Codex → 프로필 → 사용량으로 이동해 적용을 선택하세요. 현재 사용량은 자동으로 복구되지 않습니다."
   },
   "es": {
     "pageTitle": "Codex Resets — noticias, anuncios e historial",
@@ -860,7 +870,7 @@
     "archive": "Historial",
     "guide": "Cómo funcionan los reinicios",
     "rss": "Suscríbete vía RSS",
-    "headline": "No te pierdas el próximo reinicio.",
+    "headline": "Seguimiento de reinicios de Codex",
     "intro": "Siga los anuncios, implementaciones y actualizaciones de compensación de Tibo.",
     "latest": "Último reinicio registrado",
     "original": "Leer la publicación original",
@@ -934,7 +944,7 @@
     "reviewMode": "Archivo revisado manualmente",
     "liveMode": "Actualizaciones conectadas",
     "sourceShort": "De",
-    "statusHeadline": "Estado de los reinicios",
+    "statusHeadline": "Último estado del reinicio",
     "lastConfirmed": "Tiempo desde el último reinicio confirmado",
     "noConfirmed": "Aún no hay reinicio confirmado",
     "nextReset": "Siguiente reinicio",
@@ -1023,7 +1033,9 @@
     "timeDisplay": "Visualización de hora",
     "available": "Reinicio guardado disponible",
     "bankedAvailable": "Reinicio guardado disponible",
-    "bankedUseHint": "Abre Codex → Perfil → Uso para aplicarlo cuando quieras. No repone automáticamente el uso actual."
+    "bankedAction": "Listo para canjear",
+    "announcedAgo": "Tibo lo anunció {time}",
+    "bankedUseHint": "Ve a Codex → Perfil → Uso y elige Canjear. Este reinicio no repone automáticamente el uso actual."
   },
   "fr": {
     "pageTitle": "Codex Resets — actualités, annonces et historique",
@@ -1031,7 +1043,7 @@
     "archive": "Historique",
     "guide": "Comprendre les réinitialisations",
     "rss": "Abonnez-vous via RSS",
-    "headline": "Ne manquez pas la prochaine réinitialisation.",
+    "headline": "Suivi des réinitialisations Codex",
     "intro": "Suivez les annonces, les déploiements et les mises à jour de rémunération de Tibo.",
     "latest": "Dernière réinitialisation enregistrée",
     "original": "Lire le message original",
@@ -1105,7 +1117,7 @@
     "reviewMode": "Archives révisées manuellement",
     "liveMode": "Mises à jour connectées",
     "sourceShort": "De",
-    "statusHeadline": "État des réinitialisations",
+    "statusHeadline": "Dernier état de réinitialisation",
     "lastConfirmed": "Temps écoulé depuis la dernière réinitialisation confirmée",
     "noConfirmed": "Pas de réinitialisation confirmée pour l'instant",
     "nextReset": "Prochaine réinitialisation",
@@ -1194,7 +1206,9 @@
     "timeDisplay": "Affichage de l’heure",
     "available": "Réinitialisation en réserve disponible",
     "bankedAvailable": "Réinitialisation en réserve disponible",
-    "bankedUseHint": "Ouvrez Codex → Profil → Utilisation pour l’appliquer au moment voulu. Elle ne recharge pas automatiquement l’utilisation actuelle."
+    "bankedAction": "Prête à être utilisée",
+    "announcedAgo": "Annoncée par Tibo {time}",
+    "bankedUseHint": "Accédez à Codex → Profil → Utilisation et choisissez Utiliser. Cette réinitialisation ne recharge pas automatiquement l’utilisation actuelle."
   },
   "de": {
     "pageTitle": "Codex Resets — Meldungen, Ankündigungen und Verlauf",
@@ -1202,7 +1216,7 @@
     "archive": "Verlauf",
     "guide": "So funktionieren Resets",
     "rss": "Abonnieren Sie per RSS",
-    "headline": "Verpasse den nächsten Reset nicht.",
+    "headline": "Codex-Reset-Tracker",
     "intro": "Verfolgen Sie die Ankündigungen, Einführungen und Vergütungsaktualisierungen von Tibo.",
     "latest": "Letzter aufgezeichneter Reset",
     "original": "Lesen Sie den Originalbeitrag",
@@ -1276,7 +1290,7 @@
     "reviewMode": "Manuell überprüftes Archiv",
     "liveMode": "Updates verbunden",
     "sourceShort": "Von",
-    "statusHeadline": "Reset-Status",
+    "statusHeadline": "Aktueller Reset-Status",
     "lastConfirmed": "Zeit seit dem letzten bestätigten Zurücksetzen",
     "noConfirmed": "Noch kein bestätigter Reset",
     "nextReset": "Nächster Reset",
@@ -1365,7 +1379,9 @@
     "timeDisplay": "Zeitanzeige",
     "available": "Gespeicherter Reset verfügbar",
     "bankedAvailable": "Gespeicherter Reset verfügbar",
-    "bankedUseHint": "Öffne Codex → Profil → Nutzung und löse ihn bei Bedarf manuell ein. Die aktuelle Nutzung wird nicht automatisch aufgefüllt."
+    "bankedAction": "Jetzt manuell einlösbar",
+    "announcedAgo": "Von Tibo {time} angekündigt",
+    "bankedUseHint": "Öffne Codex → Profil → Nutzung und wähle Einlösen. Dieser Reset füllt die aktuelle Nutzung nicht automatisch auf."
   },
   "pt": {
     "pageTitle": "Codex Resets — notícias, anúncios e histórico",
@@ -1373,7 +1389,7 @@
     "archive": "Histórico",
     "guide": "Como funcionam as redefinições",
     "rss": "Assine via RSS",
-    "headline": "Não perca a próxima redefinição.",
+    "headline": "Monitor de redefinições do Codex",
     "intro": "Acompanhe os anúncios, lançamentos e atualizações de remuneração da Tibo.",
     "latest": "Última redefinição registrada",
     "original": "Leia a postagem original",
@@ -1447,7 +1463,7 @@
     "reviewMode": "Arquivo revisado manualmente",
     "liveMode": "Atualizações conectadas",
     "sourceShort": "De",
-    "statusHeadline": "Status das redefinições",
+    "statusHeadline": "Status mais recente",
     "lastConfirmed": "Tempo desde a última redefinição confirmada",
     "noConfirmed": "Nenhuma redefinição confirmada ainda",
     "nextReset": "Próxima redefinição",
@@ -1536,7 +1552,9 @@
     "timeDisplay": "Exibição de horário",
     "available": "Redefinição guardada disponível",
     "bankedAvailable": "Redefinição guardada disponível",
-    "bankedUseHint": "Abra Codex → Perfil → Uso para aplicá-la quando quiser. Ela não restaura automaticamente o uso atual."
+    "bankedAction": "Pronta para resgatar",
+    "announcedAgo": "Anunciada por Tibo {time}",
+    "bankedUseHint": "Acesse Codex → Perfil → Uso e escolha Resgatar. Esta redefinição não restaura automaticamente o uso atual."
   },
   "ru": {
     "pageTitle": "Codex Resets — новости, анонсы и история",
@@ -1544,7 +1562,7 @@
     "archive": "История",
     "guide": "Как работают сбросы",
     "rss": "Подписаться через RSS",
-    "headline": "Не пропустите следующий сброс.",
+    "headline": "Отслеживание сбросов Codex",
     "intro": "Следите за объявлениями Тибо, обновлениями и обновлениями компенсаций.",
     "latest": "Последний зарегистрированный сброс",
     "original": "Прочтите исходный пост",
@@ -1618,7 +1636,7 @@
     "reviewMode": "Архив, проверенный вручную",
     "liveMode": "Обновления подключены",
     "sourceShort": "От",
-    "statusHeadline": "Статус сбросов",
+    "statusHeadline": "Последний статус сброса",
     "lastConfirmed": "Время с момента последнего подтвержденного сброса",
     "noConfirmed": "Пока нет подтвержденного сброса",
     "nextReset": "Следующий сброс",
@@ -1707,6 +1725,8 @@
     "timeDisplay": "Отображение времени",
     "available": "Отложенный сброс доступен",
     "bankedAvailable": "Отложенный сброс доступен",
-    "bankedUseHint": "Откройте Codex → Профиль → Использование и примените его вручную, когда потребуется. Текущий лимит не восстановится автоматически."
+    "bankedAction": "Можно применить вручную",
+    "announcedAgo": "Tibo сообщил об этом {time}",
+    "bankedUseHint": "Откройте Codex → Профиль → Использование и выберите Применить. Этот сброс не пополнит текущий лимит автоматически."
   }
 }
