@@ -4,6 +4,7 @@ const validCountry=value=>typeof value==='string'&&/^[A-Z]{2}$/.test(value)?valu
 const readNumber=async(kv,key)=>Math.max(0,Number.parseInt(await kv.get(key)||'0',10)||0);
 const readCountries=async(kv,key)=>{try{const value=await kv.get(key,'json');return value&&typeof value==='object'?value:{};}catch{return {};}};
 export const resetCycle=data=>resetOpportunities(data.events).find(event=>/^\d{10,25}$/.test(event.id))?.id||'none';
+const recentCycles=data=>resetOpportunities(data.events).filter(event=>/^\d{10,25}$/.test(event.id)).slice(0,4);
 async function visitorHash(request,scope,secret){
   const ip=request.headers.get('CF-Connecting-IP')||'unknown';
   const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
@@ -11,9 +12,10 @@ async function visitorHash(request,scope,secret){
   return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
 }
 export async function communityStats(env,data,request){
-  const cycle=resetCycle(data),country=validCountry(request.cf?.country||request.headers.get('CF-IPCountry'));
-  const [visitors,begCount,countries]=await Promise.all([readNumber(env.RESETS,'community:visitors'),readNumber(env.RESETS,`community:beg:${cycle}:count`),readCountries(env.RESETS,`community:beg:${cycle}:countries`)]);
-  return {visitors,beg:{cycle,count:begCount,countries},country};
+  const cycles=recentCycles(data),cycle=cycles[0]?.id||'none',country=validCountry(request.cf?.country||request.headers.get('CF-IPCountry'));
+  const [visitors,begCount,countries,historyCounts]=await Promise.all([readNumber(env.RESETS,'community:visitors'),readNumber(env.RESETS,`community:beg:${cycle}:count`),readCountries(env.RESETS,`community:beg:${cycle}:countries`),Promise.all(cycles.slice(1).map(event=>readNumber(env.RESETS,`community:beg:${event.id}:count`)))]);
+  const history=cycles.slice(1).map((event,index)=>({cycle:event.id,count:historyCounts[index],announcedAt:event.announcedAt})).filter(item=>item.count>0);
+  return {visitors,beg:{cycle,count:begCount,countries,history},country};
 }
 export async function recordVisit(env,data,request){
   if(!env.STATS_SALT)throw new Error('stats_unavailable');
