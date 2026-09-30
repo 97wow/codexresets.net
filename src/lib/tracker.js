@@ -37,12 +37,13 @@ function calendarHeatmap(completed,lang,t,now){
 }
 export function renderTracker(data,lang='en',now=Date.now()){
   const t=copy[lang],events=data.events||[],posts=(data.posts||[]).slice().sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt)),live=data.collectorState==='connected',fresh=live&&data.lastSuccessAt&&now-Date.parse(data.lastSuccessAt)<900000;
+  const statusEvent=data.statusEvent||data.catalogStatusEvent||null,statusEvents=statusEvent?[statusEvent,...events]:events;
   const sourceLink=event=>`<a href="${escape(sourceURL(event.source))}" target="_blank" rel="noopener noreferrer">${t.original} ↗</a>`;
   const announcementText=event=>String(event.text||'').replace(/\s+\[[^\]]+\]\(https:\/\/x\.com\/thsottiaux\/status\/\d+\)[\d.KMB]+$/i,'').trim();
-  const active=events.filter(e=>e.state==='announced'&&!announcementResolved(e,events)).sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt));
+  const active=events.filter(e=>e.state==='announced'&&!announcementResolved(e,statusEvents)).sort((a,b)=>Date.parse(b.announcedAt)-Date.parse(a.announcedAt));
   const currentAnnouncement=active[0]||null;
   const completed=resetOpportunities(events);
-  const lastCompleted=completed[0];
+  const lastCompleted=statusEvent||completed[0];
   const bankedAvailable=lastCompleted?.state==='available'&&lastCompleted?.kind==='banked';
   const intervals=completed.slice(0,-1).map((event,index)=>Date.parse(event.announcedAt)-Date.parse(completed[index+1].announcedAt)).filter(value=>value>0);
   const formatDays=value=>{const days=value/86400000;return Number.isInteger(days)?String(days):days.toFixed(1);};

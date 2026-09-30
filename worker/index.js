@@ -9,23 +9,22 @@ import {NotifyError,confirmEmailSubscription,dispatchNotifications,handleTelegra
 import {localeBase,locales} from '../src/lib/i18n.js';
 import {collectCatalogStatus} from '../src/lib/catalog-status.js';
 
-export const withCatalogHistory=data=>{const catalogPosts=new Map((fallback.posts||[]).map(post=>[post.id,post])),currentPosts=(data.posts||[]).map(post=>{const catalog=catalogPosts.get(post.id),truncated=post.excerpt===true||/\bshow more\s*$/i.test(post.text||'');return catalog&&truncated&&catalog.text.length>String(post.text||'').length?{...post,text:catalog.text,excerpt:false,method:catalog.method||post.method}:post;}),posts=mergePosts(fallback.posts||[],currentPosts);return {...data,posts,events:deriveEvents(posts),catalogSource:fallback.catalogSource,catalogStatusSource:data.catalogStatusSource||fallback.catalogStatusSource,coverage:'catalog_backfilled'};};
+export const withCatalogHistory=data=>{const catalogPosts=new Map((fallback.posts||[]).map(post=>[post.id,post])),currentPosts=(data.posts||[]).map(post=>{const catalog=catalogPosts.get(post.id),truncated=post.excerpt===true||/\bshow more\s*$/i.test(post.text||'');return catalog&&truncated&&catalog.text.length>String(post.text||'').length?{...post,text:catalog.text,excerpt:false,method:catalog.method||post.method}:post;}),posts=mergePosts(fallback.posts||[],currentPosts);return {...data,posts,events:deriveEvents(posts),catalogSource:fallback.catalogSource,catalogStatusEvent:data.catalogStatusEvent||fallback.catalogStatusEvent||null,catalogStatusSource:data.catalogStatusSource||fallback.catalogStatusSource,coverage:'catalog_backfilled'};};
 
 export async function synchronize(env,fetcher=fetch){
   const previous=withCatalogHistory(await env.RESETS.get('state','json')||fallback);
-  let next,officialError;
+  let next,officialError,publicError,statusError,statusConnected=false;
   try{if(env.X_BEARER_TOKEN)next=await collectX(previous,env.X_BEARER_TOKEN,fetcher,{ai:env.AI});}catch(error){officialError=error;}
+  if(!next)try{next=await collectXPublic(previous,env.BROWSER,env.AI);}catch(error){publicError=error;}
+  if(env.CATALOG_STATUS_SOURCE==='true')try{next=await collectCatalogStatus(next||previous,fetcher);statusConnected=true;}catch(error){statusError=error;console.error('catalog_status_failed',{code:error?.code||'unknown'});}
   try{
-    if(!next)next=await collectXPublic(previous,env.BROWSER,env.AI);
-    if(env.CATALOG_STATUS_FALLBACK==='true'){
-      try{next=await collectCatalogStatus(next,fetcher,env.AI);}catch(error){console.error('catalog_status_fallback_failed',{code:error?.code||'unknown'});}
-    }
+    if(!next)throw publicError||officialError||statusError||new XError('source_unavailable');
     await env.RESETS.put('state',JSON.stringify(next));
-    await env.RESETS.put('health',JSON.stringify({state:'connected',method:next.collectorMethod||'x_api',attemptedAt:next.lastAttemptAt,officialApi:officialError instanceof XError?officialError.code:undefined}));
+    await env.RESETS.put('health',JSON.stringify({state:'connected',method:next.collectorMethod||(statusConnected?'catalog_status':'x_api'),attemptedAt:next.lastAttemptAt||next.catalogStatusCheckedAt,officialApi:officialError instanceof XError?officialError.code:undefined,statusSource:statusError instanceof XError?statusError.code:'connected'}));
     try{await dispatchNotifications(env,previous,next);}catch(error){console.error('notification_dispatch_failed',{code:error?.code||'unknown'});}
     return next;
   }catch(error){
-    const sourceError=error instanceof XError&&error.code!=='browser_unavailable'?error:officialError||error;
+    const sourceError=error instanceof XError&&error.code!=='browser_unavailable'?error:statusError||officialError||publicError||error;
     const code=sourceError instanceof XError?sourceError.code:'source_unavailable';
     await env.RESETS.put('health',JSON.stringify({state:'error',code,attemptedAt:new Date().toISOString()}));
     throw new XError(code);
@@ -34,7 +33,7 @@ export async function synchronize(env,fetcher=fetch){
 export function publicState(data,health){
   const hydrated=withCatalogHistory(data);
   const posts=hydrated.posts.filter(post=>post?.authorId==='1953337039510003712'&&/^\d{10,25}$/.test(post.id)&&typeof post.text==='string'&&post.text.length<=100000&&Number.isFinite(Date.parse(post.createdAt))).map(post=>({id:post.id,text:cleanPublicPostText(post.text),createdAt:post.createdAt,url:`https://x.com/thsottiaux/status/${post.id}`,isReply:post.isReply===true}));
-  return {version:1,events:hydrated.events,posts,lastSuccessAt:hydrated.lastSuccessAt,lastReviewAt:hydrated.lastReviewAt,coverage:hydrated.coverage,catalogSource:hydrated.catalogSource,collectorMethod:health?.method||hydrated.collectorMethod||null,collectorState:health?.state==='error'?'error':hydrated.collectorState};
+  return {version:1,events:hydrated.events,statusEvent:hydrated.catalogStatusEvent||null,posts,lastSuccessAt:hydrated.lastSuccessAt,lastReviewAt:hydrated.lastReviewAt,coverage:hydrated.coverage,catalogSource:hydrated.catalogSource,catalogStatusSource:hydrated.catalogStatusSource,collectorMethod:health?.method||hydrated.collectorMethod||null,collectorState:health?.state==='error'?'error':hydrated.collectorState};
 }
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin'};
 const apiHeaders={...securityHeaders,'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET, HEAD, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'public, max-age=60, s-maxage=300'};

@@ -3,8 +3,9 @@ const encoder=new TextEncoder();
 const validCountry=value=>typeof value==='string'&&/^[A-Z]{2}$/.test(value)?value:'XX';
 const readNumber=async(kv,key)=>Math.max(0,Number.parseInt(await kv.get(key)||'0',10)||0);
 const readCountries=async(kv,key)=>{try{const value=await kv.get(key,'json');return value&&typeof value==='object'?value:{};}catch{return {};}};
-export const resetCycle=data=>resetOpportunities(data.events).find(event=>/^\d{10,25}$/.test(event.id))?.id||'none';
-const recentCycles=data=>resetOpportunities(data.events).filter(event=>/^\d{10,25}$/.test(event.id)).slice(0,4);
+const currentStatus=data=>data.statusEvent||data.catalogStatusEvent||null;
+export const resetCycle=data=>currentStatus(data)?.id||resetOpportunities(data.events).find(event=>/^\d{10,25}$/.test(event.id))?.id||'none';
+const recentCycles=data=>{const status=currentStatus(data),events=resetOpportunities(data.events).filter(event=>/^\d{10,25}$/.test(event.id)&&event.id!==status?.id);return [...(status?[status]:[]),...events].slice(0,4);};
 async function visitorHash(request,scope,secret){
   const ip=request.headers.get('CF-Connecting-IP')||'unknown';
   const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
